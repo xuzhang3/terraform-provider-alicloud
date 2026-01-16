@@ -110,6 +110,14 @@ func TestAccAliCloudECSSecurityGroup_basic8588(t *testing.T) {
 		return &EcsServiceV2{testAccProvider.Meta().(*connectivity.AliyunClient)}
 	}, "DescribeEcsSecurityGroup")
 	rac := resourceAttrCheckInit(rc, ra)
+
+	fmt.Println("test")
+	fmt.Println("test")
+	fmt.Println("test")
+	fmt.Println("test")
+	fmt.Println("test")
+	fmt.Println("test")
+	fmt.Println("test")
 	testAccCheck := rac.resourceAttrMapUpdateSet()
 	rand := acctest.RandIntRange(10000, 99999)
 	name := fmt.Sprintf("tf-testAcc%sSecurityGroupName%d", defaultRegionToTest, rand)

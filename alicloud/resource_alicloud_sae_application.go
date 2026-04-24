@@ -820,27 +820,6 @@ func resourceAliCloudSaeApplication() *schema.Resource {
 				ConflictsWith: []string{"update_strategy_v2"},
 				Deprecated:    "Field `update_strategy` has been deprecated from provider version 1.211.0. New field `update_strategy_v2` instead.",
 			},
-			"nas_id": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `nas_id` has been removed from provider version 1.211.0.",
-			},
-			"mount_host": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `mount_host` has been removed from provider version 1.211.0.",
-			},
-			"mount_desc": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `mount_desc` has been removed from provider version 1.211.0.",
-			},
-			"version_id": {
-				Type:     schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-				Removed:  "Field `version_id` has been removed from provider version 1.211.0.",
-			},
 		},
 	}
 }

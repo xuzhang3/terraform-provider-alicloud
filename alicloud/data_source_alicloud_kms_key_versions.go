@@ -49,11 +49,6 @@ func dataSourceAlicloudKmsKeyVersions() *schema.Resource {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"creation_date": {
-							Type:     schema.TypeString,
-							Computed: true,
-							Removed:  "Attribute 'creation_date' has been removed and using 'create_time' instead.",
-						},
 					},
 				},
 			},
@@ -126,7 +121,6 @@ func dataSourceAlicloudKmsKeyVersionsRead(d *schema.ResourceData, meta interface
 			"key_id":         object["KeyId"],
 			"id":             fmt.Sprint(object["KeyVersionId"]),
 			"key_version_id": fmt.Sprint(object["KeyVersionId"]),
-			"creation_date":  object["CreateTime"],
 		}
 		ids = append(ids, fmt.Sprint(mapping["id"]))
 		s = append(s, mapping)

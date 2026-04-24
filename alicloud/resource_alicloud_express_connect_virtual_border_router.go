@@ -134,11 +134,6 @@ func resourceAliCloudExpressConnectVirtualBorderRouter() *schema.Resource {
 				Optional:   true,
 				Deprecated: "Field `associated_physical_connections` has been deprecated from provider version 1.263.0. Please use the resource `alicloud_express_connect_vbr_pconn_association` instead.",
 			},
-			"include_cross_account_vbr": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				Removed:  "Field `include_cross_account_vbr` has been removed from provider version 1.263.0.",
-			},
 		},
 	}
 }

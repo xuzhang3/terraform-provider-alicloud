@@ -66,12 +66,6 @@ func resourceAliyunSlbMasterSlaveServerGroup() *schema.Resource {
 							Optional:     true,
 							ValidateFunc: validation.StringInSlice([]string{"Master", "Slave"}, false),
 						},
-						"is_backup": {
-							Type:         schema.TypeInt,
-							Optional:     true,
-							ValidateFunc: validation.IntInSlice([]int{0, 1}),
-							Removed:      "Field 'is_backup' has been removed from provider version 1.63.0.",
-						},
 					},
 				},
 				MaxItems: 2,

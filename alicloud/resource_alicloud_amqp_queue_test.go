@@ -147,7 +147,6 @@ func TestUnitAliCloudAmqpQueue(t *testing.T) {
 		"auto_expire_state":       "10000",
 		"dead_letter_exchange":    "dead_letter_exchange",
 		"dead_letter_routing_key": "dead_letter_routing_key",
-		"exclusive_state":         false,
 		"max_length":              "100",
 		"maximum_priority":        10,
 		"message_ttl":             "100",

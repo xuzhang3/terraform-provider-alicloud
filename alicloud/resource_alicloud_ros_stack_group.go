@@ -126,26 +126,6 @@ func resourceAliCloudRosStackGroup() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
-			"account_ids": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `account_ids` has been removed from provider version 1.257.0.",
-			},
-			"operation_description": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `operation_description` has been removed from provider version 1.257.0.",
-			},
-			"operation_preferences": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `operation_preferences` has been removed from provider version 1.257.0.",
-			},
-			"region_ids": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `region_ids` has been removed from provider version 1.257.0.",
-			},
 		},
 	}
 }

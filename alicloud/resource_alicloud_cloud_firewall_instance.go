@@ -188,11 +188,6 @@ func resourceAliCloudCloudFirewallInstance() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"cfw_service": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				Removed:  "Attribute 'cfw_service' does not support longer, and it has been removed since v1.209.1",
-			},
 		},
 	}
 }

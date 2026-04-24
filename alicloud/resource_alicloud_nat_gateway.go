@@ -95,47 +95,6 @@ func resourceAliCloudNatGateway() *schema.Resource {
 					validation.IntBetween(1, 9),
 					validation.IntInSlice([]int{12, 24, 36})),
 			},
-			"bandwidth_packages": {
-				Type: schema.TypeList,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"ip_count": {
-							Type:     schema.TypeInt,
-							Optional: true,
-							Removed:  "Field `ip_count` has been removed from provider version 1.121.0.",
-						},
-						"bandwidth": {
-							Type:     schema.TypeInt,
-							Optional: true,
-							Removed:  "Field `bandwidth` has been removed from provider version 1.121.0.",
-						},
-						"zone": {
-							Type:     schema.TypeString,
-							Optional: true,
-							Computed: true,
-							Removed:  "Field `zone` has been removed from provider version 1.121.0.",
-						},
-						"public_ip_addresses": {
-							Type:     schema.TypeString,
-							Computed: true,
-							Removed:  "Field `public_ip_addresses` has been removed from provider version 1.121.0.",
-						},
-					},
-				},
-				MaxItems: 4,
-				Optional: true,
-				Removed:  "Field `bandwidth_packages` has been removed from provider version 1.121.0.",
-			},
-			"bandwidth_package_ids": {
-				Type:     schema.TypeString,
-				Computed: true,
-				Removed:  "Field `bandwidth_package_ids` has been removed from provider version 1.121.0.",
-			},
-			"spec": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `spec` has been removed from provider version 1.121.0. New field `specification` instead.",
-			},
 			"snat_table_ids": {
 				Type:     schema.TypeString,
 				Computed: true,

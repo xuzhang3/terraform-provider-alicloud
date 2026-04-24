@@ -122,333 +122,6 @@ func testSweepKVStoreInstances(region string) error {
 	return nil
 }
 
-// engine_version 4.0 has been offline from July 31, 2025
-func SkipTestAccAliCloudKVStoreRedisInstance_vpctest(t *testing.T) {
-	var v r_kvstore.DBInstanceAttribute
-	resourceId := "alicloud_kvstore_instance.default"
-	ra := resourceAttrInit(resourceId, AliCloudKVStoreMap0)
-	rc := resourceCheckInitWithDescribeMethod(resourceId, &v, func() interface{} {
-		return &R_kvstoreService{testAccProvider.Meta().(*connectivity.AliyunClient)}
-	}, "DescribeKvstoreInstance")
-	rac := resourceAttrCheckInit(rc, ra)
-	testAccCheck := rac.resourceAttrMapUpdateSet()
-	rand := acctest.RandIntRange(1000000, 9999999)
-	name := fmt.Sprintf("tf-testAccKvstoreRedisInstanceVpcTest%d", rand)
-	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudKVStoreRedisInstanceVpcBasicDependence0)
-	resource.Test(t, resource.TestCase{
-		PreCheck: func() {
-			testAccPreCheck(t)
-			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
-		},
-		IDRefreshName: resourceId,
-		Providers:     testAccProviders,
-		CheckDestroy:  rac.checkResourceDestroy(),
-		Steps: []resource.TestStep{
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"instance_class":   "redis.master.small.default",
-					"db_instance_name": name,
-					"instance_type":    "Redis",
-					"engine_version":   "4.0",
-					"tags": map[string]string{
-						"Created": "TF",
-						"For":     "acceptance test",
-					},
-					"resource_group_id": "${data.alicloud_resource_manager_resource_groups.default.ids.1}",
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones.0.id}",
-					"vswitch_id":        "${data.alicloud_vswitches.default.ids.0}",
-					"secondary_zone_id": "${data.alicloud_kvstore_zones.default.zones.1.id}",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"instance_class":    "redis.master.small.default",
-						"db_instance_name":  name,
-						"instance_type":     "Redis",
-						"engine_version":    "4.0",
-						"tags.%":            "2",
-						"tags.Created":      "TF",
-						"tags.For":          "acceptance test",
-						"resource_group_id": CHECKSET,
-						"zone_id":           CHECKSET,
-						"vswitch_id":        CHECKSET,
-						"secondary_zone_id": CHECKSET,
-					}),
-				),
-			},
-			{
-				ResourceName:            resourceId,
-				ImportState:             true,
-				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"dry_run", "auto_use_coupon", "backup_id", "business_info", "coupon_no", "dedicated_host_group_id", "effective_time", "force_upgrade", "global_instance", "global_instance_id", "order_type", "password", "period", "restore_time", "src_db_instance_id", "enable_public", "security_ip_group_attribute", "enable_backup_log"},
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"tags": map[string]string{
-						"Created": "TF",
-						"For":     "kvstore",
-					},
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"tags.%":       "2",
-						"tags.Created": "TF",
-						"tags.For":     "kvstore",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"config": map[string]string{
-						"appendonly":             "no",
-						"lazyfree-lazy-eviction": "no",
-						"maxmemory-policy":       "volatile-lru",
-					},
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"config.%":                      "3",
-						"config.appendonly":             "no",
-						"config.lazyfree-lazy-eviction": "no",
-						"config.maxmemory-policy":       "volatile-lru",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"security_ip_group_name": "tf",
-					"security_ips":           []string{"10.23.12.24"},
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"security_ip_group_name": "tf",
-						"security_ips.#":         "1",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"resource_group_id": "${data.alicloud_resource_manager_resource_groups.default.ids.1}",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"resource_group_id": CHECKSET,
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"security_group_id": "${alicloud_security_group.default.id}",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"security_group_id": CHECKSET,
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"db_instance_name": name + "_update",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"db_instance_name": name + "_update",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"instance_class": "redis.master.mid.default",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"instance_class": "redis.master.mid.default",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"instance_class": "redis.master.large.default",
-					"engine_version": "5.0",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"instance_class": "redis.master.large.default",
-						"engine_version": "5.0",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones.1.id}",
-					"vswitch_id":        "${data.alicloud_vswitches.update.ids.0}",
-					"secondary_zone_id": "${data.alicloud_kvstore_zones.default.zones.0.id}",
-					"timeouts": []map[string]interface{}{
-						{
-							"update": "1h",
-						},
-					},
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"zone_id":           CHECKSET,
-						"vswitch_id":        CHECKSET,
-						"secondary_zone_id": CHECKSET,
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"maintain_start_time": "02:00Z",
-					"maintain_end_time":   "03:00Z",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"maintain_start_time": "02:00Z",
-						"maintain_end_time":   "03:00Z",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"backup_period": []string{"Tuesday", "Wednesday"},
-					"backup_time":   "10:00Z-11:00Z",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"backup_period.#": "2",
-						"backup_time":     "10:00Z-11:00Z",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"private_connection_prefix": fmt.Sprintf("privateprefix%d", rand),
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"private_connection_prefix": CHECKSET,
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"private_connection_port": "4010",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"private_connection_port": "4010",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"instance_release_protection": "true",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"instance_release_protection": "true",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"engine_version": "5.0",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"engine_version": "5.0",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"payment_type":      "PrePaid",
-					"period":            "1",
-					"auto_renew":        "true",
-					"auto_renew_period": "2",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"payment_type":      "PrePaid",
-						"auto_renew":        "true",
-						"auto_renew_period": "2",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"payment_type": "PostPaid",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"payment_type": "PostPaid",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"instance_class":              "redis.master.small.default",
-					"instance_release_protection": "false",
-					"resource_group_id":           "${data.alicloud_resource_manager_resource_groups.default.ids.1}",
-					"security_ips":                []string{"10.0.0.1"},
-					"db_instance_name":            name,
-					"vpc_auth_mode":               "Open",
-					"config": map[string]string{
-						"appendonly":             "yes",
-						"lazyfree-lazy-eviction": "yes",
-						"maxmemory-policy":       "volatile-lru",
-					},
-					"tags": map[string]string{
-						"Created": "TF",
-						"For":     "acceptance test",
-					},
-					"zone_id":             "${data.alicloud_kvstore_zones.default.zones.0.id}",
-					"vswitch_id":          "${data.alicloud_vswitches.default.ids.0}",
-					"secondary_zone_id":   REMOVEKEY,
-					"maintain_start_time": "04:00Z",
-					"maintain_end_time":   "06:00Z",
-					// There is an OpenAPI bug
-					//"backup_period":             []string{"Wednesday"},
-					//"backup_time":               "11:00Z-12:00Z",
-					"private_connection_prefix": fmt.Sprintf("privateprefixupdate%d", rand),
-					"private_connection_port":   "4011",
-					"timeouts": []map[string]interface{}{
-						{
-							"update": "1h",
-						},
-					},
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"instance_class":                "redis.master.small.default",
-						"instance_release_protection":   "false",
-						"resource_group_id":             CHECKSET,
-						"security_ips.#":                "1",
-						"db_instance_name":              name,
-						"vpc_auth_mode":                 "Open",
-						"config.%":                      "3",
-						"config.appendonly":             "yes",
-						"config.lazyfree-lazy-eviction": "yes",
-						"config.maxmemory-policy":       "volatile-lru",
-						"tags.%":                        "2",
-						"tags.Created":                  "TF",
-						"tags.For":                      "acceptance test",
-						"zone_id":                       CHECKSET,
-						"vswitch_id":                    CHECKSET,
-						"secondary_zone_id":             REMOVEKEY,
-						"maintain_start_time":           "04:00Z",
-						"maintain_end_time":             "06:00Z",
-						//"backup_period.#":               "1",
-						//"backup_time":                   "11:00Z-12:00Z",
-						"private_connection_port":   "4011",
-						"private_connection_prefix": CHECKSET,
-					}),
-				),
-			},
-		},
-	})
-}
-
 func TestAccAliCloudKVStoreRedisInstance_6_0(t *testing.T) {
 	var v r_kvstore.DBInstanceAttribute
 	resourceId := "alicloud_kvstore_instance.default"
@@ -482,9 +155,9 @@ func TestAccAliCloudKVStoreRedisInstance_6_0(t *testing.T) {
 						"For":     "acceptance test",
 					},
 					"resource_group_id": "${data.alicloud_resource_manager_resource_groups.default.ids.1}",
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones.0.id}",
+					"zone_id":           "cn-hangzhou-i", // zone_id and vswitch_id should be changed simultaneously
 					"vswitch_id":        "${data.alicloud_vswitches.default.ids.0}",
-					"secondary_zone_id": "${data.alicloud_kvstore_zones.default.zones.1.id}",
+					"secondary_zone_id": "cn-hangzhou-g",
 				}),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
@@ -604,9 +277,9 @@ func TestAccAliCloudKVStoreRedisInstance_6_0(t *testing.T) {
 			},
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones.1.id}",
+					"zone_id":           "cn-hangzhou-g",
 					"vswitch_id":        "${data.alicloud_vswitches.update.ids.0}",
-					"secondary_zone_id": "${data.alicloud_kvstore_zones.default.zones.0.id}",
+					"secondary_zone_id": "cn-hangzhou-i",
 					"timeouts": []map[string]interface{}{
 						{
 							"update": "1h",
@@ -631,19 +304,6 @@ func TestAccAliCloudKVStoreRedisInstance_6_0(t *testing.T) {
 					}),
 				),
 			},
-			// There is an OpenAPI bug in eu-central-1
-			//{
-			//	Config: testAccConfig(map[string]interface{}{
-			//		"maintain_start_time": "02:00Z",
-			//		"maintain_end_time":   "03:00Z",
-			//	}),
-			//	Check: resource.ComposeTestCheckFunc(
-			//		testAccCheck(map[string]string{
-			//			"maintain_start_time": "02:00Z",
-			//			"maintain_end_time":   "03:00Z",
-			//		}),
-			//	),
-			//},
 			{
 				Config: testAccConfig(map[string]interface{}{
 					"backup_period": []string{"Tuesday", "Wednesday"},
@@ -749,7 +409,7 @@ func TestAccAliCloudKVStoreRedisInstance_6_0(t *testing.T) {
 						"Created": "TF",
 						"For":     "acceptance test",
 					},
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones.0.id}",
+					"zone_id":           "cn-hangzhou-i",
 					"vswitch_id":        "${data.alicloud_vswitches.default.ids.0}",
 					"secondary_zone_id": REMOVEKEY,
 					// There is an OpenAPI bug in eu-central-1
@@ -831,9 +491,9 @@ func TestAccAliCloudKVStoreRedisInstance_7_0(t *testing.T) {
 						"For":     "acceptance test",
 					},
 					"resource_group_id": "${data.alicloud_resource_manager_resource_groups.default.ids.1}",
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones.0.id}",
+					"zone_id":           "cn-hangzhou-i",
 					"vswitch_id":        "${data.alicloud_vswitches.default.ids.0}",
-					"secondary_zone_id": "${data.alicloud_kvstore_zones.default.zones.1.id}",
+					"secondary_zone_id": "cn-hangzhou-g",
 				}),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
@@ -1130,9 +790,9 @@ func TestAccAliCloudKVStoreRedisInstance_7_0_with_proxy_class(t *testing.T) {
 						"For":     "acceptance test",
 					},
 					"resource_group_id": "${data.alicloud_resource_manager_resource_groups.default.ids.1}",
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones.0.id}",
+					"zone_id":           "cn-hangzhou-i",
 					"vswitch_id":        "${data.alicloud_vswitches.default.ids.0}",
-					"secondary_zone_id": "${data.alicloud_kvstore_zones.default.zones.1.id}",
+					"secondary_zone_id": "cn-hangzhou-g",
 				}),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
@@ -1265,9 +925,9 @@ func TestAccAliCloudKVStoreRedisInstance_7_0_with_proxy_class(t *testing.T) {
 			},
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones.1.id}",
+					"zone_id":           "cn-hangzhou-g",
 					"vswitch_id":        "${data.alicloud_vswitches.update.ids.0}",
-					"secondary_zone_id": "${data.alicloud_kvstore_zones.default.zones.0.id}",
+					"secondary_zone_id": "cn-hangzhou-i",
 					"timeouts": []map[string]interface{}{
 						{
 							"update": "1h",
@@ -1379,9 +1039,9 @@ func TestAccAliCloudKVStoreRedisInstance_7_0_with_proxy_class(t *testing.T) {
 						"Created": "TF",
 						"For":     "acceptance test",
 					},
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones.0.id}",
+					"zone_id":           "cn-hangzhou-i",
 					"vswitch_id":        "${data.alicloud_vswitches.default.ids.0}",
-					"secondary_zone_id": "${data.alicloud_kvstore_zones.default.zones.1.id}",
+					"secondary_zone_id": "cn-hangzhou-g",
 					// There is an OpenAPI bug in eu-central-1
 					//"maintain_start_time": "04:00Z",
 					//"maintain_end_time":   "06:00Z",
@@ -1427,346 +1087,6 @@ func TestAccAliCloudKVStoreRedisInstance_7_0_with_proxy_class(t *testing.T) {
 	})
 }
 
-// engine_version 4.0 has been offline from July 31, 2025
-func SkipTestAccAliCloudKVStoreRedisInstance_prepaid(t *testing.T) {
-	var v r_kvstore.DBInstanceAttribute
-	resourceId := "alicloud_kvstore_instance.default"
-	ra := resourceAttrInit(resourceId, AliCloudKVStoreMap0)
-	rc := resourceCheckInitWithDescribeMethod(resourceId, &v, func() interface{} {
-		return &R_kvstoreService{testAccProvider.Meta().(*connectivity.AliyunClient)}
-	}, "DescribeKvstoreInstance")
-	rac := resourceAttrCheckInit(rc, ra)
-	testAccCheck := rac.resourceAttrMapUpdateSet()
-	rand := acctest.RandIntRange(1000000, 9999999)
-	name := fmt.Sprintf("tf-testAccKvstoreRedisInstancePrePaid%d", rand)
-	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudKVStoreRedisInstancePrePaidBasicDependence0)
-	resource.Test(t, resource.TestCase{
-		PreCheck: func() {
-			testAccPreCheck(t)
-		},
-		IDRefreshName: resourceId,
-		Providers:     testAccProviders,
-		CheckDestroy:  rac.checkResourceDestroy(),
-		Steps: []resource.TestStep{
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"instance_class":   "redis.master.small.default",
-					"payment_type":     "PrePaid",
-					"period":           "1",
-					"db_instance_name": name,
-					"instance_type":    "Redis",
-					"engine_version":   "4.0",
-					"tags": map[string]string{
-						"Created": "TF",
-						"For":     "acceptance test",
-					},
-					"resource_group_id": "${data.alicloud_resource_manager_resource_groups.default.ids.1}",
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones[0].id}",
-					"vswitch_id":        "${data.alicloud_vswitches.default.ids.0}",
-					"secondary_zone_id": "${data.alicloud_kvstore_zones.default.zones[1].id}",
-					"auto_renew":        "true",
-					"auto_renew_period": "1",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"instance_class":    "redis.master.small.default",
-						"db_instance_name":  name,
-						"instance_type":     "Redis",
-						"engine_version":    "4.0",
-						"tags.%":            "2",
-						"tags.Created":      "TF",
-						"tags.For":          "acceptance test",
-						"resource_group_id": CHECKSET,
-						"zone_id":           CHECKSET,
-						"vswitch_id":        CHECKSET,
-						"secondary_zone_id": CHECKSET,
-						"payment_type":      "PrePaid",
-						"auto_renew":        "true",
-						"auto_renew_period": "1",
-					}),
-				),
-			},
-			{
-				ResourceName:            resourceId,
-				ImportState:             true,
-				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"dry_run", "auto_use_coupon", "backup_id", "business_info", "coupon_no", "dedicated_host_group_id", "effective_time", "force_upgrade", "global_instance", "global_instance_id", "order_type", "password", "period", "restore_time", "src_db_instance_id", "enable_public", "security_ip_group_attribute", "enable_backup_log"},
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"auto_renew_period": "2",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"auto_renew_period": "2",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"auto_renew": "false",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"auto_renew":        "false",
-						"auto_renew_period": "1",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"payment_type": "PostPaid",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"payment_type": "PostPaid",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"payment_type":      "PrePaid",
-					"period":            "1",
-					"auto_renew":        "true",
-					"auto_renew_period": "2",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"payment_type":      "PrePaid",
-						"auto_renew":        "true",
-						"auto_renew_period": "2",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"payment_type": "PostPaid",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"payment_type": "PostPaid",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"tags": map[string]string{
-						"Created": "TF",
-						"For":     "kvstore",
-					},
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"tags.%":       "2",
-						"tags.Created": "TF",
-						"tags.For":     "kvstore",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"config": map[string]string{
-						"appendonly":             "no",
-						"lazyfree-lazy-eviction": "no",
-						"maxmemory-policy":       "volatile-lru",
-					},
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"config.%":                      "3",
-						"config.appendonly":             "no",
-						"config.lazyfree-lazy-eviction": "no",
-						"config.maxmemory-policy":       "volatile-lru",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"security_ips": []string{"10.23.12.24"},
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"security_ips.#": "1",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"resource_group_id": "${data.alicloud_resource_manager_resource_groups.default.ids.1}",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"resource_group_id": CHECKSET,
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"db_instance_name": name + "_update",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"db_instance_name": name + "_update",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"instance_class": "redis.master.mid.default",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"instance_class": "redis.master.mid.default",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"engine_version": "5.0",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"engine_version": "5.0",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones[1].id}",
-					"vswitch_id":        "${data.alicloud_vswitches.update.ids.0}",
-					"secondary_zone_id": "${data.alicloud_kvstore_zones.default.zones[0].id}",
-					"timeouts": []map[string]interface{}{
-						{
-							"update": "1h",
-						},
-					},
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"zone_id":           CHECKSET,
-						"vswitch_id":        CHECKSET,
-						"secondary_zone_id": CHECKSET,
-					}),
-				),
-			},
-			// There is an OpenAPI bug in eu-central-1
-			//{
-			//	Config: testAccConfig(map[string]interface{}{
-			//		"maintain_start_time": "02:00Z",
-			//		"maintain_end_time":   "03:00Z",
-			//	}),
-			//	Check: resource.ComposeTestCheckFunc(
-			//		testAccCheck(map[string]string{
-			//			"maintain_start_time": "02:00Z",
-			//			"maintain_end_time":   "03:00Z",
-			//		}),
-			//	),
-			//},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"backup_period": []string{"Tuesday", "Wednesday"},
-					"backup_time":   "10:00Z-11:00Z",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"backup_period.#": "2",
-						"backup_time":     "10:00Z-11:00Z",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"private_connection_prefix": fmt.Sprintf("privateprefix%d", rand),
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"private_connection_prefix": CHECKSET,
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"private_connection_port": "4010",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"private_connection_port": "4010",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"instance_release_protection": "true",
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"instance_release_protection": "true",
-					}),
-				),
-			},
-			{
-				Config: testAccConfig(map[string]interface{}{
-					"instance_release_protection": "false",
-					"resource_group_id":           "${data.alicloud_resource_manager_resource_groups.default.ids.1}",
-					"security_ips":                []string{"10.0.0.1"},
-					"db_instance_name":            name,
-					"vpc_auth_mode":               "Open",
-					"config": map[string]string{
-						"appendonly":             "yes",
-						"lazyfree-lazy-eviction": "yes",
-						"maxmemory-policy":       "volatile-lru",
-					},
-					"tags": map[string]string{
-						"Created": "TF",
-						"For":     "acceptance test",
-					},
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones[0].id}",
-					"vswitch_id":        "${data.alicloud_vswitches.default.ids.0}",
-					"secondary_zone_id": REMOVEKEY,
-					// There is an OpenAPI bug in eu-central-1
-					//"maintain_start_time": "04:00Z",
-					//"maintain_end_time":   "06:00Z",
-					// There is an OpenAPI bug
-					//"backup_period":             []string{"Wednesday"},
-					//"backup_time":               "11:00Z-12:00Z",
-					"private_connection_prefix": fmt.Sprintf("privateprefixupdate%d", rand),
-					"private_connection_port":   "4011",
-					"timeouts": []map[string]interface{}{
-						{
-							"update": "1h",
-						},
-					},
-				}),
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheck(map[string]string{
-						"instance_release_protection":   "false",
-						"resource_group_id":             CHECKSET,
-						"security_ips.#":                "1",
-						"db_instance_name":              name,
-						"vpc_auth_mode":                 "Open",
-						"config.%":                      "3",
-						"config.appendonly":             "yes",
-						"config.lazyfree-lazy-eviction": "yes",
-						"config.maxmemory-policy":       "volatile-lru",
-						"tags.%":                        "2",
-						"tags.Created":                  "TF",
-						"tags.For":                      "acceptance test",
-						"zone_id":                       CHECKSET,
-						"vswitch_id":                    CHECKSET,
-						"secondary_zone_id":             REMOVEKEY,
-						//"maintain_start_time":           "04:00Z",
-						//"maintain_end_time":             "06:00Z",
-						//"backup_period.#":               "1",
-						//"backup_time":                   "11:00Z-12:00Z",
-						"private_connection_port":   "4011",
-						"private_connection_prefix": CHECKSET,
-					}),
-				),
-			},
-		},
-	})
-}
-
 func TestAccAliCloudKVStoreRedisInstance_5_0_memory_classic_standard(t *testing.T) {
 	var v r_kvstore.DBInstanceAttribute
 	// en-central-1 has no enough quota for this class
@@ -1796,7 +1116,7 @@ func TestAccAliCloudKVStoreRedisInstance_5_0_memory_classic_standard(t *testing.
 					"instance_type":        "Redis",
 					"engine_version":       "5.0",
 					"resource_group_id":    "${data.alicloud_resource_manager_resource_groups.default.ids.1}",
-					"zone_id":              "${data.alicloud_kvstore_zones.default.zones.0.id}",
+					"zone_id":              "cn-hangzhou-i",
 					"vswitch_id":           "${data.alicloud_vswitches.default.ids.0}",
 					"instance_charge_type": "PrePaid",
 					"period":               "1",
@@ -1983,9 +1303,9 @@ func TestAccAliCloudKVStoreRedisInstance_5_0_memory_classic_standard(t *testing.
 			},
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones.1.id}",
+					"zone_id":           "cn-hangzhou-g",
 					"vswitch_id":        "${data.alicloud_vswitches.update.ids.0}",
-					"secondary_zone_id": "${data.alicloud_kvstore_zones.default.zones.0.id}",
+					"secondary_zone_id": "cn-hangzhou-i",
 					"timeouts": []map[string]interface{}{
 						{
 							"update": "1h",
@@ -2083,7 +1403,7 @@ func TestAccAliCloudKVStoreRedisInstance_5_0_memory_classic_standard(t *testing.
 						"Created": "TF",
 						"For":     "acceptance test",
 					},
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones.0.id}",
+					"zone_id":           "cn-hangzhou-i",
 					"vswitch_id":        "${data.alicloud_vswitches.default.ids.0}",
 					"secondary_zone_id": REMOVEKEY,
 					// There is an OpenAPI bug in eu-central-1
@@ -2160,7 +1480,7 @@ func TestAccAliCloudKVStoreRedisInstance_5_0_memory_classic_cluster(t *testing.T
 					"instance_type":     "Redis",
 					"engine_version":    "5.0",
 					"resource_group_id": "${data.alicloud_resource_manager_resource_groups.default.ids.1}",
-					"zone_id":           "${data.alicloud_kvstore_zones.default.zones.0.id}",
+					"zone_id":           "cn-hangzhou-i",
 					"vswitch_id":        "${data.alicloud_vswitches.default.ids.0}",
 					"shard_count":       "2",
 					"tags": map[string]string{
@@ -2397,7 +1717,7 @@ func TestAccAliCloudKVStoreRedisInstance_5_0_memory_classic_cluster(t *testing.T
 						"Created": "TF",
 						"For":     "acceptance test",
 					},
-					"zone_id":    "${data.alicloud_kvstore_zones.default.zones.0.id}",
+					"zone_id":    "cn-hangzhou-i",
 					"vswitch_id": "${data.alicloud_vswitches.default.ids.0}",
 					// There is an OpenAPI bug in eu-central-1
 					//"maintain_start_time":       "04:00Z",
@@ -2656,54 +1976,18 @@ func AliCloudKVStoreRedisInstanceVpcBasicDependence0(name string) string {
   		status = "OK"
 	}
 
-	data "alicloud_kvstore_zones" "default" {
-  		instance_charge_type = "PostPaid"
-	}
-
 	data "alicloud_vpcs" "default" {
   		name_regex = "^default-NODELETING$"
 	}
 
 	data "alicloud_vswitches" "default" {
   		vpc_id  = data.alicloud_vpcs.default.ids.0
-  		zone_id = data.alicloud_kvstore_zones.default.zones.0.id
+  		zone_id = "cn-hangzhou-i"
 	}
 
 	data "alicloud_vswitches" "update" {
   		vpc_id  = data.alicloud_vpcs.default.ids.0
-  		zone_id = data.alicloud_kvstore_zones.default.zones.1.id
-	}
-
-	resource "alicloud_security_group" "default" {
-  		inner_access_policy = "Accept"
-  		name                = "tf-example"
-  		vpc_id              = data.alicloud_vpcs.default.ids.0
-	}
-	`)
-}
-
-func AliCloudKVStoreRedisInstancePrePaidBasicDependence0(name string) string {
-	return fmt.Sprintf(`
-	data "alicloud_resource_manager_resource_groups" "default" {
-  		status = "OK"
-	}
-
-	data "alicloud_kvstore_zones" "default" {
-  		instance_charge_type = "PrePaid"
-	}
-
-	data "alicloud_vpcs" "default" {
-  		name_regex = "^default-NODELETING$"
-	}
-
-	data "alicloud_vswitches" "default" {
-  		vpc_id  = data.alicloud_vpcs.default.ids.0
-  		zone_id = data.alicloud_kvstore_zones.default.zones.0.id
-	}
-
-	data "alicloud_vswitches" "update" {
-  		vpc_id  = data.alicloud_vpcs.default.ids.0
-  		zone_id = data.alicloud_kvstore_zones.default.zones.1.id
+  		zone_id = "cn-hangzhou-g"
 	}
 	`)
 }
@@ -2720,12 +2004,12 @@ func AliCloudKVStoreMemcacheInstanceVpcBasicDependence0(name string) string {
 
 	data "alicloud_vswitches" "default" {
   		vpc_id  = data.alicloud_vpcs.default.ids.0
-  		zone_id = "cn-hangzhou-h"
+  		zone_id = "cn-hangzhou-i"
 	}
 
 	data "alicloud_vswitches" "slave" {
   		vpc_id  = data.alicloud_vpcs.default.ids.0
-  		zone_id = "cn-hangzhou-i"
+  		zone_id = "cn-hangzhou-g"
 	}
 	`)
 }

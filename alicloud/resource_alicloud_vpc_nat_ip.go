@@ -62,11 +62,6 @@ func resourceAliCloudNatGatewayNatIp() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"nat_ip_cidr_id": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `nat_ip_cidr_id` has been removed from provider version 1.274.0.",
-			},
 		},
 	}
 }

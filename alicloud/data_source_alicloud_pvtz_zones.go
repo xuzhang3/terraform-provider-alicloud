@@ -144,16 +144,6 @@ func dataSourceAliCloudPvtzZones() *schema.Resource {
 								},
 							},
 						},
-						"creation_time": {
-							Type:     schema.TypeString,
-							Computed: true,
-							Removed:  "Field 'creation_time' has been removed from provider version 1.107.0",
-						},
-						"update_time": {
-							Type:     schema.TypeString,
-							Computed: true,
-							Removed:  "Field 'update_time' has been removed from provider version 1.107.0",
-						},
 					},
 				},
 			},

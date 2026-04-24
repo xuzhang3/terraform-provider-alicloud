@@ -23,11 +23,6 @@ func dataSourceAlicloudEipAddresses() *schema.Resource {
 				MinItems:   1,
 				Deprecated: "Field 'ip_addresses' has been deprecated from provider version 1.126.0 and it will be removed in the future version. Please use the new attribute 'ip_address' instead.",
 			},
-			"in_use": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				Removed:  "Field 'in_use' has been removed from provider version 1.126.0.",
-			},
 			"name_regex": {
 				Type:         schema.TypeString,
 				Optional:     true,

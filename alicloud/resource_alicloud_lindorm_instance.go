@@ -49,11 +49,6 @@ func resourceAliCloudLindormInstance() *schema.Resource {
 				Computed:     true,
 				ValidateFunc: validation.Any(IntInSlice([]int{0}), IntBetween(800, 1000000)),
 			},
-			"core_num": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Removed:  "Field `core_num` has been deprecated from provider version 1.188.0, and it has been removed from provider version 1.207.0.",
-			},
 			"core_spec": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -84,11 +79,6 @@ func resourceAliCloudLindormInstance() *schema.Resource {
 				Computed:     true,
 				ValidateFunc: StringInSlice([]string{"lindorm.c.xlarge"}, false),
 			},
-			"group_name": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `group_name` has been removed from provider version 1.211.0.",
-			},
 			"instance_name": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -113,16 +103,6 @@ func resourceAliCloudLindormInstance() *schema.Resource {
 				Optional:     true,
 				Computed:     true,
 				ValidateFunc: StringInSlice([]string{"lindorm.g.xlarge", "lindorm.g.2xlarge"}, false),
-			},
-			"phoenix_node_count": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Removed:  "Field `phoenix_node_count` has been removed from provider version 1.211.0.",
-			},
-			"phoenix_node_specification": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `phoenix_node_specification` has been removed from provider version 1.211.0.",
 			},
 			"pricing_cycle": {
 				Type:         schema.TypeString,
@@ -183,11 +163,6 @@ func resourceAliCloudLindormInstance() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
-			},
-			"upgrade_type": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `upgrade_type` has been deprecated from provider version 1.163.0, and it has been removed from provider version 1.207.0.",
 			},
 			"vpc_id": {
 				Type:     schema.TypeString,

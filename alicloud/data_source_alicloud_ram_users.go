@@ -68,11 +68,6 @@ func dataSourceAlicloudRamUsers() *schema.Resource {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"last_login_date": {
-							Removed:  "Field 'last_login_date' has been removed from provider version 1.79.0.",
-							Type:     schema.TypeString,
-							Computed: true,
-						},
 					},
 				},
 			},

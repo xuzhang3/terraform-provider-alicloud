@@ -68,11 +68,6 @@ func dataSourceAlicloudClickHouseDbClusters() *schema.Resource {
 							Computed: true,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
-									"db_cluster_ip_array_attribute": {
-										Type:     schema.TypeString,
-										Computed: true,
-										Removed:  "Field 'db_cluster_ip_array_attribute' has been removed from provider",
-									},
 									"db_cluster_ip_array_name": {
 										Type:     schema.TypeString,
 										Computed: true,
@@ -353,9 +348,8 @@ func dataSourceAlicloudClickHouseDbClustersRead(d *schema.ResourceData, meta int
 						continue
 					}
 					temp1 := map[string]interface{}{
-						"db_cluster_ip_array_attribute": m1["DBClusterIPArrayAttribute"],
-						"db_cluster_ip_array_name":      m1["DBClusterIPArrayName"],
-						"security_ip_list":              m1["SecurityIPList"],
+						"db_cluster_ip_array_name": m1["DBClusterIPArrayName"],
+						"security_ip_list":         m1["SecurityIPList"],
 					}
 					iPArray = append(iPArray, temp1)
 				}

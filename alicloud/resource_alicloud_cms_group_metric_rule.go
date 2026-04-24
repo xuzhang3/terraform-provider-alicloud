@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudCmsGroupMetricRule() *schema.Resource {
@@ -714,18 +714,6 @@ func resourceAliCloudCmsGroupMetricRuleUpdate(d *schema.ResourceData, meta inter
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("group_id")
-		d.SetPartial("group_metric_rule_name")
-		d.SetPartial("metric_name")
-		d.SetPartial("contact_groups")
-		d.SetPartial("dimensions")
-		d.SetPartial("email_subject")
-		d.SetPartial("effective_interval")
-		d.SetPartial("no_effective_interval")
-		d.SetPartial("period")
-		d.SetPartial("silence_time")
-		d.SetPartial("webhook")
-		d.SetPartial("escalations")
 	}
 
 	update = false
@@ -784,7 +772,6 @@ func resourceAliCloudCmsGroupMetricRuleUpdate(d *schema.ResourceData, meta inter
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("targets")
 	}
 
 	d.Partial(false)

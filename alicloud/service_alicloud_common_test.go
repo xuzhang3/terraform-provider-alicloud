@@ -14,9 +14,9 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 /**
@@ -99,7 +99,7 @@ func resourceCheckInitWithDescribeMethod(resourceId string, resourceObject inter
 
 // caching the additional attribute type used to convert the addition attribute value type before calling Get method
 func (rc *resourceCheck) setAdditionalAttrsType() {
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceType, ok := provider.ResourcesMap[strings.Split(rc.resourceId, ".")[0]]
 	if !ok {
 		log.Panicf("invalid resource type: %s", strings.Split(rc.resourceId, ".")[0])

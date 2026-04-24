@@ -10,8 +10,8 @@ import (
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/samber/lo"
 )
 
@@ -853,7 +853,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("engine_version")
 	}
 
 	update = false
@@ -923,10 +922,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("db_instance_class")
-		d.SetPartial("db_instance_storage")
-		d.SetPartial("replication_factor")
-		d.SetPartial("readonly_replicas")
 	}
 
 	update = false
@@ -974,8 +969,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("storage_type")
-		d.SetPartial("provisioned_iops")
 	}
 
 	update = false
@@ -1024,8 +1017,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("secondary_zone_id")
-		d.SetPartial("hidden_zone_id")
 	}
 
 	update = false
@@ -1060,7 +1051,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("security_group_id")
 	}
 
 	update = false
@@ -1095,7 +1085,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("name")
 	}
 
 	update = false
@@ -1136,7 +1125,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("resource_group_id")
 	}
 
 	update = false
@@ -1190,8 +1178,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("auto_renew")
-		d.SetPartial("auto_renew_duration")
 	}
 
 	if !d.IsNewResource() && (d.HasChange("instance_charge_type") && d.Get("instance_charge_type").(string) == "PrePaid") {
@@ -1232,8 +1218,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("instance_charge_type")
-		d.SetPartial("period")
 	}
 
 	if !d.IsNewResource() && d.HasChange("security_ip_list") {
@@ -1248,13 +1232,11 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("security_ip_list")
 	}
 
 	if !d.IsNewResource() && (d.HasChange("account_password") || d.HasChange("kms_encrypted_password")) {
 		var accountPassword string
 		if accountPassword = d.Get("account_password").(string); accountPassword != "" {
-			d.SetPartial("account_password")
 		} else if kmsPassword := d.Get("kms_encrypted_password").(string); kmsPassword != "" {
 			kmsService := KmsService{meta.(*connectivity.AliyunClient)}
 			decryptResp, err := kmsService.Decrypt(kmsPassword, d.Get("kms_encryption_context").(map[string]interface{}))
@@ -1264,8 +1246,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 
 			accountPassword = decryptResp
 
-			d.SetPartial("kms_encrypted_password")
-			d.SetPartial("kms_encryption_context")
 		}
 
 		err := ddsService.ResetAccountPassword(d, accountPassword, "instance")
@@ -1279,14 +1259,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("backup_time")
-		d.SetPartial("backup_period")
-		d.SetPartial("backup_retention_period")
-		d.SetPartial("backup_retention_policy_on_cluster_deletion")
-		d.SetPartial("enable_backup_log")
-		d.SetPartial("log_backup_retention_period")
-		d.SetPartial("snapshot_backup_type")
-		d.SetPartial("backup_interval")
 	}
 
 	update = false
@@ -1335,7 +1307,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("ssl_action")
 	}
 
 	if d.HasChange("maintain_start_time") || d.HasChange("maintain_end_time") {
@@ -1371,8 +1342,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("maintain_start_time")
-		d.SetPartial("maintain_end_time")
 	}
 
 	if d.HasChange("tde_status") || d.HasChange("encryptor_name") || d.HasChange("encryption_key") {
@@ -1433,9 +1402,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("tde_status")
-		d.SetPartial("encryptor_name")
-		d.SetPartial("encryption_key")
 	}
 
 	if d.HasChange("db_instance_release_protection") {
@@ -1472,7 +1438,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("db_instance_release_protection")
 	}
 
 	update = false
@@ -1515,7 +1480,6 @@ func resourceAliCloudMongoDBInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("global_security_group_list")
 	}
 
 	if err := ddsService.setInstanceTags(d); err != nil {

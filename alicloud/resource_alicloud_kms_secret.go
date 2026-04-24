@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudKmsSecret() *schema.Resource {
@@ -348,10 +348,6 @@ func resourceAliCloudKmsSecretUpdate(d *schema.ResourceData, meta interface{}) e
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("secret_data")
-		d.SetPartial("version_id")
-		d.SetPartial("secret_data_type")
-		d.SetPartial("version_stages")
 	}
 
 	update = false
@@ -393,8 +389,6 @@ func resourceAliCloudKmsSecretUpdate(d *schema.ResourceData, meta interface{}) e
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("enable_automatic_rotation")
-		d.SetPartial("rotation_interval")
 	}
 
 	update = false
@@ -429,7 +423,6 @@ func resourceAliCloudKmsSecretUpdate(d *schema.ResourceData, meta interface{}) e
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("policy")
 	}
 
 	update = false
@@ -464,7 +457,6 @@ func resourceAliCloudKmsSecretUpdate(d *schema.ResourceData, meta interface{}) e
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("description")
 	}
 
 	if !d.IsNewResource() && d.HasChange("tags") {
@@ -472,7 +464,6 @@ func resourceAliCloudKmsSecretUpdate(d *schema.ResourceData, meta interface{}) e
 			return WrapError(err)
 		}
 
-		d.SetPartial("tags")
 	}
 
 	d.Partial(false)

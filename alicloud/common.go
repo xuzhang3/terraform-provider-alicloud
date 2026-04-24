@@ -33,10 +33,10 @@ import (
 	"github.com/denverdino/aliyungo/common"
 	"github.com/denverdino/aliyungo/cs"
 	"github.com/google/uuid"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/mitchellh/go-homedir"
 	"gopkg.in/yaml.v2"
 	yamlV3 "gopkg.in/yaml.v3"
@@ -1367,7 +1367,7 @@ func mapSort(target map[string]string) []string {
 
 // lintignore: R001
 func newInstanceDiff(resourceName string, attributes, attributesDiff map[string]interface{}, state *terraform.InstanceState) (*terraform.InstanceDiff, error) {
-	p := Provider().(*schema.Provider).ResourcesMap
+	p := Provider().ResourcesMap
 	dOld, _ := schema.InternalMap(p[resourceName].Schema).Data(state, nil)
 	dNew, _ := schema.InternalMap(p[resourceName].Schema).Data(state, nil)
 	for key, value := range attributes {
@@ -1413,7 +1413,7 @@ func newInstanceDiff(resourceName string, attributes, attributesDiff map[string]
 				}
 			}
 		}
-		diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: oldValue, New: newValue})
+		diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: oldValue, New: newValue}
 
 		if objectKey != "" {
 			for removeKey, removeValue := range dOld.State().Attributes {
@@ -1421,9 +1421,9 @@ func newInstanceDiff(resourceName string, attributes, attributesDiff map[string]
 					if _, ok := dNew.State().Attributes[removeKey]; !ok {
 						// If the attribue has complex elements, there should remove the key, not setting it to empty
 						if len(strings.Split(removeKey, ".")) > 2 {
-							diff.DelAttribute(removeKey)
+							delete(diff.Attributes, removeKey)
 						} else {
-							diff.SetAttribute(removeKey, &terraform.ResourceAttrDiff{Old: removeValue, New: ""})
+							diff.Attributes[removeKey] = &terraform.ResourceAttrDiff{Old: removeValue, New: ""}
 						}
 					}
 				}

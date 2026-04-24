@@ -12,9 +12,9 @@ import (
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/denverdino/aliyungo/common"
 	"github.com/google/uuid"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAliCloudEcsInstanceSet() *schema.Resource {
@@ -744,7 +744,6 @@ func resourceAliCloudEcsInstanceSetUpdate(d *schema.ResourceData, meta interface
 		if err := ecsService.SetInstanceSetResourceTags(d, "instance", instanceIds); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 
 	if d.HasChange("exclude_instance_filter") {

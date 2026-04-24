@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAlicloudAlidnsGtmInstance() *schema.Resource {
@@ -319,7 +319,6 @@ func resourceAlicloudAlidnsGtmInstanceUpdate(d *schema.ResourceData, meta interf
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("resource_group_id")
 	}
 	update = false
 	switchDnsGtmInstanceStrategyModeRequest := map[string]interface{}{
@@ -352,7 +351,6 @@ func resourceAlicloudAlidnsGtmInstanceUpdate(d *schema.ResourceData, meta interf
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("strategy_mode")
 	}
 	update = false
 	updateDnsGtmInstanceGlobalConfigReq := map[string]interface{}{
@@ -447,15 +445,6 @@ func resourceAlicloudAlidnsGtmInstanceUpdate(d *schema.ResourceData, meta interf
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("alert_config")
-		d.SetPartial("alert_group")
-		d.SetPartial("cname_type")
-		d.SetPartial("instance_name")
-		d.SetPartial("public_cname_mode")
-		d.SetPartial("public_rr")
-		d.SetPartial("public_user_domain_name")
-		d.SetPartial("public_zone_name")
-		d.SetPartial("ttl")
 	}
 	d.Partial(false)
 	return resourceAlicloudAlidnsGtmInstanceRead(d, meta)

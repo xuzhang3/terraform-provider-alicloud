@@ -10,9 +10,9 @@ import (
 	"github.com/PaesslerAG/jsonpath"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAliCloudEcsLaunchTemplate() *schema.Resource {
@@ -193,7 +193,7 @@ func resourceAliCloudEcsLaunchTemplate() *schema.Resource {
 						"primary_ip": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validation.SingleIP(),
+							ValidateFunc: validation.IsIPAddress,
 						},
 						"security_group_id": {
 							Type:     schema.TypeString,
@@ -944,7 +944,6 @@ func resourceAliCloudEcsLaunchTemplateUpdate(d *schema.ResourceData, meta interf
 		if err := ecsService.SetResourceTemplateTags(d, "launchtemplate"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("template_tags")
 	}
 	versions, err := getLaunchTemplateVersions(d.Id(), meta)
 	if err != nil {

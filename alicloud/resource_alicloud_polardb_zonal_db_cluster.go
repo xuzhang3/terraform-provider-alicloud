@@ -2,6 +2,7 @@
 package alicloud
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -11,8 +12,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/polardb"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 type Pair struct {
@@ -53,7 +54,7 @@ func resourceAliCloudPolarDbZonalCluster() *schema.Resource {
 			Delete: schema.DefaultTimeout(5 * time.Minute),
 		},
 
-		CustomizeDiff: func(d *schema.ResourceDiff, v interface{}) error {
+		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, v interface{}) error {
 			if d.HasChange("db_cluster_nodes_configs") {
 				flagNodeAttributesUpdate := false
 				flagNodeIdsUpdate := false
@@ -499,8 +500,6 @@ func resourceAliCloudPolarDbZonalClusterUpdate(d *schema.ResourceData, meta inte
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), "ModifyAutoRenewAttribute", AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("renewal_status")
-		d.SetPartial("auto_renew_period")
 	}
 
 	if d.HasChange("db_cluster_nodes_configs") {

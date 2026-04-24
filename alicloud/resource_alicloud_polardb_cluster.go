@@ -11,8 +11,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/polardb"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAlicloudPolarDBCluster() *schema.Resource {
@@ -624,7 +624,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 		if err := polarDBService.ModifyParameters(d); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("parameters")
 	}
 
 	if err := polarDBService.setClusterTags(d); err != nil {
@@ -671,10 +670,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 		if err := polarDBService.WaitForPolarDBPayType(d.Id(), requestPayType, DefaultTimeout); err != nil {
 			return WrapError(err)
 		}
-		if payType == string(PrePaid) {
-			d.SetPartial("period")
-		}
-		d.SetPartial("pay_type")
 	}
 
 	if (d.Get("pay_type").(string) == string(PrePaid)) &&
@@ -715,8 +710,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("renewal_status")
-		d.SetPartial("auto_renew_period")
 	}
 
 	if d.HasChange("maintain_time") {
@@ -732,7 +725,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), AlibabaCloudSdkGoERROR)
 		}
 		addDebug(request.GetActionName(), raw, request.RpcRequest, request)
-		d.SetPartial("maintain_time")
 	}
 
 	if !d.IsNewResource() && d.HasChanges("target_db_revision_version_code") {
@@ -793,11 +785,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 				return WrapErrorf(err, IdMsg, d.Id())
 			}
 		}
-		d.SetPartial("upgrade_type")
-		d.SetPartial("from_time_service")
-		d.SetPartial("planned_start_time")
-		d.SetPartial("planned_end_time")
-		d.SetPartial("target_db_revision_version_code")
 
 	}
 
@@ -806,7 +793,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 		if err := polarDBService.ModifyDBClusterAccessWhitelist(d); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("db_cluster_ip_array")
 	}
 
 	if !d.IsNewResource() && d.HasChange("security_ips") {
@@ -821,7 +807,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 		if err := polarDBService.ModifyDBSecurityIps(d.Id(), ipstr); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("security_ips")
 	}
 
 	if v, ok := d.GetOk("creation_category"); !ok || v.(string) != "Basic" {
@@ -928,7 +913,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), AlibabaCloudSdkGoERROR)
 		}
 		addDebug(request.GetActionName(), raw, request.RpcRequest, request)
-		d.SetPartial("collector_status")
 	}
 
 	if v, ok := d.GetOk("db_type"); ok && v.(string) == "MySQL" {
@@ -971,10 +955,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 				if _, err := stateConf.WaitForState(); err != nil {
 					return WrapErrorf(err, IdMsg, d.Id())
 				}
-				d.SetPartial("tde_status")
-				d.SetPartial("encrypt_new_tables")
-				d.SetPartial("encryption_key")
-				d.SetPartial("role_arn")
 			}
 		}
 	}
@@ -995,7 +975,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), AlibabaCloudSdkGoERROR)
 		}
 		addDebug(request.GetActionName(), raw, request.RpcRequest, request)
-		d.SetPartial("security_group_ids")
 	}
 
 	if d.HasChange("deletion_lock") {
@@ -1026,7 +1005,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 			}
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, ProviderERROR)
 		}
-		d.SetPartial("deletion_lock")
 	}
 
 	if d.HasChange("serverless_steady_switch") {
@@ -1097,12 +1075,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 			if _, err := stateConf.WaitForState(); err != nil {
 				return WrapErrorf(err, IdMsg, d.Id())
 			}
-			d.SetPartial("scale_min")
-			d.SetPartial("scale_max")
-			d.SetPartial("scale_ro_num_min")
-			d.SetPartial("scale_ro_num_max")
-			d.SetPartial("scale_ap_ro_num_min")
-			d.SetPartial("scale_ap_ro_num_max")
 		}
 		// Turn off steady state
 		if u, ok := d.GetOk("serverless_steady_switch"); ok {
@@ -1173,7 +1145,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("compress_storage")
 	}
 
 	if d.HasChanges("scale_min", "scale_max", "allow_shut_down", "scale_ro_num_min", "scale_ro_num_max", "seconds_until_auto_pause", "scale_ap_ro_num_min", "scale_ap_ro_num_max", "serverless_rule_mode", "serverless_rule_cpu_shrink_threshold", "serverless_rule_cpu_enlarge_threshold") {
@@ -1258,15 +1229,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("scale_min")
-		d.SetPartial("scale_max")
-		d.SetPartial("scale_ro_num_min")
-		d.SetPartial("scale_ro_num_max")
-		d.SetPartial("allow_shut_down")
-		d.SetPartial("seconds_until_auto_pause")
-		d.SetPartial("serverless_rule_mode")
-		d.SetPartial("serverless_rule_cpu_shrink_threshold")
-		d.SetPartial("serverless_rule_cpu_enlarge_threshold")
 	}
 
 	if d.HasChange("enable_dynamodb") || d.IsNewResource() {
@@ -1298,7 +1260,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 			if _, err := stateConf.WaitForState(); err != nil {
 				return WrapErrorf(err, IdMsg, d.Id())
 			}
-			d.SetPartial("enable_dynamodb")
 		}
 	}
 
@@ -1344,7 +1305,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 			if _, err := stateConf.WaitForState(); err != nil {
 				return WrapErrorf(err, IdMsg, d.Id())
 			}
-			d.SetPartial("db_node_class")
 		}
 	}
 
@@ -1361,7 +1321,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), AlibabaCloudSdkGoERROR)
 		}
 		addDebug(request.GetActionName(), raw, request.RpcRequest, request)
-		d.SetPartial("description")
 	}
 
 	if d.HasChange("storage_type") {
@@ -1393,7 +1352,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("storage_type")
 	}
 
 	if d.HasChange("provisioned_iops") {
@@ -1426,7 +1384,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("provisioned_iops")
 	}
 
 	if d.HasChange("storage_space") {
@@ -1468,7 +1425,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("storage_space")
 	}
 
 	if d.HasChange("hot_replica_mode") {
@@ -1518,8 +1474,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 			if _, err := stateConf.WaitForState(); err != nil {
 				return WrapErrorf(err, IdMsg, d.Id())
 			}
-			d.SetPartial("hot_replica_mode")
-			d.SetPartial("db_node_id")
 		}
 	}
 
@@ -1552,7 +1506,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("standby_az")
 	}
 
 	if d.HasChange("resource_group_id") {
@@ -1578,7 +1531,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("resource_group_id")
 	}
 
 	if d.HasChange("global_security_group_list") {
@@ -1608,7 +1560,6 @@ func resourceAlicloudPolarDBClusterUpdate(d *schema.ResourceData, meta interface
 			}
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, ProviderERROR)
 		}
-		d.SetPartial("global_security_group_list")
 	}
 
 	d.Partial(false)

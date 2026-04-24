@@ -15,9 +15,9 @@ import (
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/alikafka"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -114,7 +114,7 @@ func testSweepAlikafkaConsumerGroup(region string) error {
 
 // lintignore: R001
 func TestUnitAliCloudAliKafkaConsumerGroup(t *testing.T) {
-	p := Provider().(*schema.Provider).ResourcesMap
+	p := Provider().ResourcesMap
 	dInit, _ := schema.InternalMap(p["alicloud_alikafka_consumer_group"].Schema).Data(nil, nil)
 	dExisted, _ := schema.InternalMap(p["alicloud_alikafka_consumer_group"].Schema).Data(nil, nil)
 	dInit.MarkNewResource()

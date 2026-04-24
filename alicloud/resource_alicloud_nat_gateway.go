@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAliCloudNatGateway() *schema.Resource {
@@ -384,7 +384,6 @@ func resourceAliCloudNatGatewayUpdate(d *schema.ResourceData, meta interface{}) 
 		if err := vpcServiceV2.SetResourceTags(d, "NATGATEWAY"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 
 	if d.HasChange("deletion_protection") {
@@ -416,7 +415,6 @@ func resourceAliCloudNatGatewayUpdate(d *schema.ResourceData, meta interface{}) 
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("deletion_protection")
 	}
 
 	update := false
@@ -474,9 +472,6 @@ func resourceAliCloudNatGatewayUpdate(d *schema.ResourceData, meta interface{}) 
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("description")
-		d.SetPartial("name")
-		d.SetPartial("nat_gateway_name")
 	}
 
 	if !d.IsNewResource() && d.HasChange("specification") {
@@ -509,7 +504,6 @@ func resourceAliCloudNatGatewayUpdate(d *schema.ResourceData, meta interface{}) 
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("specification")
 	}
 	update = false
 	updateNatGatewayNatTypeReq := map[string]interface{}{
@@ -553,9 +547,6 @@ func resourceAliCloudNatGatewayUpdate(d *schema.ResourceData, meta interface{}) 
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("nat_type")
-		d.SetPartial("vswitch_id")
-		d.SetPartial("dry_run")
 	}
 
 	d.Partial(false)

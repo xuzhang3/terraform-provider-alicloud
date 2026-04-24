@@ -12,10 +12,10 @@ import (
 	util "github.com/alibabacloud-go/tea-utils/service"
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -224,7 +224,7 @@ resource "alicloud_nas_fileset" "default" {
 
 // lintignore: R001
 func TestUnitAlicloudNASDataFlow(t *testing.T) {
-	p := Provider().(*schema.Provider).ResourcesMap
+	p := Provider().ResourcesMap
 	d, _ := schema.InternalMap(p["alicloud_nas_data_flow"].Schema).Data(nil, nil)
 	dCreate, _ := schema.InternalMap(p["alicloud_nas_data_flow"].Schema).Data(nil, nil)
 	dCreate.MarkNewResource()
@@ -411,15 +411,15 @@ func TestUnitAlicloudNASDataFlow(t *testing.T) {
 		for _, key := range []string{"description", "throughput", "dry_run"} {
 			switch p["alicloud_nas_data_flow"].Schema[key].Type {
 			case schema.TypeString:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: d.Get(key).(string), New: d.Get(key).(string) + "_update"})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: d.Get(key).(string), New: d.Get(key).(string) + "_update"}
 			case schema.TypeBool:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: strconv.FormatBool(d.Get(key).(bool)), New: strconv.FormatBool(true)})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: strconv.FormatBool(d.Get(key).(bool)), New: strconv.FormatBool(true)}
 			case schema.TypeInt:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: strconv.Itoa(d.Get(key).(int)), New: strconv.Itoa(1200)})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: strconv.Itoa(d.Get(key).(int)), New: strconv.Itoa(1200)}
 			case schema.TypeMap:
-				diff.SetAttribute("tags.%", &terraform.ResourceAttrDiff{Old: "0", New: "2"})
-				diff.SetAttribute("tags.For", &terraform.ResourceAttrDiff{Old: "", New: "Test"})
-				diff.SetAttribute("tags.Created", &terraform.ResourceAttrDiff{Old: "", New: "TF"})
+				diff.Attributes["tags.%"] = &terraform.ResourceAttrDiff{Old: "0", New: "2"}
+				diff.Attributes["tags.For"] = &terraform.ResourceAttrDiff{Old: "", New: "Test"}
+				diff.Attributes["tags.Created"] = &terraform.ResourceAttrDiff{Old: "", New: "TF"}
 			}
 		}
 		resourceData1, _ := schema.InternalMap(p["alicloud_nas_data_flow"].Schema).Data(nil, diff)
@@ -445,15 +445,15 @@ func TestUnitAlicloudNASDataFlow(t *testing.T) {
 		for _, key := range []string{"description", "throughput"} {
 			switch p["alicloud_nas_data_flow"].Schema[key].Type {
 			case schema.TypeString:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: d.Get(key).(string), New: d.Get(key).(string) + "_update"})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: d.Get(key).(string), New: d.Get(key).(string) + "_update"}
 			case schema.TypeBool:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: strconv.FormatBool(d.Get(key).(bool)), New: strconv.FormatBool(true)})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: strconv.FormatBool(d.Get(key).(bool)), New: strconv.FormatBool(true)}
 			case schema.TypeInt:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: strconv.Itoa(d.Get(key).(int)), New: strconv.Itoa(1200)})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: strconv.Itoa(d.Get(key).(int)), New: strconv.Itoa(1200)}
 			case schema.TypeMap:
-				diff.SetAttribute("tags.%", &terraform.ResourceAttrDiff{Old: "0", New: "2"})
-				diff.SetAttribute("tags.For", &terraform.ResourceAttrDiff{Old: "", New: "Test"})
-				diff.SetAttribute("tags.Created", &terraform.ResourceAttrDiff{Old: "", New: "TF"})
+				diff.Attributes["tags.%"] = &terraform.ResourceAttrDiff{Old: "0", New: "2"}
+				diff.Attributes["tags.For"] = &terraform.ResourceAttrDiff{Old: "", New: "Test"}
+				diff.Attributes["tags.Created"] = &terraform.ResourceAttrDiff{Old: "", New: "TF"}
 			}
 		}
 		resourceData, _ := schema.InternalMap(p["alicloud_nas_data_flow"].Schema).Data(nil, diff)
@@ -474,15 +474,15 @@ func TestUnitAlicloudNASDataFlow(t *testing.T) {
 		for _, key := range []string{"description", "throughput"} {
 			switch p["alicloud_nas_data_flow"].Schema[key].Type {
 			case schema.TypeString:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: d.Get(key).(string), New: d.Get(key).(string) + "_update"})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: d.Get(key).(string), New: d.Get(key).(string) + "_update"}
 			case schema.TypeBool:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: strconv.FormatBool(d.Get(key).(bool)), New: strconv.FormatBool(true)})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: strconv.FormatBool(d.Get(key).(bool)), New: strconv.FormatBool(true)}
 			case schema.TypeInt:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: strconv.Itoa(d.Get(key).(int)), New: strconv.Itoa(1200)})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: strconv.Itoa(d.Get(key).(int)), New: strconv.Itoa(1200)}
 			case schema.TypeMap:
-				diff.SetAttribute("tags.%", &terraform.ResourceAttrDiff{Old: "0", New: "2"})
-				diff.SetAttribute("tags.For", &terraform.ResourceAttrDiff{Old: "", New: "Test"})
-				diff.SetAttribute("tags.Created", &terraform.ResourceAttrDiff{Old: "", New: "TF"})
+				diff.Attributes["tags.%"] = &terraform.ResourceAttrDiff{Old: "0", New: "2"}
+				diff.Attributes["tags.For"] = &terraform.ResourceAttrDiff{Old: "", New: "Test"}
+				diff.Attributes["tags.Created"] = &terraform.ResourceAttrDiff{Old: "", New: "TF"}
 			}
 		}
 		resourceData1, _ := schema.InternalMap(p["alicloud_nas_data_flow"].Schema).Data(nil, diff)
@@ -496,8 +496,8 @@ func TestUnitAlicloudNASDataFlow(t *testing.T) {
 	})
 	t.Run("UpdateModifyNasDataFlowStatusStoppedAttributeAbnormal", func(t *testing.T) {
 		diff := terraform.NewInstanceDiff()
-		diff.SetAttribute("status", &terraform.ResourceAttrDiff{Old: "Running", New: "Stopped"})
-		diff.SetAttribute("dry_run", &terraform.ResourceAttrDiff{Old: strconv.FormatBool(true), New: strconv.FormatBool(false)})
+		diff.Attributes["status"] = &terraform.ResourceAttrDiff{Old: "Running", New: "Stopped"}
+		diff.Attributes["dry_run"] = &terraform.ResourceAttrDiff{Old: strconv.FormatBool(true), New: strconv.FormatBool(false)}
 		resourceData1, _ := schema.InternalMap(p["alicloud_nas_data_flow"].Schema).Data(nil, diff)
 		resourceData1.SetId(d.Id())
 		retryFlag := true
@@ -529,8 +529,8 @@ func TestUnitAlicloudNASDataFlow(t *testing.T) {
 	})
 	t.Run("UpdateModifyNasDataFlowStatusRunningAttributeAbnormal", func(t *testing.T) {
 		diff := terraform.NewInstanceDiff()
-		diff.SetAttribute("status", &terraform.ResourceAttrDiff{Old: "Stopped", New: "Running"})
-		diff.SetAttribute("dry_run", &terraform.ResourceAttrDiff{Old: strconv.FormatBool(true), New: strconv.FormatBool(false)})
+		diff.Attributes["status"] = &terraform.ResourceAttrDiff{Old: "Stopped", New: "Running"}
+		diff.Attributes["dry_run"] = &terraform.ResourceAttrDiff{Old: strconv.FormatBool(true), New: strconv.FormatBool(false)}
 
 		resourceData1, _ := schema.InternalMap(p["alicloud_nas_data_flow"].Schema).Data(nil, diff)
 		resourceData1.SetId(d.Id())
@@ -563,7 +563,7 @@ func TestUnitAlicloudNASDataFlow(t *testing.T) {
 	})
 	t.Run("UpdateModifyNasDataFlowStatusStoppedAttributeNormal", func(t *testing.T) {
 		diff := terraform.NewInstanceDiff()
-		diff.SetAttribute("status", &terraform.ResourceAttrDiff{Old: "Running", New: "Stopped"})
+		diff.Attributes["status"] = &terraform.ResourceAttrDiff{Old: "Running", New: "Stopped"}
 		resourceData1, _ := schema.InternalMap(p["alicloud_nas_data_flow"].Schema).Data(nil, diff)
 		resourceData1.SetId(d.Id())
 		patches := gomonkey.ApplyMethod(reflect.TypeOf(&client.Client{}), "DoRequest", func(_ *client.Client, _ *string, _ *string, _ *string, _ *string, _ *string, _ map[string]interface{}, _ map[string]interface{}, _ *util.RuntimeOptions) (map[string]interface{}, error) {
@@ -588,7 +588,7 @@ func TestUnitAlicloudNASDataFlow(t *testing.T) {
 	})
 	t.Run("UpdateModifyNasDataFlowStatusRunningAttributeNormal", func(t *testing.T) {
 		diff := terraform.NewInstanceDiff()
-		diff.SetAttribute("status", &terraform.ResourceAttrDiff{Old: "Stopped", New: "Running"})
+		diff.Attributes["status"] = &terraform.ResourceAttrDiff{Old: "Stopped", New: "Running"}
 		resourceData1, _ := schema.InternalMap(p["alicloud_nas_data_flow"].Schema).Data(nil, diff)
 		resourceData1.SetId(d.Id())
 		patches := gomonkey.ApplyMethod(reflect.TypeOf(&client.Client{}), "DoRequest", func(_ *client.Client, _ *string, _ *string, _ *string, _ *string, _ *string, _ map[string]interface{}, _ map[string]interface{}, _ *util.RuntimeOptions) (map[string]interface{}, error) {

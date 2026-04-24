@@ -15,10 +15,10 @@ import (
 	util "github.com/alibabacloud-go/tea-utils/service"
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -109,10 +109,10 @@ func TestAccAliCloudHBRReplicationVault_basic0(t *testing.T) {
 	checkoutSupportedRegions(t, true, connectivity.HBRSupportRegions)
 	ra := resourceAttrInit(resourceId, AlicloudHBRReplicationVaultMap0)
 	var providers []*schema.Provider
-	providerFactories := map[string]terraform.ResourceProviderFactory{
-		"alicloud": func() (terraform.ResourceProvider, error) {
+	providerFactories := map[string]func() (*schema.Provider, error){
+		"alicloud": func() (*schema.Provider, error) {
 			p := Provider()
-			providers = append(providers, p.(*schema.Provider))
+			providers = append(providers, p)
 			return p, nil
 		},
 	}
@@ -196,10 +196,10 @@ func TestAccAliCloudHBRReplicationVault_basic1(t *testing.T) {
 	checkoutSupportedRegions(t, true, connectivity.HBRSupportRegions)
 	ra := resourceAttrInit(resourceId, AlicloudHBRReplicationVaultMap0)
 	var providers []*schema.Provider
-	providerFactories := map[string]terraform.ResourceProviderFactory{
-		"alicloud": func() (terraform.ResourceProvider, error) {
+	providerFactories := map[string]func() (*schema.Provider, error){
+		"alicloud": func() (*schema.Provider, error) {
 			p := Provider()
-			providers = append(providers, p.(*schema.Provider))
+			providers = append(providers, p)
 			return p, nil
 		},
 	}
@@ -311,7 +311,7 @@ func testAccCheckHBRReplicationVaultDestroyWithProvider(s *terraform.State, prov
 
 // lintignore: R001
 func TestUnitAlicloudHBRReplicationVault(t *testing.T) {
-	p := Provider().(*schema.Provider).ResourcesMap
+	p := Provider().ResourcesMap
 	dInit, _ := schema.InternalMap(p["alicloud_hbr_replication_vault"].Schema).Data(nil, nil)
 	dExisted, _ := schema.InternalMap(p["alicloud_hbr_replication_vault"].Schema).Data(nil, nil)
 	dInit.MarkNewResource()
@@ -584,10 +584,10 @@ func TestAccAliCloudHbrReplicationVault_basic10880(t *testing.T) {
 	ra := resourceAttrInit(resourceId, AlicloudHbrReplicationVaultMap10880)
 	testAccCheck := ra.resourceAttrMapUpdateSet()
 	var providers []*schema.Provider
-	providerFactories := map[string]terraform.ResourceProviderFactory{
-		"alicloud": func() (terraform.ResourceProvider, error) {
+	providerFactories := map[string]func() (*schema.Provider, error){
+		"alicloud": func() (*schema.Provider, error) {
 			p := Provider()
-			providers = append(providers, p.(*schema.Provider))
+			providers = append(providers, p)
 			return p, nil
 		},
 	}

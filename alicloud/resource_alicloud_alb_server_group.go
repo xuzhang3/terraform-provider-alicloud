@@ -1,14 +1,15 @@
 package alicloud
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"time"
 
 	"github.com/PaesslerAG/jsonpath"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudAlbServerGroup() *schema.Resource {
@@ -1085,7 +1086,7 @@ func resourceAliCloudAlbServerGroupDelete(d *schema.ResourceData, meta interface
 	return nil
 }
 
-func resourceAlbServerGroupCustomizeDiff(diff *schema.ResourceDiff, v interface{}) error {
+func resourceAlbServerGroupCustomizeDiff(ctx context.Context, diff *schema.ResourceDiff, v interface{}) error {
 	groupType := diff.Get("server_group_type").(string)
 	if groupType == "Fc" {
 		// Fc load balancers do not support vpc_id, protocol

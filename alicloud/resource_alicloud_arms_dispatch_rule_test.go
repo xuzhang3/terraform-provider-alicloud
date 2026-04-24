@@ -15,9 +15,9 @@ import (
 	util "github.com/alibabacloud-go/tea-utils/service"
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -439,7 +439,7 @@ resource "alicloud_arms_alert_contact_group" "default" {
 
 // lintignore: R001
 func TestUnitAlicloudARMSDispatchRule(t *testing.T) {
-	p := Provider().(*schema.Provider).ResourcesMap
+	p := Provider().ResourcesMap
 	dInit, _ := schema.InternalMap(p["alicloud_arms_dispatch_rule"].Schema).Data(nil, nil)
 	dExisted, _ := schema.InternalMap(p["alicloud_arms_dispatch_rule"].Schema).Data(nil, nil)
 	dInit.MarkNewResource()

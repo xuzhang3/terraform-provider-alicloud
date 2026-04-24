@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAlicloudGpdbElasticInstance() *schema.Resource {
@@ -281,7 +281,6 @@ func resourceAlicloudGpdbElasticInstanceUpdate(d *schema.ResourceData, meta inte
 		if err := gpdbService.SetResourceTags(d, "ALIYUN::GPDB::INSTANCE"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 	if d.HasChange("db_instance_description") {
 		action := "ModifyDBInstanceDescription"
@@ -307,7 +306,6 @@ func resourceAlicloudGpdbElasticInstanceUpdate(d *schema.ResourceData, meta inte
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("db_instance_description")
 	}
 	if d.HasChange("security_ip_list") {
 		ipList := expandStringList(d.Get("security_ip_list").([]interface{}))
@@ -318,7 +316,6 @@ func resourceAlicloudGpdbElasticInstanceUpdate(d *schema.ResourceData, meta inte
 		if err := gpdbService.ModifyGpdbSecurityIps(d.Id(), ipStr); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("security_ip_list")
 	}
 
 	d.Partial(false)

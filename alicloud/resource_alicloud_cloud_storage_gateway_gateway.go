@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudCloudStorageGatewayGateway() *schema.Resource {
@@ -279,8 +279,6 @@ func resourceAliCloudCloudStorageGatewayGatewayUpdate(d *schema.ResourceData, me
 			return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 		}
 
-		d.SetPartial("gateway_name")
-		d.SetPartial("description")
 	}
 
 	update = false
@@ -324,7 +322,6 @@ func resourceAliCloudCloudStorageGatewayGatewayUpdate(d *schema.ResourceData, me
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("gateway_class")
 	}
 
 	update = false
@@ -368,7 +365,6 @@ func resourceAliCloudCloudStorageGatewayGatewayUpdate(d *schema.ResourceData, me
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("public_network_bandwidth")
 	}
 
 	d.Partial(false)

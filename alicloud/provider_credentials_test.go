@@ -11,7 +11,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 // TestProviderCredentials_ExternalMode 测试 External 模式的凭证获取
@@ -104,7 +104,7 @@ EOF
 		raw["shared_credentials_file"] = configPath
 		raw["region"] = "cn-beijing"
 
-		resourceData := schema.TestResourceDataRaw(t, Provider().(*schema.Provider).Schema, raw)
+		resourceData := schema.TestResourceDataRaw(t, Provider().Schema, raw)
 
 		// 读取配置文件验证
 		providerConfig = nil // 重置全局变量
@@ -199,7 +199,7 @@ func TestProviderCredentials_OAuthMode(t *testing.T) {
 		raw["shared_credentials_file"] = configPath
 		raw["region"] = "cn-hangzhou"
 
-		resourceData := schema.TestResourceDataRaw(t, Provider().(*schema.Provider).Schema, raw)
+		resourceData := schema.TestResourceDataRaw(t, Provider().Schema, raw)
 
 		// 读取配置文件验证
 		providerConfig = nil // 重置全局变量
@@ -312,7 +312,7 @@ EOF
 			raw["shared_credentials_file"] = configPath
 			raw["region"] = "cn-beijing"
 
-			resourceData := schema.TestResourceDataRaw(t, Provider().(*schema.Provider).Schema, raw)
+			resourceData := schema.TestResourceDataRaw(t, Provider().Schema, raw)
 
 			// 重置全局变量
 			providerConfig = nil
@@ -374,7 +374,7 @@ func TestProviderCredentials_GetConfigFromProfile(t *testing.T) {
 	raw["shared_credentials_file"] = configPath
 	raw["region"] = "cn-beijing"
 
-	resourceData := schema.TestResourceDataRaw(t, Provider().(*schema.Provider).Schema, raw)
+	resourceData := schema.TestResourceDataRaw(t, Provider().Schema, raw)
 
 	tests := []struct {
 		name        string
@@ -462,7 +462,7 @@ func TestProviderCredentials_AdvancedModesReturnNil(t *testing.T) {
 			raw["shared_credentials_file"] = configPath
 			raw["region"] = "cn-beijing"
 
-			resourceData := schema.TestResourceDataRaw(t, Provider().(*schema.Provider).Schema, raw)
+			resourceData := schema.TestResourceDataRaw(t, Provider().Schema, raw)
 
 			providerConfig = nil
 			// 对于高级模式，access_key_id 应该返回 nil
@@ -520,7 +520,7 @@ func TestProviderCredentials_PriorityOrder(t *testing.T) {
 		raw["shared_credentials_file"] = configPath
 		raw["region"] = "cn-beijing"
 
-		resourceData := schema.TestResourceDataRaw(t, Provider().(*schema.Provider).Schema, raw)
+		resourceData := schema.TestResourceDataRaw(t, Provider().Schema, raw)
 
 		// 使用 getProviderConfig 逻辑验证优先级
 		// 注意：这里我们模拟 provider.go 中的逻辑
@@ -546,7 +546,7 @@ func TestProviderCredentials_PriorityOrder(t *testing.T) {
 		raw["shared_credentials_file"] = configPath
 		raw["region"] = "cn-beijing"
 
-		resourceData := schema.TestResourceDataRaw(t, Provider().(*schema.Provider).Schema, raw)
+		resourceData := schema.TestResourceDataRaw(t, Provider().Schema, raw)
 
 		providerConfig = nil
 		val, err := getConfigFromProfile(resourceData, "access_key_id")
@@ -567,7 +567,7 @@ func TestProviderCredentials_ConfigFileNotFound(t *testing.T) {
 	raw["shared_credentials_file"] = "/tmp/non-existent-config-file-12345.json"
 	raw["region"] = "cn-beijing"
 
-	resourceData := schema.TestResourceDataRaw(t, Provider().(*schema.Provider).Schema, raw)
+	resourceData := schema.TestResourceDataRaw(t, Provider().Schema, raw)
 
 	providerConfig = nil
 	val, err := getConfigFromProfile(resourceData, "access_key_id")
@@ -630,7 +630,7 @@ func TestProviderConfigure_WithExternalAndOAuth(t *testing.T) {
 	raw["shared_credentials_file"] = configPath
 	raw["region"] = "cn-beijing"
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	// 尝试配置 provider（这会实际调用外部凭证提供程序）
@@ -655,7 +655,7 @@ func TestProviderConfigure_StaticAK(t *testing.T) {
 		"region":     "cn-hangzhou",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -677,7 +677,7 @@ func TestProviderConfigure_StaticAKWithSTS(t *testing.T) {
 		"region":         "cn-shanghai",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -717,7 +717,7 @@ func TestProviderConfigure_MissingCredentials(t *testing.T) {
 		"region": "cn-hangzhou",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	_, err := providerConfigure(resourceData, provider)
@@ -758,7 +758,7 @@ func TestProviderConfigure_MissingSecretKey(t *testing.T) {
 		"region":     "cn-hangzhou",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	_, err := providerConfigure(resourceData, provider)
@@ -775,7 +775,7 @@ func TestProviderConfigure_DefaultRegion(t *testing.T) {
 		// 不设置 region，应该使用默认值
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -810,7 +810,7 @@ func TestProviderConfigure_CredentialsURI(t *testing.T) {
 		"region":          "cn-hangzhou",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -857,7 +857,7 @@ func TestProviderConfigure_CredentialsURIInvalid(t *testing.T) {
 		"region":          "cn-hangzhou",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	_, err := providerConfigure(resourceData, provider)
@@ -910,7 +910,7 @@ func TestProviderConfigure_ProfileWithStaticAK(t *testing.T) {
 		"region":                  "cn-beijing",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	// 重置全局变量
@@ -965,7 +965,7 @@ func TestProviderConfigure_ProfileWithSTS(t *testing.T) {
 		"region":                  "cn-shanghai",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	providerConfig = nil
@@ -1041,7 +1041,7 @@ EOF
 		"region":                  "cn-hangzhou",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	providerConfig = nil
@@ -1079,7 +1079,7 @@ func TestProviderConfigure_AssumeRole(t *testing.T) {
 		},
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -1109,7 +1109,7 @@ func TestProviderConfigure_AssumeRoleConfig(t *testing.T) {
 		},
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	// 只测试配置能够正确解析，不测试实际的 STS 调用
@@ -1147,7 +1147,7 @@ func TestProviderConfigure_AssumeRoleDefaultSessionName(t *testing.T) {
 		},
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	// 测试配置解析，验证 session_name 的默认值逻辑
@@ -1178,7 +1178,7 @@ func TestProviderConfigure_WithEndpoints(t *testing.T) {
 		},
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -1202,7 +1202,7 @@ func TestProviderConfigure_WithTimeout(t *testing.T) {
 		"max_retry_timeout":      90,
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -1224,7 +1224,7 @@ func TestProviderConfigure_WithAccountId(t *testing.T) {
 		"account_id": "123456789012",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -1246,7 +1246,7 @@ func TestProviderConfigure_WithConfigurationSource(t *testing.T) {
 		"configuration_source": "test/1.0.0",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -1278,7 +1278,7 @@ func TestProviderConfigure_WithProtocol(t *testing.T) {
 				"protocol":   tc.protocol,
 			}
 
-			provider := Provider().(*schema.Provider)
+			provider := Provider()
 			resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 			client, err := providerConfigure(resourceData, provider)
@@ -1302,7 +1302,7 @@ func TestProviderConfigure_SkipRegionValidation(t *testing.T) {
 		"skip_region_validation": true,
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -1324,7 +1324,7 @@ func TestProviderConfigure_SecureTransport(t *testing.T) {
 		"secure_transport": "true",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -1346,7 +1346,7 @@ func TestProviderConfigure_SourceIP(t *testing.T) {
 		"source_ip":  "192.168.1.100",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -1400,7 +1400,7 @@ func TestProviderConfigure_StaticOverridesProfile(t *testing.T) {
 		"region":                  "cn-hangzhou",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	providerConfig = nil
@@ -1473,7 +1473,7 @@ func TestProviderConfigure_ProfileNotFound(t *testing.T) {
 		"region":                  "cn-hangzhou",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	providerConfig = nil
@@ -1506,7 +1506,7 @@ func TestProviderConfigure_AllRegions(t *testing.T) {
 				"region":     region,
 			}
 
-			provider := Provider().(*schema.Provider)
+			provider := Provider()
 			resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 			client, err := providerConfigure(resourceData, provider)
@@ -1533,7 +1533,7 @@ func TestProviderConfigure_EcsRoleName(t *testing.T) {
 		"region":        "cn-hangzhou",
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -1558,7 +1558,7 @@ func TestProviderConfigure_SignVersion(t *testing.T) {
 		},
 	}
 
-	provider := Provider().(*schema.Provider)
+	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	client, err := providerConfigure(resourceData, provider)
@@ -1677,7 +1677,7 @@ func TestProviderConfigure_AdvancedProfileModes(t *testing.T) {
 				"region":                  "cn-hangzhou",
 			}
 
-			provider := Provider().(*schema.Provider)
+			provider := Provider()
 			resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 			// 重置全局变量
@@ -1742,7 +1742,7 @@ func TestProviderConfigure_GetConfigFromProfile_AdvancedModes(t *testing.T) {
 				"region":                  "cn-hangzhou",
 			}
 
-			provider := Provider().(*schema.Provider)
+			provider := Provider()
 			resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 			// 重置全局变量
@@ -1884,7 +1884,7 @@ func TestAdvancedProfileModes_CredentialRetrieval(t *testing.T) {
 				"region":                  "cn-hangzhou",
 			}
 
-			provider := Provider().(*schema.Provider)
+			provider := Provider()
 			resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 			// 重置全局变量

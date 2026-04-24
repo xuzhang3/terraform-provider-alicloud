@@ -2,8 +2,8 @@ package alicloud
 
 import (
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAlicloudOtsInstance() *schema.Resource {
@@ -241,7 +241,6 @@ func resourceAliyunOtsInstanceUpdate(d *schema.ResourceData, meta interface{}) e
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), actionPath, AlibabaCloudSdkGoERROR)
 		}
 		addDebug(actionPath, response, request)
-		d.SetPartial("resource_group_id")
 	}
 	hasChangeACL := false
 	if !d.IsNewResource() && d.HasChange("network_type_acl") {
@@ -263,7 +262,6 @@ func resourceAliyunOtsInstanceUpdate(d *schema.ResourceData, meta interface{}) e
 		}
 		addDebug(actionPath, response, request)
 		hasChangeACL = true
-		d.SetPartial("network_type_acl")
 	}
 
 	if !d.IsNewResource() && d.HasChange("network_source_acl") {
@@ -286,7 +284,6 @@ func resourceAliyunOtsInstanceUpdate(d *schema.ResourceData, meta interface{}) e
 		}
 		addDebug(actionPath, response, request)
 		hasChangeACL = true
-		d.SetPartial("network_source_acl")
 	}
 
 	// accessed_by is a deprecated attribute, updates on accessed_by will only take effect when the ACL has not been updated.
@@ -303,7 +300,6 @@ func resourceAliyunOtsInstanceUpdate(d *schema.ResourceData, meta interface{}) e
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), actionPath, AlibabaCloudSdkGoERROR)
 		}
 		addDebug(actionPath, response, request)
-		d.SetPartial("accessed_by")
 	}
 
 	if !d.IsNewResource() && d.HasChange("tags") {
@@ -356,7 +352,6 @@ func resourceAliyunOtsInstanceUpdate(d *schema.ResourceData, meta interface{}) e
 			}
 			addDebug(actionPath, response, request)
 		}
-		d.SetPartial("tags")
 	}
 	if err := otsService.WaitForOtsInstance(d.Id(), toInstanceInnerStatus(Running), DefaultTimeout); err != nil {
 		return WrapError(err)

@@ -7,9 +7,9 @@ import (
 
 	util "github.com/alibabacloud-go/tea-utils/service"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAlicloudDBReadonlyInstance() *schema.Resource {
@@ -417,16 +417,6 @@ func resourceAlicloudDBReadonlyInstanceUpdate(d *schema.ResourceData, meta inter
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("ssl_enabled")
-		d.SetPartial("ca_type")
-		d.SetPartial("server_cert")
-		d.SetPartial("server_key")
-		d.SetPartial("client_ca_enabled")
-		d.SetPartial("client_ca_cert")
-		d.SetPartial("client_crl_enabled")
-		d.SetPartial("client_cert_revocation_list")
-		d.SetPartial("acl")
-		d.SetPartial("replication_acl")
 
 		// wait instance status is running after modifying
 		if _, err := stateConf.WaitForState(); err != nil {
@@ -493,11 +483,6 @@ func resourceAlicloudDBReadonlyInstanceUpdate(d *schema.ResourceData, meta inter
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("security_ips")
-		d.SetPartial("db_instance_ip_array_name")
-		d.SetPartial("db_instance_ip_array_attribute")
-		d.SetPartial("security_ip_type")
-		d.SetPartial("whitelist_network_type")
 	}
 
 	if d.IsNewResource() {
@@ -522,7 +507,6 @@ func resourceAlicloudDBReadonlyInstanceUpdate(d *schema.ResourceData, meta inter
 				return resource.NonRetryableError(err)
 			}
 			addDebug(action, response, request)
-			d.SetPartial("instance_name")
 			return nil
 		})
 
@@ -544,7 +528,6 @@ func resourceAlicloudDBReadonlyInstanceUpdate(d *schema.ResourceData, meta inter
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 		addDebug(action, response, request)
-		d.SetPartial("resource_group_id")
 	}
 	update := false
 	action := "ModifyDBInstanceSpec"
@@ -589,11 +572,6 @@ func resourceAlicloudDBReadonlyInstanceUpdate(d *schema.ResourceData, meta inter
 				return resource.NonRetryableError(err)
 			}
 			addDebug(action, response, request)
-			d.SetPartial("instance_type")
-			d.SetPartial("instance_storage")
-			d.SetPartial("db_instance_storage_type")
-			d.SetPartial("db_instance_storage_type")
-			d.SetPartial("effective_time")
 			return nil
 		})
 
@@ -646,7 +624,6 @@ func resourceAlicloudDBReadonlyInstanceUpdate(d *schema.ResourceData, meta inter
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("target_minor_version")
 		// wait instance status is running after modifying
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
@@ -681,8 +658,6 @@ func resourceAlicloudDBReadonlyInstanceUpdate(d *schema.ResourceData, meta inter
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("instance_charge_type")
-		d.SetPartial("period")
 
 	}
 
@@ -709,8 +684,6 @@ func resourceAlicloudDBReadonlyInstanceUpdate(d *schema.ResourceData, meta inter
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("auto_renew")
-		d.SetPartial("auto_renew_period")
 	}
 
 	d.Partial(false)

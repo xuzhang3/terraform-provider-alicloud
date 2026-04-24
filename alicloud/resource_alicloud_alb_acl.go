@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAlicloudAlbAcl() *schema.Resource {
@@ -162,7 +162,6 @@ func resourceAlicloudAlbAclUpdate(d *schema.ResourceData, meta interface{}) erro
 		if err := albService.SetResourceTags(d, "acl"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 	update := false
 	request := map[string]interface{}{
@@ -193,7 +192,6 @@ func resourceAlicloudAlbAclUpdate(d *schema.ResourceData, meta interface{}) erro
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("resource_group_id")
 	}
 	update = false
 	updateAclAttributeReq := map[string]interface{}{
@@ -231,7 +229,6 @@ func resourceAlicloudAlbAclUpdate(d *schema.ResourceData, meta interface{}) erro
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("acl_name")
 	}
 	update = false
 
@@ -327,7 +324,6 @@ func resourceAlicloudAlbAclUpdate(d *schema.ResourceData, meta interface{}) erro
 			}
 		}
 
-		d.SetPartial("acl_entries")
 	}
 	d.Partial(false)
 	return resourceAlicloudAlbAclRead(d, meta)

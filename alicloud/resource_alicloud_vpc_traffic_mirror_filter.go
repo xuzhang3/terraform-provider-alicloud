@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudVpcTrafficMirrorFilter() *schema.Resource {
@@ -349,8 +349,6 @@ func resourceAliCloudVpcTrafficMirrorFilterUpdate(d *schema.ResourceData, meta i
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("traffic_mirror_filter_description")
-		d.SetPartial("traffic_mirror_filter_name")
 	}
 	update = false
 	action = "MoveResourceGroup"
@@ -382,7 +380,6 @@ func resourceAliCloudVpcTrafficMirrorFilterUpdate(d *schema.ResourceData, meta i
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("resource_group_id")
 	}
 
 	update = false
@@ -392,7 +389,6 @@ func resourceAliCloudVpcTrafficMirrorFilterUpdate(d *schema.ResourceData, meta i
 		if err := vpcServiceV2.SetResourceTags(d, "TRAFFICMIRRORFILTER"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 	d.Partial(false)
 	return resourceAliCloudVpcTrafficMirrorFilterRead(d, meta)

@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudConfigAggregateCompliancePack() *schema.Resource {
@@ -384,10 +384,6 @@ func resourceAliCloudConfigAggregateCompliancePackUpdate(d *schema.ResourceData,
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("aggregate_compliance_pack_name")
-		d.SetPartial("description")
-		d.SetPartial("risk_level")
-		d.SetPartial("config_rules")
 	}
 
 	if d.HasChange("config_rule_ids") {
@@ -470,7 +466,6 @@ func resourceAliCloudConfigAggregateCompliancePackUpdate(d *schema.ResourceData,
 			}
 		}
 
-		d.SetPartial("config_rule_ids")
 	}
 
 	d.Partial(false)

@@ -12,10 +12,10 @@ import (
 	util "github.com/alibabacloud-go/tea-utils/service"
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -24,10 +24,10 @@ func TestAccAliCloudCenTransitRouterPeerAttachment_basic(t *testing.T) {
 	resourceId := "alicloud_cen_transit_router_peer_attachment.default"
 	ra := resourceAttrInit(resourceId, AliCloudCenTransitRouterPeerAttachmentMap)
 	var providers []*schema.Provider
-	providerFactories := map[string]terraform.ResourceProviderFactory{
-		"alicloud": func() (terraform.ResourceProvider, error) {
+	providerFactories := map[string]func() (*schema.Provider, error){
+		"alicloud": func() (*schema.Provider, error) {
 			p := Provider()
-			providers = append(providers, p.(*schema.Provider))
+			providers = append(providers, p)
 			return p, nil
 		},
 	}
@@ -199,10 +199,10 @@ func TestAccAliCloudCenTransitRouterPeerAttachment_basic1(t *testing.T) {
 	resourceId := "alicloud_cen_transit_router_peer_attachment.default"
 	ra := resourceAttrInit(resourceId, AliCloudCenTransitRouterPeerAttachmentMap)
 	var providers []*schema.Provider
-	providerFactories := map[string]terraform.ResourceProviderFactory{
-		"alicloud": func() (terraform.ResourceProvider, error) {
+	providerFactories := map[string]func() (*schema.Provider, error){
+		"alicloud": func() (*schema.Provider, error) {
 			p := Provider()
-			providers = append(providers, p.(*schema.Provider))
+			providers = append(providers, p)
 			return p, nil
 		},
 	}
@@ -458,10 +458,10 @@ func TestAccAliCloudCenTransitRouterPeerAttachment_basic2(t *testing.T) {
 	resourceId := "alicloud_cen_transit_router_peer_attachment.default"
 	ra := resourceAttrInit(resourceId, AliCloudCenTransitRouterPeerAttachmentMap)
 	var providers []*schema.Provider
-	providerFactories := map[string]terraform.ResourceProviderFactory{
-		"alicloud": func() (terraform.ResourceProvider, error) {
+	providerFactories := map[string]func() (*schema.Provider, error){
+		"alicloud": func() (*schema.Provider, error) {
 			p := Provider()
-			providers = append(providers, p.(*schema.Provider))
+			providers = append(providers, p)
 			return p, nil
 		},
 	}
@@ -536,7 +536,7 @@ func TestAccAliCloudCenTransitRouterPeerAttachment_basic2(t *testing.T) {
 
 // lintignore: R001
 func TestUnitAliCloudCenTransitRouterPeerAttachment(t *testing.T) {
-	p := Provider().(*schema.Provider).ResourcesMap
+	p := Provider().ResourcesMap
 	d, _ := schema.InternalMap(p["alicloud_cen_transit_router_peer_attachment"].Schema).Data(nil, nil)
 	dCreate, _ := schema.InternalMap(p["alicloud_cen_transit_router_peer_attachment"].Schema).Data(nil, nil)
 	dCreate.MarkNewResource()
@@ -696,15 +696,15 @@ func TestUnitAliCloudCenTransitRouterPeerAttachment(t *testing.T) {
 		for _, key := range []string{"auto_publish_route_enabled", "bandwidth", "dry_run", "cen_bandwidth_package_id", "transit_router_attachment_description", "transit_router_attachment_name"} {
 			switch p["alicloud_cen_transit_router_peer_attachment"].Schema[key].Type {
 			case schema.TypeString:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: d.Get(key).(string), New: d.Get(key).(string) + "_update"})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: d.Get(key).(string), New: d.Get(key).(string) + "_update"}
 			case schema.TypeBool:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: strconv.FormatBool(d.Get(key).(bool)), New: strconv.FormatBool(true)})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: strconv.FormatBool(d.Get(key).(bool)), New: strconv.FormatBool(true)}
 			case schema.TypeInt:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: strconv.Itoa(d.Get(key).(int)), New: strconv.Itoa(3)})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: strconv.Itoa(d.Get(key).(int)), New: strconv.Itoa(3)}
 			case schema.TypeMap:
-				diff.SetAttribute("tags.%", &terraform.ResourceAttrDiff{Old: "0", New: "2"})
-				diff.SetAttribute("tags.For", &terraform.ResourceAttrDiff{Old: "", New: "Test"})
-				diff.SetAttribute("tags.Created", &terraform.ResourceAttrDiff{Old: "", New: "TF"})
+				diff.Attributes["tags.%"] = &terraform.ResourceAttrDiff{Old: "0", New: "2"}
+				diff.Attributes["tags.For"] = &terraform.ResourceAttrDiff{Old: "", New: "Test"}
+				diff.Attributes["tags.Created"] = &terraform.ResourceAttrDiff{Old: "", New: "TF"}
 			}
 		}
 		resourceData1, _ := schema.InternalMap(p["alicloud_cen_transit_router_peer_attachment"].Schema).Data(nil, diff)
@@ -731,15 +731,15 @@ func TestUnitAliCloudCenTransitRouterPeerAttachment(t *testing.T) {
 		for _, key := range []string{"auto_publish_route_enabled", "bandwidth", "dry_run", "cen_bandwidth_package_id", "transit_router_attachment_description", "transit_router_attachment_name"} {
 			switch p["alicloud_cen_transit_router_peer_attachment"].Schema[key].Type {
 			case schema.TypeString:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: d.Get(key).(string), New: d.Get(key).(string) + "_update"})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: d.Get(key).(string), New: d.Get(key).(string) + "_update"}
 			case schema.TypeBool:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: strconv.FormatBool(d.Get(key).(bool)), New: strconv.FormatBool(true)})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: strconv.FormatBool(d.Get(key).(bool)), New: strconv.FormatBool(true)}
 			case schema.TypeInt:
-				diff.SetAttribute(key, &terraform.ResourceAttrDiff{Old: strconv.Itoa(d.Get(key).(int)), New: strconv.Itoa(3)})
+				diff.Attributes[key] = &terraform.ResourceAttrDiff{Old: strconv.Itoa(d.Get(key).(int)), New: strconv.Itoa(3)}
 			case schema.TypeMap:
-				diff.SetAttribute("tags.%", &terraform.ResourceAttrDiff{Old: "0", New: "2"})
-				diff.SetAttribute("tags.For", &terraform.ResourceAttrDiff{Old: "", New: "Test"})
-				diff.SetAttribute("tags.Created", &terraform.ResourceAttrDiff{Old: "", New: "TF"})
+				diff.Attributes["tags.%"] = &terraform.ResourceAttrDiff{Old: "0", New: "2"}
+				diff.Attributes["tags.For"] = &terraform.ResourceAttrDiff{Old: "", New: "Test"}
+				diff.Attributes["tags.Created"] = &terraform.ResourceAttrDiff{Old: "", New: "TF"}
 			}
 		}
 		resourceData1, _ := schema.InternalMap(p["alicloud_cen_transit_router_peer_attachment"].Schema).Data(nil, diff)
@@ -890,10 +890,10 @@ func SkipTestAccAliCloudCenTransitRouterPeerAttachment_basic3(t *testing.T) {
 	resourceId := "alicloud_cen_transit_router_peer_attachment.default"
 	ra := resourceAttrInit(resourceId, AliCloudCenTransitRouterPeerAttachmentMap)
 	var providers []*schema.Provider
-	providerFactories := map[string]terraform.ResourceProviderFactory{
-		"alicloud": func() (terraform.ResourceProvider, error) {
+	providerFactories := map[string]func() (*schema.Provider, error){
+		"alicloud": func() (*schema.Provider, error) {
 			p := Provider()
-			providers = append(providers, p.(*schema.Provider))
+			providers = append(providers, p)
 			return p, nil
 		},
 	}

@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAlicloudSaeApplicationScalingRule() *schema.Resource {
@@ -571,10 +571,6 @@ func resourceAlicloudSaeApplicationScalingRuleUpdate(d *schema.ResourceData, met
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), "PUT "+action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("min_ready_instances")
-		d.SetPartial("min_ready_instance_ratio")
-		d.SetPartial("scaling_rule_timer")
-		d.SetPartial("scaling_rule_metric")
 	}
 
 	if d.HasChange("scaling_rule_enable") {
@@ -633,7 +629,6 @@ func resourceAlicloudSaeApplicationScalingRuleUpdate(d *schema.ResourceData, met
 					return WrapErrorf(err, DefaultErrorMsg, d.Id(), "PUT "+action, AlibabaCloudSdkGoERROR)
 				}
 			}
-			d.SetPartial("scaling_rule_enable")
 		}
 	}
 	d.Partial(false)

@@ -11,8 +11,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/cloudapi"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 type CloudApiService struct {
@@ -505,7 +505,6 @@ func (s *CloudApiService) setInstanceTags(d *schema.ResourceData, resourceType T
 		addDebug(request.GetActionName(), raw, request.RpcRequest, request)
 	}
 
-	d.SetPartial("tags")
 
 	return nil
 }

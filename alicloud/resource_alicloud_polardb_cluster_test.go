@@ -11,9 +11,9 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/polardb"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -2820,7 +2820,7 @@ func resourceRecoverFromRecyclebinClusterConfigDependence(name string) string {
 
 func deleteTDEPolicyAndRole() error {
 	// 删除策略
-	p := Provider().(*schema.Provider).ResourcesMap
+	p := Provider().ResourcesMap
 	ramPolicyExisted, _ := schema.InternalMap(p["alicloud_resource_manager_role"].Schema).Data(nil, nil)
 	region := os.Getenv("ALICLOUD_REGION")
 	rawClient, err := sharedClientForRegion(region)

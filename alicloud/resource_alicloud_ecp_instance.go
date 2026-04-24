@@ -7,8 +7,8 @@ import (
 
 	"github.com/PaesslerAG/jsonpath"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudEcpInstance() *schema.Resource {
@@ -299,10 +299,6 @@ func resourceAliCloudEcpInstanceUpdate(d *schema.ResourceData, meta interface{})
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("key_pair_name")
-		d.SetPartial("vnc_password")
-		d.SetPartial("instance_name")
-		d.SetPartial("description")
 	}
 
 	update = false
@@ -357,7 +353,6 @@ func resourceAliCloudEcpInstanceUpdate(d *schema.ResourceData, meta interface{})
 			}
 		}
 
-		d.SetPartial("resolution")
 	}
 
 	if d.HasChange("status") {
@@ -383,7 +378,6 @@ func resourceAliCloudEcpInstanceUpdate(d *schema.ResourceData, meta interface{})
 			}
 		}
 
-		d.SetPartial("status")
 	}
 
 	d.Partial(false)

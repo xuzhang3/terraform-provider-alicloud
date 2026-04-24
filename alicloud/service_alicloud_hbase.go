@@ -10,8 +10,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/hbase"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 const (
@@ -73,7 +73,6 @@ func (s *HBaseService) setInstanceTags(d *schema.ResourceData) error {
 		addDebug(request.GetActionName(), raw, request.RpcRequest, request)
 	}
 
-	d.SetPartial("tags")
 	return nil
 }
 

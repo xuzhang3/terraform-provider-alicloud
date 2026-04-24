@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudAdbDbCluster() *schema.Resource {
@@ -450,7 +450,6 @@ func resourceAliCloudAdbDbClusterUpdate(d *schema.ResourceData, meta interface{}
 		if err := adbService.SetResourceTags(d, "ALIYUN::ADB::CLUSTER"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 
 	if !d.IsNewResource() && d.HasChange("description") {
@@ -477,7 +476,6 @@ func resourceAliCloudAdbDbClusterUpdate(d *schema.ResourceData, meta interface{}
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("description")
 	}
 
 	if d.HasChange("maintain_time") {
@@ -503,8 +501,6 @@ func resourceAliCloudAdbDbClusterUpdate(d *schema.ResourceData, meta interface{}
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-
-		d.SetPartial("maintain_time")
 	}
 
 	if !d.IsNewResource() && d.HasChange("resource_group_id") {
@@ -531,7 +527,6 @@ func resourceAliCloudAdbDbClusterUpdate(d *schema.ResourceData, meta interface{}
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("resource_group_id")
 	}
 
 	update := false
@@ -585,8 +580,6 @@ func resourceAliCloudAdbDbClusterUpdate(d *schema.ResourceData, meta interface{}
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("payment_type")
-		d.SetPartial("pay_type")
 	}
 
 	update = false
@@ -635,8 +628,6 @@ func resourceAliCloudAdbDbClusterUpdate(d *schema.ResourceData, meta interface{}
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("auto_renew_period")
-		d.SetPartial("renewal_status")
 	}
 
 	update = false
@@ -671,7 +662,6 @@ func resourceAliCloudAdbDbClusterUpdate(d *schema.ResourceData, meta interface{}
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("security_ips")
 	}
 
 	update = false
@@ -751,12 +741,6 @@ func resourceAliCloudAdbDbClusterUpdate(d *schema.ResourceData, meta interface{}
 			}
 		}
 
-		d.SetPartial("compute_resource")
-		d.SetPartial("db_cluster_category")
-		d.SetPartial("db_node_class")
-		d.SetPartial("db_node_count")
-		d.SetPartial("elastic_io_resource")
-		d.SetPartial("elastic_io_resource_size")
 	}
 
 	update = false
@@ -803,7 +787,6 @@ func resourceAliCloudAdbDbClusterUpdate(d *schema.ResourceData, meta interface{}
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("db_node_storage")
 	}
 
 	update = false
@@ -853,7 +836,6 @@ func resourceAliCloudAdbDbClusterUpdate(d *schema.ResourceData, meta interface{}
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("disk_performance_level")
 	}
 
 	update = false
@@ -937,7 +919,6 @@ func resourceAliCloudAdbDbClusterUpdate(d *schema.ResourceData, meta interface{}
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("enable_ssl")
 	}
 
 	d.Partial(false)

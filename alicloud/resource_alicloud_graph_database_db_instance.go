@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAlicloudGraphDatabaseDbInstance() *schema.Resource {
@@ -262,7 +262,6 @@ func resourceAlicloudGraphDatabaseDbInstanceUpdate(d *schema.ResourceData, meta 
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("db_instance_description")
 	}
 	update = false
 	modifyDBInstanceAccessWhiteListReq := map[string]interface{}{
@@ -334,7 +333,6 @@ func resourceAlicloudGraphDatabaseDbInstanceUpdate(d *schema.ResourceData, meta 
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("db_instance_ip_array")
 	}
 
 	modifyDBInstanceSpecReq := map[string]interface{}{
@@ -374,9 +372,6 @@ func resourceAlicloudGraphDatabaseDbInstanceUpdate(d *schema.ResourceData, meta 
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("db_instance_storage_type")
-		d.SetPartial("db_node_class")
-		d.SetPartial("db_node_storage")
 	}
 	d.Partial(false)
 	return resourceAlicloudGraphDatabaseDbInstanceRead(d, meta)

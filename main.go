@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/aliyun/terraform-provider-alicloud/alicloud"
-	"github.com/hashicorp/terraform-plugin-sdk/plugin"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 )
 
 func main() {

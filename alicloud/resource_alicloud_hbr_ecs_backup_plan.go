@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAlicloudHbrEcsBackupPlan() *schema.Resource {
@@ -294,16 +294,6 @@ func resourceAlicloudHbrEcsBackupPlanUpdate(d *schema.ResourceData, meta interfa
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("vault_id")
-		d.SetPartial("detail")
-		d.SetPartial("ecs_backup_plan_name")
-		d.SetPartial("exclude")
-		d.SetPartial("include")
-		d.SetPartial("options")
-		d.SetPartial("path")
-		d.SetPartial("retention")
-		d.SetPartial("schedule")
-		d.SetPartial("speed_limit")
 	}
 	if d.HasChange("disabled") {
 		object, err := hbrService.DescribeHbrEcsBackupPlan(d.Id())
@@ -341,7 +331,6 @@ func resourceAlicloudHbrEcsBackupPlanUpdate(d *schema.ResourceData, meta interfa
 			}
 		}
 	}
-	d.SetPartial("disabled")
 
 	d.Partial(false)
 	return resourceAlicloudHbrEcsBackupPlanRead(d, meta)

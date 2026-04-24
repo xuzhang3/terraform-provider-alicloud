@@ -6,9 +6,9 @@ import (
 
 	"github.com/PaesslerAG/jsonpath"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -172,21 +172,18 @@ func resourceAlicloudDbauditInstanceUpdate(d *schema.ResourceData, meta interfac
 		if err := dbauditService.setInstanceTags(d, "INSTANCE"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 
 	if d.HasChange("description") {
 		if err := dbauditService.UpdateDbauditInstanceDescription(d.Id(), d.Get("description").(string)); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("description")
 	}
 
 	if d.HasChange("resource_group_id") {
 		if err := dbauditService.UpdateResourceGroup(d.Id(), d.Get("resource_group_id").(string)); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("resource_group_id")
 	}
 
 	if d.IsNewResource() {
@@ -202,7 +199,6 @@ func resourceAlicloudDbauditInstanceUpdate(d *schema.ResourceData, meta interfac
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("plan_code")
 	}
 
 	d.Partial(false)

@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAlicloudSlbCaCertificate() *schema.Resource {
@@ -122,7 +122,6 @@ func resourceAlicloudSlbCaCertificateUpdate(d *schema.ResourceData, meta interfa
 		if err := slbService.SetResourceTags(d, "certificate"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 	update := false
 	request := map[string]interface{}{
@@ -154,8 +153,6 @@ func resourceAlicloudSlbCaCertificateUpdate(d *schema.ResourceData, meta interfa
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("name")
-		d.SetPartial("ca_certificate_name")
 	}
 	d.Partial(false)
 	return resourceAlicloudSlbCaCertificateRead(d, meta)

@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAlicloudDtsSynchronizationJob() *schema.Resource {
@@ -501,7 +501,6 @@ func resourceAlicloudDtsSynchronizationJobUpdate(d *schema.ResourceData, meta in
 		if fmt.Sprint(response["Success"]) == "false" {
 			return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 		}
-		d.SetPartial("dts_job_name")
 	}
 
 	modifyDtsJobPasswordReq := map[string]interface{}{
@@ -538,8 +537,6 @@ func resourceAlicloudDtsSynchronizationJobUpdate(d *schema.ResourceData, meta in
 		if fmt.Sprint(response["Success"]) == "false" {
 			return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 		}
-		d.SetPartial("source_endpoint_password")
-		d.SetPartial("source_endpoint_user_name")
 
 		target := d.Get("status").(string)
 		err = resourceAlicloudDtsSynchronizationJobStatusFlow(d, meta, target)
@@ -578,8 +575,6 @@ func resourceAlicloudDtsSynchronizationJobUpdate(d *schema.ResourceData, meta in
 		if fmt.Sprint(response["Success"]) == "false" {
 			return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 		}
-		d.SetPartial("destination_endpoint_password")
-		d.SetPartial("destination_endpoint_user_name")
 
 		target := d.Get("status").(string)
 		err = resourceAlicloudDtsSynchronizationJobStatusFlow(d, meta, target)
@@ -663,7 +658,6 @@ func resourceAlicloudDtsSynchronizationJobUpdate(d *schema.ResourceData, meta in
 		if fmt.Sprint(response["Success"]) == "false" {
 			return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 		}
-		d.SetPartial("db_list")
 
 		target := d.Get("status").(string)
 		err = resourceAlicloudDtsSynchronizationJobStatusFlow(d, meta, target)
@@ -743,7 +737,6 @@ func resourceAlicloudDtsSynchronizationJobUpdate(d *schema.ResourceData, meta in
 				return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 			}
 			// d.Set("job_parameters", normNew)
-			// d.SetPartial("job_parameters")
 
 			target := d.Get("status").(string)
 			err = resourceAlicloudDtsSynchronizationJobStatusFlow(d, meta, target)
@@ -861,7 +854,6 @@ func resourceAlicloudDtsSynchronizationJobStatusFlow(d *schema.ResourceData, met
 				return WrapErrorf(err, IdMsg, d.Id())
 			}
 		}
-		d.SetPartial("status")
 	}
 
 	return nil

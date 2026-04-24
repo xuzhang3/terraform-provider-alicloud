@@ -5,10 +5,10 @@ import (
 	"testing"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 func TestAccAlicloudGaBasicAccelerateIpEndpointRelation_basic0(t *testing.T) {
@@ -17,10 +17,10 @@ func TestAccAlicloudGaBasicAccelerateIpEndpointRelation_basic0(t *testing.T) {
 	resourceId := "alicloud_ga_basic_accelerate_ip_endpoint_relation.default"
 	ra := resourceAttrInit(resourceId, resourceAlicloudGaBasicAccelerateIpEndpointRelationMap)
 	var providers []*schema.Provider
-	providerFactories := map[string]terraform.ResourceProviderFactory{
-		"alicloud": func() (terraform.ResourceProvider, error) {
+	providerFactories := map[string]func() (*schema.Provider, error){
+		"alicloud": func() (*schema.Provider, error) {
 			p := Provider()
-			providers = append(providers, p.(*schema.Provider))
+			providers = append(providers, p)
 			return p, nil
 		},
 	}

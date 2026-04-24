@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudGaBandwidthPackage() *schema.Resource {
@@ -279,7 +279,6 @@ func resourceAliCloudGaBandwidthPackageUpdate(d *schema.ResourceData, meta inter
 		if err := gaService.SetResourceTags(d, "bandwidthpackage"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 
 	update := false
@@ -325,8 +324,6 @@ func resourceAliCloudGaBandwidthPackageUpdate(d *schema.ResourceData, meta inter
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("renewal_status")
-		d.SetPartial("auto_renew_duration")
 	}
 
 	update = false
@@ -390,10 +387,6 @@ func resourceAliCloudGaBandwidthPackageUpdate(d *schema.ResourceData, meta inter
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("bandwidth")
-		d.SetPartial("bandwidth_type")
-		d.SetPartial("bandwidth_package_name")
-		d.SetPartial("description")
 	}
 
 	update = false
@@ -433,7 +426,6 @@ func resourceAliCloudGaBandwidthPackageUpdate(d *schema.ResourceData, meta inter
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("resource_group_id")
 	}
 
 	d.Partial(false)

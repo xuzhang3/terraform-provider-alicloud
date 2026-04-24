@@ -7,8 +7,8 @@ import (
 
 	"github.com/PaesslerAG/jsonpath"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudDdoscooInstance() *schema.Resource {
@@ -379,7 +379,6 @@ func resourceAliCloudDdoscooInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("bandwidth")
 	}
 
 	if d.HasChange("base_bandwidth") {
@@ -387,7 +386,6 @@ func resourceAliCloudDdoscooInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("base_bandwidth")
 	}
 
 	if d.HasChange("domain_count") {
@@ -395,7 +393,6 @@ func resourceAliCloudDdoscooInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("domain_count")
 	}
 
 	if d.HasChange("port_count") {
@@ -403,7 +400,6 @@ func resourceAliCloudDdoscooInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("port_count")
 	}
 
 	if d.HasChange("service_bandwidth") {
@@ -411,7 +407,6 @@ func resourceAliCloudDdoscooInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("service_bandwidth")
 	}
 
 	if d.HasChange("normal_bandwidth") {
@@ -419,7 +414,6 @@ func resourceAliCloudDdoscooInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("normal_bandwidth")
 	}
 
 	if d.HasChange("normal_qps") {
@@ -427,7 +421,6 @@ func resourceAliCloudDdoscooInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("normal_qps")
 	}
 
 	if d.HasChange("product_plan") {
@@ -435,7 +428,6 @@ func resourceAliCloudDdoscooInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("product_plan")
 	}
 
 	if d.HasChange("function_version") {
@@ -443,7 +435,6 @@ func resourceAliCloudDdoscooInstanceUpdate(d *schema.ResourceData, meta interfac
 			return WrapError(err)
 		}
 
-		d.SetPartial("function_version")
 	}
 
 	stateConf := BuildStateConf([]string{}, []string{"1"}, d.Timeout(schema.TimeoutUpdate), 5*time.Second, ddosCooServiceV2.DdosCooInstanceStateRefreshFunc(d.Id(), "Status", []string{}))

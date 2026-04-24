@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAlicloudEcdPolicyGroup() *schema.Resource {
@@ -363,7 +363,6 @@ func resourceAlicloudEcdPolicyGroupUpdate(d *schema.ResourceData, meta interface
 		if err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("authorize_access_policy_rules")
 	}
 	if d.HasChange("authorize_security_policy_rules") {
 		update = true
@@ -371,7 +370,6 @@ func resourceAlicloudEcdPolicyGroupUpdate(d *schema.ResourceData, meta interface
 		if err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("authorize_security_policy_rules")
 	}
 	if d.HasChange("cidr_ip") {
 		update = true

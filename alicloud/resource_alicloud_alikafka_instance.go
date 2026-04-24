@@ -9,9 +9,9 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/denverdino/aliyungo/common"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAliCloudAlikafkaInstance() *schema.Resource {
@@ -875,7 +875,6 @@ func resourceAliCloudAlikafkaInstanceUpdate(d *schema.ResourceData, meta interfa
 			return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 		}
 
-		d.SetPartial("name")
 	}
 
 	// Process paid type change, note only support change from post to pre pay.
@@ -925,7 +924,6 @@ func resourceAliCloudAlikafkaInstanceUpdate(d *schema.ResourceData, meta interfa
 			return WrapError(errors.New("paid type only support change from post pay to pre pay"))
 		}
 
-		d.SetPartial("paid_type")
 	}
 
 	update := false
@@ -1160,14 +1158,6 @@ func resourceAliCloudAlikafkaInstanceUpdate(d *schema.ResourceData, meta interfa
 			}
 		}
 
-		d.SetPartial("partition_num")
-		d.SetPartial("disk_size")
-		d.SetPartial("io_max")
-		d.SetPartial("io_max_spec")
-		d.SetPartial("spec_type")
-		d.SetPartial("eip_max")
-		d.SetPartial("serverless_config")
-		d.SetPartial("confluent_config")
 	}
 
 	if !d.IsNewResource() && d.HasChange("service_version") {
@@ -1214,7 +1204,6 @@ func resourceAliCloudAlikafkaInstanceUpdate(d *schema.ResourceData, meta interfa
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("service_version")
 	}
 
 	if !d.IsNewResource() && d.HasChange("config") {
@@ -1256,7 +1245,6 @@ func resourceAliCloudAlikafkaInstanceUpdate(d *schema.ResourceData, meta interfa
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("config")
 	}
 
 	update = false
@@ -1293,7 +1281,6 @@ func resourceAliCloudAlikafkaInstanceUpdate(d *schema.ResourceData, meta interfa
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("resource_group_id")
 	}
 
 	object, err := alikafkaService.DescribeAliKafkaInstance(d.Id())
@@ -1341,7 +1328,6 @@ func resourceAliCloudAlikafkaInstanceUpdate(d *schema.ResourceData, meta interfa
 				return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 			}
 
-			d.SetPartial("enable_auto_group")
 		}
 	}
 
@@ -1384,7 +1370,6 @@ func resourceAliCloudAlikafkaInstanceUpdate(d *schema.ResourceData, meta interfa
 				return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 			}
 
-			d.SetPartial("enable_auto_topic")
 		}
 
 		update = false
@@ -1426,7 +1411,6 @@ func resourceAliCloudAlikafkaInstanceUpdate(d *schema.ResourceData, meta interfa
 				return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 			}
 
-			d.SetPartial("default_topic_partition_num")
 		}
 	}
 

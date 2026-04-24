@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudGaBasicAccelerator() *schema.Resource {
@@ -221,7 +221,6 @@ func resourceAliCloudGaBasicAcceleratorUpdate(d *schema.ResourceData, meta inter
 		if err := gaService.SetResourceTags(d, "basicaccelerator"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 
 	if d.HasChange("basic_accelerator_name") {
@@ -267,8 +266,6 @@ func resourceAliCloudGaBasicAcceleratorUpdate(d *schema.ResourceData, meta inter
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("basic_accelerator_name")
-		d.SetPartial("description")
 	}
 
 	update = false
@@ -312,7 +309,6 @@ func resourceAliCloudGaBasicAcceleratorUpdate(d *schema.ResourceData, meta inter
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("cross_border_status")
 	}
 
 	update = false
@@ -352,7 +348,6 @@ func resourceAliCloudGaBasicAcceleratorUpdate(d *schema.ResourceData, meta inter
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("resource_group_id")
 	}
 
 	d.Partial(false)

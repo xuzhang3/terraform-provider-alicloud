@@ -9,8 +9,8 @@ import (
 
 	"github.com/PaesslerAG/jsonpath"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudVpcIpv6Gateway() *schema.Resource {
@@ -211,8 +211,6 @@ func resourceAlicloudVpcIpv6GatewayUpdate(d *schema.ResourceData, meta interface
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("description")
-		d.SetPartial("ipv6_gateway_name")
 	}
 	update = false
 	action = "MoveResourceGroup"
@@ -244,7 +242,6 @@ func resourceAlicloudVpcIpv6GatewayUpdate(d *schema.ResourceData, meta interface
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("resource_group_id")
 	}
 
 	update = false
@@ -254,7 +251,6 @@ func resourceAlicloudVpcIpv6GatewayUpdate(d *schema.ResourceData, meta interface
 		if err := vpcServiceV2.SetResourceTags(d, "IPV6GATEWAY"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 	d.Partial(false)
 	return resourceAlicloudVpcIpv6GatewayRead(d, meta)

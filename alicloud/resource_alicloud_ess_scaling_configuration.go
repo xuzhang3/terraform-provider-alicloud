@@ -12,8 +12,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ess"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAlicloudEssScalingConfiguration() *schema.Resource {
@@ -983,7 +983,6 @@ func resourceAliyunEssScalingConfigurationUpdate(d *schema.ResourceData, meta in
 				}
 			}
 		}
-		d.SetPartial("active")
 	}
 
 	if err := enableEssScalingConfiguration(d, meta); err != nil {
@@ -1482,7 +1481,6 @@ func enableEssScalingConfiguration(d *schema.ResourceData, meta interface{}) err
 					return WrapError(err)
 				}
 
-				d.SetPartial("scaling_configuration_id")
 			}
 		} else {
 			if group.LifecycleState == string(Active) {
@@ -1501,7 +1499,6 @@ func enableEssScalingConfiguration(d *schema.ResourceData, meta interface{}) err
 				}
 			}
 		}
-		d.SetPartial("enable")
 	}
 
 	return nil

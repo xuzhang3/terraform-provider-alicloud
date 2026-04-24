@@ -9,7 +9,7 @@ import (
 
 	"github.com/PaesslerAG/jsonpath"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudSelectDBDbInstance() *schema.Resource {
@@ -327,7 +327,6 @@ func resourceAliCloudSelectDBDbInstanceUpdate(d *schema.ResourceData, meta inter
 		if _, err := selectDBService.ModifySelectDBInstancePaymentType(d.Id(), request); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("payment_type")
 
 	}
 
@@ -354,8 +353,6 @@ func resourceAliCloudSelectDBDbInstanceUpdate(d *schema.ResourceData, meta inter
 			if _, err := stateConf.WaitForState(); err != nil {
 				return WrapErrorf(err, IdMsg, d.Id())
 			}
-			d.SetPartial("enable_public_network")
-			d.SetPartial("instance_net_infos")
 		} else if !oldNetStatus.(bool) && newNetStatus.(bool) {
 			if _, err := selectDBService.AllocateSelectDBInstancePublicConnection(d.Id()); err != nil {
 				return WrapError(err)
@@ -364,8 +361,6 @@ func resourceAliCloudSelectDBDbInstanceUpdate(d *schema.ResourceData, meta inter
 			if _, err := stateConf.WaitForState(); err != nil {
 				return WrapErrorf(err, IdMsg, d.Id())
 			}
-			d.SetPartial("enable_public_network")
-			d.SetPartial("instance_net_infos")
 		}
 
 	}
@@ -419,8 +414,6 @@ func resourceAliCloudSelectDBDbInstanceUpdate(d *schema.ResourceData, meta inter
 			}
 		}
 
-		d.SetPartial("upgraded_engine_minor_version")
-		d.SetPartial("engine_minor_version")
 	}
 
 	cacheSizeModified := false
@@ -441,10 +434,6 @@ func resourceAliCloudSelectDBDbInstanceUpdate(d *schema.ResourceData, meta inter
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, defaultBeId)
 		}
-		d.SetPartial("db_instance_class")
-		if d.HasChange("cache_size") {
-			d.SetPartial("cache_size")
-		}
 	}
 
 	if !d.IsNewResource() && d.HasChange("cache_size") && !cacheSizeModified {
@@ -463,10 +452,6 @@ func resourceAliCloudSelectDBDbInstanceUpdate(d *schema.ResourceData, meta inter
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, defaultBeId)
 		}
-		d.SetPartial("cache_size")
-		if d.HasChange("db_instance_class") {
-			d.SetPartial("db_instance_class")
-		}
 	}
 
 	if !d.IsNewResource() && d.HasChange("db_instance_description") {
@@ -475,7 +460,6 @@ func resourceAliCloudSelectDBDbInstanceUpdate(d *schema.ResourceData, meta inter
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), "ModifySelectDBInstanceDescription", AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("db_instance_description")
 	}
 
 	if d.HasChange("tags") {
@@ -483,7 +467,6 @@ func resourceAliCloudSelectDBDbInstanceUpdate(d *schema.ResourceData, meta inter
 		if err := selectDBService.SetResourceTags(d.Id(), added, removed); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 
 	if d.HasChange("admin_pass") {
@@ -491,7 +474,6 @@ func resourceAliCloudSelectDBDbInstanceUpdate(d *schema.ResourceData, meta inter
 		if _, err := selectDBService.ModifySelectDBInstanceAdminPass(d.Id(), newPass.(string)); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("admin_pass")
 	}
 
 	if d.HasChange("desired_security_ip_lists") {
@@ -503,7 +485,6 @@ func resourceAliCloudSelectDBDbInstanceUpdate(d *schema.ResourceData, meta inter
 				return WrapErrorf(err, DefaultErrorMsg, d.Id(), "ModifySecurityIPList", AlibabaCloudSdkGoERROR)
 			}
 		}
-		d.SetPartial("desired_security_ip_lists")
 	}
 	stateConf := BuildStateConf([]string{"RESOURCE_PREPARING", "CREATING", "CLASS_CHANGING", "MODULE_UPGRADING", "NET_CREATING", "NET_DELETING"},
 		[]string{"ACTIVATION"}, d.Timeout(schema.TimeoutUpdate), 10*time.Second, selectDBService.SelectDBDbInstanceStateRefreshFunc(d.Id(), []string{"DELETING"}))

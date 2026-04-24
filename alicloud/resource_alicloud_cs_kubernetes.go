@@ -17,9 +17,9 @@ import (
 	"github.com/denverdino/aliyungo/common"
 	"github.com/denverdino/aliyungo/cs"
 	aliyungoecs "github.com/denverdino/aliyungo/ecs"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"gopkg.in/yaml.v2"
 )
 
@@ -690,7 +690,6 @@ func modifyCluster(d *schema.ResourceData, meta interface{}, invoker *Invoker) e
 			request.MaintenanceWindow = expandMaintenanceWindowConfigRoa(v)
 			updated = true
 		}
-		d.SetPartial("maintenance_window")
 	}
 
 	// modify cluster maintenance window
@@ -727,7 +726,6 @@ func modifyCluster(d *schema.ResourceData, meta interface{}, invoker *Invoker) e
 		}
 		request.SetEnableRrsa(enableRRSA)
 		updated = true
-		d.SetPartial("enable_rrsa")
 	}
 
 	if d.HasChange("custom_san") {

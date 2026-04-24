@@ -7,8 +7,8 @@ import (
 
 	"github.com/PaesslerAG/jsonpath"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudResourceManagerResourceGroup() *schema.Resource {
@@ -217,7 +217,6 @@ func resourceAliCloudResourceManagerResourceGroupUpdate(d *schema.ResourceData, 
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("display_name")
 	}
 
 	if d.HasChange("tags") {
@@ -225,7 +224,6 @@ func resourceAliCloudResourceManagerResourceGroupUpdate(d *schema.ResourceData, 
 			return WrapError(err)
 		}
 
-		d.SetPartial("tags")
 	}
 
 	d.Partial(false)

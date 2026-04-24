@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudCloudFirewallInstance() *schema.Resource {
@@ -471,10 +471,6 @@ func resourceAliCloudCloudFirewallInstanceUpdate(d *schema.ResourceData, meta in
 			return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 		}
 
-		d.SetPartial("renewal_status")
-		d.SetPartial("payment_type")
-		d.SetPartial("renewal_duration")
-		d.SetPartial("renewal_duration_unit")
 	}
 
 	update = false
@@ -647,14 +643,6 @@ func resourceAliCloudCloudFirewallInstanceUpdate(d *schema.ResourceData, meta in
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("payment_type")
-		d.SetPartial("fw_vpc_number")
-		d.SetPartial("ip_number")
-		d.SetPartial("cfw_log_storage")
-		d.SetPartial("cfw_log")
-		d.SetPartial("band_width")
-		d.SetPartial("spec")
-		d.SetPartial("instance_count")
 	}
 
 	cfwInstance, err := cloudFireWallService.DescribeCloudFirewallInstanceUserBuyVersion(d.Id())
@@ -704,7 +692,6 @@ func resourceAliCloudCloudFirewallInstanceUpdate(d *schema.ResourceData, meta in
 			return WrapErrorf(err, DefaultErrorMsg, "alicloud_cloud_firewall_instance", action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("cfw_log")
 	}
 
 	d.Partial(false)

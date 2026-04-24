@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAlicloudScdnDomain() *schema.Resource {
@@ -299,11 +299,6 @@ func resourceAlicloudScdnDomainUpdate(d *schema.ResourceData, meta interface{}) 
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("ssl_protocol")
-		d.SetPartial("cert_name")
-		d.SetPartial("cert_type")
-		d.SetPartial("ssl_pri")
-		d.SetPartial("ssl_pub")
 	}
 	update = false
 	updateScdnDomainReq := map[string]interface{}{
@@ -356,8 +351,6 @@ func resourceAlicloudScdnDomainUpdate(d *schema.ResourceData, meta interface{}) 
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("resource_group_id")
-		d.SetPartial("sources")
 	}
 	if d.HasChange("status") {
 		object, err := scdnService.DescribeScdnDomain(d.Id())
@@ -418,7 +411,6 @@ func resourceAlicloudScdnDomainUpdate(d *schema.ResourceData, meta interface{}) 
 					return WrapErrorf(err, IdMsg, d.Id())
 				}
 			}
-			d.SetPartial("status")
 		}
 	}
 	d.Partial(false)

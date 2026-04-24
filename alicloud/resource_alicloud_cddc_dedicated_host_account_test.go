@@ -12,9 +12,9 @@ import (
 	util "github.com/alibabacloud-go/tea-utils/service"
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -118,7 +118,7 @@ resource "alicloud_cddc_dedicated_host" "default" {
 
 // lintignore: R001
 func TestUnitAlicloudCddcDedicatedHostAccount(t *testing.T) {
-	p := Provider().(*schema.Provider).ResourcesMap
+	p := Provider().ResourcesMap
 	dInit, _ := schema.InternalMap(p["alicloud_cddc_dedicated_host_account"].Schema).Data(nil, nil)
 	dExisted, _ := schema.InternalMap(p["alicloud_cddc_dedicated_host_account"].Schema).Data(nil, nil)
 	dInit.MarkNewResource()

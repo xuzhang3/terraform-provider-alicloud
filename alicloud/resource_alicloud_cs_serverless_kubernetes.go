@@ -10,8 +10,8 @@ import (
 	roacs "github.com/alibabacloud-go/cs-20151215/v7/client"
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAlicloudCSServerlessKubernetes() *schema.Resource {
@@ -692,7 +692,6 @@ func modifyServerlessCluster(d *schema.ResourceData, meta interface{}, invoker *
 			request.MaintenanceWindow = expandMaintenanceWindowConfigRoa(v)
 			updated = true
 		}
-		d.SetPartial("maintenance_window")
 	}
 
 	// modify cluster maintenance window
@@ -729,7 +728,6 @@ func modifyServerlessCluster(d *schema.ResourceData, meta interface{}, invoker *
 		}
 		request.SetEnableRrsa(enableRRSA)
 		updated = true
-		d.SetPartial("enable_rrsa")
 	}
 
 	if d.HasChange("custom_san") {

@@ -13,7 +13,7 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud"
 	set "github.com/deckarep/golang-set"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	log "github.com/sirupsen/logrus"
 	"github.com/waigani/diffparser"
 )
@@ -100,10 +100,10 @@ func main() {
 		}
 
 		log.Infof("==> Checking resource or data-source %s attributes consistency...", resourceName)
-		resource, ok := alicloud.Provider().(*schema.Provider).ResourcesMap[resourceName]
+		resource, ok := alicloud.Provider().ResourcesMap[resourceName]
 		if !ok || resource == nil {
 			resourceName = strings.TrimPrefix(resourceName, "data_source_")
-			resource, ok = alicloud.Provider().(*schema.Provider).DataSourcesMap[resourceName]
+			resource, ok = alicloud.Provider().DataSourcesMap[resourceName]
 			if !ok || resource == nil {
 				log.Errorf("resource %s is not found in the provider ResourceMap\n\n", resourceName)
 				exitCode = 1
@@ -360,7 +360,7 @@ func getResourceAttributes(rootName string, resourceAttributeMap map[string]Reso
 			key = rootName + "." + key
 		}
 
-		var thisRemoved = value.Removed
+		var thisRemoved = ""
 		if len(thisRemoved) == 0 && len(rootRemoved) != 0 {
 			thisRemoved = rootRemoved
 		}

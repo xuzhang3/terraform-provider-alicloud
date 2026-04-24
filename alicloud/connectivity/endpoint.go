@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/location"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
 // ServiceCode Load endpoints from endpoints.xml or environment variables to meet specified application scenario, like private cloud.

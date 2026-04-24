@@ -9,8 +9,8 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/blues/jsonata-go"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudNlbSecurityPolicy() *schema.Resource {
@@ -211,7 +211,6 @@ func resourceAliCloudNlbSecurityPolicyUpdate(d *schema.ResourceData, meta interf
 		if _, err := stateConf.WaitForState(); err != nil {
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
-		d.SetPartial("security_policy_name")
 	}
 	update = false
 	action = "MoveResourceGroup"
@@ -245,7 +244,6 @@ func resourceAliCloudNlbSecurityPolicyUpdate(d *schema.ResourceData, meta interf
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("resource_group_id")
 	}
 
 	if d.HasChange("tags") {
@@ -253,7 +251,6 @@ func resourceAliCloudNlbSecurityPolicyUpdate(d *schema.ResourceData, meta interf
 		if err := nlbServiceV2.SetResourceTags(d, "securitypolicy"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 	d.Partial(false)
 	return resourceAliCloudNlbSecurityPolicyRead(d, meta)

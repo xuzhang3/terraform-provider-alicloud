@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudCmsMetricRuleTemplate() *schema.Resource {
@@ -615,9 +615,6 @@ func resourceAliCloudCmsMetricRuleTemplateUpdate(d *schema.ResourceData, meta in
 			return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 		}
 
-		d.SetPartial("metric_rule_template_name")
-		d.SetPartial("description")
-		d.SetPartial("alert_templates")
 	}
 
 	update = false
@@ -698,13 +695,6 @@ func resourceAliCloudCmsMetricRuleTemplateUpdate(d *schema.ResourceData, meta in
 			return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 		}
 
-		d.SetPartial("group_id")
-		d.SetPartial("apply_mode")
-		d.SetPartial("notify_level")
-		d.SetPartial("silence_time")
-		d.SetPartial("webhook")
-		d.SetPartial("enable_start_time")
-		d.SetPartial("enable_end_time")
 	}
 
 	d.Partial(false)

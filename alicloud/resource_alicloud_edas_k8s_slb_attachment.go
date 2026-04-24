@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAlicloudEdasK8sSlbAttachment() *schema.Resource {
@@ -245,7 +245,6 @@ func resourceAlicloudEdasK8sSlbAttachmentUpdate(d *schema.ResourceData, meta int
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), "alicloud_edas_k8s_slb_attachment", AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("slb_configs")
 	}
 	d.Partial(false)
 	return resourceAlicloudEdasK8sSlbAttachmentRead(d, meta)

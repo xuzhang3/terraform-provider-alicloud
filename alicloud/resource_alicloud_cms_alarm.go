@@ -10,8 +10,8 @@ import (
 	util "github.com/alibabacloud-go/tea-utils/service"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudCmsAlarm() *schema.Resource {
@@ -815,23 +815,6 @@ func resourceAliCloudCmsAlarmUpdate(d *schema.ResourceData, meta interface{}) er
 		return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 	}
 
-	d.SetPartial("name")
-	d.SetPartial("contact_groups")
-	d.SetPartial("metric_dimensions")
-	d.SetPartial("effective_interval")
-	d.SetPartial("period")
-	d.SetPartial("silence_time")
-	d.SetPartial("webhook")
-	d.SetPartial("escalations_critical")
-	d.SetPartial("escalations_info")
-	d.SetPartial("escalations_warn")
-	d.SetPartial("prometheus")
-	d.SetPartial("composite_expression")
-	d.SetPartial("tags")
-	d.SetPartial("dimensions")
-	d.SetPartial("start_time")
-	d.SetPartial("end_time")
-
 	if d.Get("enabled").(bool) {
 		action := "EnableMetricRules"
 		enableMetricRequest := make(map[string]interface{})
@@ -877,8 +860,6 @@ func resourceAliCloudCmsAlarmUpdate(d *schema.ResourceData, meta interface{}) er
 	if err := cmsService.WaitForCmsAlarm(d.Id(), d.Get("enabled").(bool), 102); err != nil {
 		return WrapError(err)
 	}
-
-	d.SetPartial("enabled")
 
 	update := false
 	putMetricRuleTargetsReq := map[string]interface{}{
@@ -943,7 +924,6 @@ func resourceAliCloudCmsAlarmUpdate(d *schema.ResourceData, meta interface{}) er
 			return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 		}
 
-		d.SetPartial("targets")
 	}
 
 	d.Partial(false)

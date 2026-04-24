@@ -12,9 +12,9 @@ import (
 	"github.com/denverdino/aliyungo/common"
 	"github.com/denverdino/aliyungo/cs"
 	aliyungoecs "github.com/denverdino/aliyungo/ecs"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 const (
@@ -577,7 +577,6 @@ func resourceAlicloudCSEdgeKubernetesUpdate(d *schema.ResourceData, meta interfa
 				if tags, err := ConvertCsTags(d); err == nil {
 					args.Tags = tags
 				}
-				d.SetPartial("tags")
 			}
 
 			if err := invoker.Run(func() error {
@@ -601,12 +600,6 @@ func resourceAlicloudCSEdgeKubernetesUpdate(d *schema.ResourceData, meta interfa
 			if _, err := stateConf.WaitForState(); err != nil {
 				return WrapErrorf(err, IdMsg, d.Id())
 			}
-			d.SetPartial("worker_data_disks")
-			d.SetPartial("worker_number")
-			d.SetPartial("worker_disk_category")
-			d.SetPartial("worker_disk_size")
-			d.SetPartial("worker_disk_snapshot_policy_id")
-			d.SetPartial("worker_disk_performance_level")
 		}
 
 	}
@@ -637,8 +630,6 @@ func resourceAlicloudCSEdgeKubernetesUpdate(d *schema.ResourceData, meta interfa
 			requestMap["ClusterName"] = clusterName
 			addDebug("ModifyClusterName", response, requestInfo, requestMap)
 		}
-		d.SetPartial("name")
-		d.SetPartial("name_prefix")
 	}
 
 	// modify cluster deletion protection
@@ -663,7 +654,6 @@ func resourceAlicloudCSEdgeKubernetesUpdate(d *schema.ResourceData, meta interfa
 			requestMap["deletion_protection"] = requestInfo.DeletionProtection
 			addDebug("ModifyCluster", response, requestInfo, requestMap)
 		}
-		d.SetPartial("deletion_protection")
 	}
 
 	// modify cluster tag
@@ -673,7 +663,6 @@ func resourceAlicloudCSEdgeKubernetesUpdate(d *schema.ResourceData, meta interfa
 			return WrapErrorf(err, ResponseCodeMsg, d.Id(), "ModifyClusterTags", AlibabaCloudSdkGoERROR)
 		}
 	}
-	d.SetPartial("tags")
 
 	// upgrade cluster version
 	err := UpgradeAlicloudKubernetesCluster(d, meta)

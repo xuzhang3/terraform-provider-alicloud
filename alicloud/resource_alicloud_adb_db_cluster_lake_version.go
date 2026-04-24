@@ -9,8 +9,8 @@ import (
 	"github.com/PaesslerAG/jsonpath"
 	util "github.com/alibabacloud-go/tea-utils/service"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudAdbDbClusterLakeVersion() *schema.Resource {
@@ -453,11 +453,6 @@ func resourceAliCloudAdbDbClusterLakeVersionUpdate(d *schema.ResourceData, meta 
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("compute_resource")
-		d.SetPartial("storage_resource")
-		d.SetPartial("product_form")
-		d.SetPartial("reserved_node_size")
-		d.SetPartial("reserved_node_count")
 	}
 
 	update = false
@@ -497,7 +492,6 @@ func resourceAliCloudAdbDbClusterLakeVersionUpdate(d *schema.ResourceData, meta 
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("security_ips")
 	}
 
 	update = false
@@ -543,7 +537,6 @@ func resourceAliCloudAdbDbClusterLakeVersionUpdate(d *schema.ResourceData, meta 
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("enable_ssl")
 	}
 
 	update = false
@@ -583,7 +576,6 @@ func resourceAliCloudAdbDbClusterLakeVersionUpdate(d *schema.ResourceData, meta 
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("db_cluster_description")
 	}
 
 	update = false
@@ -623,7 +615,6 @@ func resourceAliCloudAdbDbClusterLakeVersionUpdate(d *schema.ResourceData, meta 
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("resource_group_id")
 	}
 
 	update = false
@@ -674,7 +665,6 @@ func resourceAliCloudAdbDbClusterLakeVersionUpdate(d *schema.ResourceData, meta 
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 
-		d.SetPartial("payment_type")
 	}
 
 	d.Partial(false)

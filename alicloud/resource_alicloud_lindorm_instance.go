@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAliCloudLindormInstance() *schema.Resource {
@@ -597,7 +597,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 		if err := hitsdbService.SetResourceTags(d, "INSTANCE"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 	update := false
 	request := map[string]interface{}{
@@ -627,7 +626,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("ip_white_list")
 	}
 	update = false
 	updateLindormInstanceAttributeReq := map[string]interface{}{
@@ -664,8 +662,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("instance_name")
-		d.SetPartial("deletion_proection")
 	}
 
 	update = false
@@ -692,9 +688,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 		if err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("log_single_storage")
-		d.SetPartial("core_single_storage")
-		d.SetPartial("log_spec")
 	}
 
 	update = false
@@ -706,7 +699,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 		if v, ok := d.GetOk("cold_storage"); ok {
 			upgradeLindormInstanceColdStorageReq["ColdStorage"] = v
 		}
-		d.SetPartial("cold_storage")
 	}
 	if update {
 		err := UpgradeLindormInstance(d, meta, upgradeLindormInstanceColdStorageReq)
@@ -733,7 +725,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 		if err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("file_engine_node_count")
 	}
 
 	update = false
@@ -754,7 +745,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 		if err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("file_engine_specification")
 	}
 
 	if (d.HasChange("search_engine_node_count") || d.HasChange("search_engine_specification")) && !d.IsNewResource() {
@@ -796,8 +786,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 			}
 		}
 
-		d.SetPartial("search_engine_specification")
-		d.SetPartial("search_engine_node_count")
 	}
 
 	if (d.HasChange("table_engine_node_count") || d.HasChange("table_engine_specification")) && !d.IsNewResource() {
@@ -850,8 +838,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 			}
 		}
 
-		d.SetPartial("table_engine_specification")
-		d.SetPartial("table_engine_node_count")
 	}
 
 	if (d.HasChange("time_series_engine_node_count") || d.HasChange("time_serires_engine_specification") || d.HasChange("time_series_engine_specification")) && !d.IsNewResource() {
@@ -902,9 +888,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 			}
 		}
 
-		d.SetPartial("time_serires_engine_specification")
-		d.SetPartial("time_series_engine_specification")
-		d.SetPartial("time_series_engine_node_count")
 	}
 
 	if d.HasChange("lts_node_count") || d.HasChange("lts_node_specification") {
@@ -946,8 +929,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 			}
 		}
 
-		d.SetPartial("lts_node_specification")
-		d.SetPartial("lts_node_count")
 	}
 
 	if (d.HasChange("stream_engine_node_count") || d.HasChange("stream_engine_specification")) && !d.IsNewResource() {
@@ -992,8 +973,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 			}
 		}
 
-		d.SetPartial("stream_engine_node_count")
-		d.SetPartial("stream_engine_specification")
 	}
 
 	update = false
@@ -1019,7 +998,6 @@ func resourceAliCloudLindormInstanceUpdate(d *schema.ResourceData, meta interfac
 		if err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("instance_storage")
 	}
 
 	d.Partial(false)

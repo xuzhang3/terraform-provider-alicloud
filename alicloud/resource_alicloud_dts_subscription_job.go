@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudDtsSubscriptionJob() *schema.Resource {
@@ -322,7 +322,6 @@ func resourceAliCloudDtsSubscriptionJobUpdate(d *schema.ResourceData, meta inter
 		if err := dtsService.SetResourceTags(d, "ALIYUN::DTS::INSTANCE:JOB"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 	update := false
 	request := map[string]interface{}{
@@ -356,7 +355,6 @@ func resourceAliCloudDtsSubscriptionJobUpdate(d *schema.ResourceData, meta inter
 		if fmt.Sprint(response["Success"]) == "false" {
 			return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 		}
-		d.SetPartial("dts_job_name")
 	}
 	update = false
 	modifyDtsJobPasswordReq := map[string]interface{}{
@@ -394,8 +392,6 @@ func resourceAliCloudDtsSubscriptionJobUpdate(d *schema.ResourceData, meta inter
 		if fmt.Sprint(response["Success"]) == "false" {
 			return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 		}
-		d.SetPartial("source_endpoint_password")
-		d.SetPartial("source_endpoint_user_name")
 
 		target := d.Get("status").(string)
 		err = resourceAliCloudDtsSubscriptionJobStatusFlow(d, meta, target)
@@ -569,26 +565,6 @@ func resourceAliCloudDtsSubscriptionJobUpdate(d *schema.ResourceData, meta inter
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
-		d.SetPartial("db_list")
-		d.SetPartial("dts_job_name")
-		d.SetPartial("subscription_instance_network_type")
-		d.SetPartial("checkpoint")
-		d.SetPartial("source_endpoint_database_name")
-		d.SetPartial("source_endpoint_engine_name")
-		d.SetPartial("source_endpoint_ip")
-		d.SetPartial("source_endpoint_instance_id")
-		d.SetPartial("source_endpoint_instance_type")
-		d.SetPartial("source_endpoint_oracle_sid")
-		d.SetPartial("source_endpoint_owner_id")
-		d.SetPartial("source_endpoint_password")
-		d.SetPartial("source_endpoint_port")
-		d.SetPartial("source_endpoint_region")
-		d.SetPartial("source_endpoint_role")
-		d.SetPartial("source_endpoint_user_name")
-		d.SetPartial("subscription_data_type_ddl")
-		d.SetPartial("subscription_data_type_dml")
-		d.SetPartial("subscription_instance_vpc_id")
-		d.SetPartial("subscription_instance_vswitch_id")
 
 		target := d.Get("status").(string)
 		err = resourceAliCloudDtsSubscriptionJobStatusFlow(d, meta, target)
@@ -739,7 +715,6 @@ func resourceAliCloudDtsSubscriptionJobStatusFlow(d *schema.ResourceData, meta i
 				return WrapErrorf(err, IdMsg, d.Id())
 			}
 		}
-		d.SetPartial("status")
 	}
 
 	return nil

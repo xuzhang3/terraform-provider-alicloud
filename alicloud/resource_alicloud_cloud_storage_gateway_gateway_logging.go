@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAlicloudCloudStorageGatewayGatewayLogging() *schema.Resource {
@@ -167,7 +167,6 @@ func resourceAlicloudCloudStorageGatewayGatewayLoggingUpdate(d *schema.ResourceD
 					return WrapError(fmt.Errorf("%s failed, response: %v", action, response))
 				}
 			}
-			d.SetPartial("status")
 		}
 	}
 	d.Partial(false)

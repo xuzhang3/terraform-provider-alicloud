@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudSddpRule() *schema.Resource {
@@ -305,14 +305,6 @@ func resourceAliCloudSddpRuleUpdate(d *schema.ResourceData, meta interface{}) er
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("rule_name")
-		d.SetPartial("category")
-		d.SetPartial("content")
-		d.SetPartial("risk_level_id")
-		d.SetPartial("rule_type")
-		d.SetPartial("product_code")
-		d.SetPartial("product_id")
-		d.SetPartial("warn_level")
 	}
 
 	update = false
@@ -353,7 +345,6 @@ func resourceAliCloudSddpRuleUpdate(d *schema.ResourceData, meta interface{}) er
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("status")
 	}
 
 	d.Partial(false)

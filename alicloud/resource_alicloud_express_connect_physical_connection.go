@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudExpressConnectPhysicalConnection() *schema.Resource {
@@ -274,14 +274,6 @@ func resourceAliCloudExpressConnectPhysicalConnectionUpdate(d *schema.ResourceDa
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("line_operator")
-		d.SetPartial("port_type")
-		d.SetPartial("bandwidth")
-		d.SetPartial("circuit_code")
-		d.SetPartial("peer_location")
-		d.SetPartial("redundant_physical_connection_id")
-		d.SetPartial("physical_connection_name")
-		d.SetPartial("description")
 	}
 
 	if d.HasChange("status") {
@@ -328,7 +320,6 @@ func resourceAliCloudExpressConnectPhysicalConnectionUpdate(d *schema.ResourceDa
 				}
 			}
 
-			d.SetPartial("status")
 		}
 	}
 

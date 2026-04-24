@@ -8,8 +8,8 @@ import (
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/slb"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliyunSlbServerGroup() *schema.Resource {
@@ -192,7 +192,6 @@ func resourceAliyunSlbServerGroupUpdate(d *schema.ResourceData, meta interface{}
 			return WrapError(err)
 		}
 
-		d.SetPartial("tags")
 	}
 
 	var removeserverSet, addServerSet, updateServerSet *schema.Set
@@ -247,7 +246,6 @@ func resourceAliyunSlbServerGroupUpdate(d *schema.ResourceData, meta interface{}
 					return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), AlibabaCloudSdkGoERROR)
 				}
 				addDebug(request.GetActionName(), raw, request.RpcRequest, request)
-				d.SetPartial("servers")
 			}
 		}
 		if addServerSet.Len() > 0 {
@@ -289,7 +287,6 @@ func resourceAliyunSlbServerGroupUpdate(d *schema.ResourceData, meta interface{}
 					return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), AlibabaCloudSdkGoERROR)
 				}
 				addDebug(request.GetActionName(), raw, request.RpcRequest, request)
-				d.SetPartial("servers")
 			}
 		}
 	}
@@ -345,8 +342,6 @@ func resourceAliyunSlbServerGroupUpdate(d *schema.ResourceData, meta interface{}
 					return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), AlibabaCloudSdkGoERROR)
 				}
 				addDebug(request.GetActionName(), raw, request.RpcRequest, request)
-				d.SetPartial("servers")
-				d.SetPartial("name")
 			}
 		} else {
 			raw, err := client.WithSlbClient(func(slbClient *slb.Client) (interface{}, error) {
@@ -358,7 +353,6 @@ func resourceAliyunSlbServerGroupUpdate(d *schema.ResourceData, meta interface{}
 				return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), AlibabaCloudSdkGoERROR)
 			}
 
-			d.SetPartial("name")
 		}
 	}
 

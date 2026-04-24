@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func resourceAlicloudArmsPrometheus() *schema.Resource {
@@ -183,7 +183,6 @@ func resourceAliCloudArmsPrometheusUpdate(d *schema.ResourceData, meta interface
 		if err := armsService.SetResourceTags(d, "PROMETHEUS"); err != nil {
 			return WrapError(err)
 		}
-		d.SetPartial("tags")
 	}
 
 	update := false
@@ -220,7 +219,6 @@ func resourceAliCloudArmsPrometheusUpdate(d *schema.ResourceData, meta interface
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("sub_clusters_json")
 	}
 
 	update = false
@@ -254,7 +252,6 @@ func resourceAliCloudArmsPrometheusUpdate(d *schema.ResourceData, meta interface
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("grafana_instance_id")
 	}
 
 	update = false
@@ -291,7 +288,6 @@ func resourceAliCloudArmsPrometheusUpdate(d *schema.ResourceData, meta interface
 			return WrapErrorf(err, DefaultErrorMsg, d.Id(), action, AlibabaCloudSdkGoERROR)
 		}
 
-		d.SetPartial("resource_group_id")
 	}
 
 	d.Partial(false)

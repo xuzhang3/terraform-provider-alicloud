@@ -1,6 +1,7 @@
 package alicloud
 
 import (
+	"context"
 	"fmt"
 	"hash/crc32"
 	"log"
@@ -8,8 +9,8 @@ import (
 
 	"github.com/PaesslerAG/jsonpath"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceAliCloudNlbLoadBalancer() *schema.Resource {
@@ -250,7 +251,7 @@ func resourceAliCloudNlbLoadBalancer() *schema.Resource {
 				},
 			},
 		},
-		CustomizeDiff: func(diff *schema.ResourceDiff, v interface{}) error {
+		CustomizeDiff: func(ctx context.Context, diff *schema.ResourceDiff, v interface{}) error {
 			for _, key := range diff.GetChangedKeysPrefix("zone_mappings") {
 				// If the set contains computed key, there are some diff changes when one of element has been changed,
 				// and there aims to ignore the diff

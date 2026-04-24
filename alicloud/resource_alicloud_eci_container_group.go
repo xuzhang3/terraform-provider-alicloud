@@ -666,37 +666,6 @@ func resourceAliCloudEciContainerGroup() *schema.Resource {
 				},
 			},
 			// lintignore: S018
-			"eci_security_context": {
-				Type:     schema.TypeSet,
-				Removed:  "Field 'eci_security_context' has been removed from provider version ?",
-				Optional: true,
-				ForceNew: true,
-				MaxItems: 1,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"sysctls": {
-							Type:     schema.TypeList,
-							Optional: true,
-							ForceNew: true,
-							Elem: &schema.Resource{
-								Schema: map[string]*schema.Schema{
-									"name": {
-										Type:     schema.TypeString,
-										Optional: true,
-										ForceNew: true,
-									},
-									"value": {
-										Type:     schema.TypeString,
-										Optional: true,
-										ForceNew: true,
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			// lintignore: S018
 			"security_context": {
 				Type:     schema.TypeSet,
 				Optional: true,
@@ -1079,26 +1048,6 @@ func resourceAliCloudEciContainerGroupCreate(d *schema.ResourceData, meta interf
 				dnsConfigMap["Search"] = dnsConfigArg["searches"]
 			}
 			request["DnsConfig"] = dnsConfigMap
-		}
-	}
-	if v, ok := d.GetOk("eci_security_context"); ok {
-		if v != nil {
-			eciSecurityContextMap := make(map[string]interface{})
-			for _, eciSecurityContext := range v.(*schema.Set).List() {
-				eciSecurityContextArg := eciSecurityContext.(map[string]interface{})
-				if eciSecurityContextArg["sysctls"] != nil {
-					sysctlsMaps := make([]map[string]interface{}, 0)
-					for _, sysctls := range eciSecurityContextArg["sysctls"].([]interface{}) {
-						sysctlsMap := make(map[string]interface{})
-						sysctlsArg := sysctls.(map[string]interface{})
-						sysctlsMap["Name"] = sysctlsArg["name"]
-						sysctlsMap["Value"] = sysctlsArg["value"]
-						sysctlsMaps = append(sysctlsMaps, sysctlsMap)
-					}
-					eciSecurityContextMap["Sysctls"] = sysctlsMaps
-				}
-			}
-			request["EciSecurityContext"] = eciSecurityContextMap
 		}
 	}
 	if v, ok := d.GetOk("security_context"); ok {

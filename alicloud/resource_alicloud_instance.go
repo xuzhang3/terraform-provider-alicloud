@@ -342,13 +342,7 @@ func resourceAliCloudInstance() *schema.Resource {
 					},
 				},
 			},
-			//subnet_id and vswitch_id both exists, cause compatible old version, and aws habit.
-			"subnet_id": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true, //add this schema cause subnet_id not used enter parameter, will different, so will be ForceNew
-				Removed:  "Field 'subnet_id' has been removed from version 1.210.0",
-			},
+
 			"vpc_id": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -749,12 +743,6 @@ func resourceAliCloudInstance() *schema.Resource {
 				DiffSuppressFunc: vpcTypeResourceDiffSuppressFunc,
 				Deprecated:       "Field `role_name` has been deprecated from provider version 1.275.0. New resource `alicloud_ecs_ram_role_attachment` instead.",
 			},
-			"io_optimized": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Removed:  "Field `io_optimized` has been removed from provider version 1.213.1.",
-			},
 		},
 	}
 }
@@ -890,9 +878,6 @@ func resourceAliCloudInstanceCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	vswitchValue := d.Get("vswitch_id")
-	if vswitchValue == "" {
-		vswitchValue = d.Get("subnet_id")
-	}
 
 	if v, ok := d.GetOk("instance_charge_type"); ok {
 		request["InstanceChargeType"] = v
@@ -1334,7 +1319,6 @@ func resourceAliCloudInstanceRead(d *schema.ResourceData, meta interface{}) erro
 		d.Set("public_ip", "")
 	}
 
-	d.Set("subnet_id", instance.VpcAttributes.VSwitchId)
 	d.Set("vpc_id", instance.VpcAttributes.VpcId)
 	d.Set("vswitch_id", instance.VpcAttributes.VSwitchId)
 	d.Set("spot_duration", instance.SpotDuration)
@@ -2928,14 +2912,6 @@ func modifyVpcAttribute(d *schema.ResourceData, meta interface{}, run bool) (boo
 		}
 	}
 
-	if d.HasChange("subnet_id") {
-		update = true
-		if d.Get("subnet_id").(string) == "" {
-			return update, WrapError(Error("Field 'subnet_id' is required when modifying the instance VPC attribute."))
-		}
-		request.VSwitchId = d.Get("subnet_id").(string)
-	}
-
 	if request.VSwitchId != "" && d.HasChange("private_ip") {
 		request.PrivateIpAddress = d.Get("private_ip").(string)
 		update = true
@@ -2986,7 +2962,6 @@ func modifyVpcAttribute(d *schema.ResourceData, meta interface{}, run bool) (boo
 		}
 
 		d.SetPartial("vswitch_id")
-		d.SetPartial("subnet_id")
 		d.SetPartial("private_ip")
 		d.SetPartial("vpc_id")
 		d.SetPartial("security_groups")

@@ -187,11 +187,6 @@ func resourceAliCloudKvstoreInstance() *schema.Resource {
 				Optional:     true,
 				ValidateFunc: StringInSlice([]string{"Immediately", "MaintainTime"}, false),
 			},
-			"modify_mode": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Removed:  "Field `modify_mode` has been removed from provider version 1.216.0.",
-			},
 			"node_type": {
 				Type:         schema.TypeString,
 				Optional:     true,

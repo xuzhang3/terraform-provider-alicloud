@@ -25,13 +25,6 @@ func resourceAlicloudSlbLoadBalancer() *schema.Resource {
 			Delete: schema.DefaultTimeout(9 * time.Minute),
 		},
 		Schema: map[string]*schema.Schema{
-			"internet": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				ForceNew: true,
-				Computed: true,
-				Removed:  "Field 'internet' has been removed from provider version 1.124. Use 'address_type' replaces it.",
-			},
 			"address": {
 				Type:     schema.TypeString,
 				Optional: true,

@@ -25,6 +25,7 @@ func resourceAlicloudClickHouseDbCluster() *schema.Resource {
 		Timeouts: &schema.ResourceTimeout{
 			Create: schema.DefaultTimeout(60 * time.Minute),
 			Update: schema.DefaultTimeout(60 * time.Minute),
+			Delete: schema.DefaultTimeout(60 * time.Minute),
 		},
 		Schema: map[string]*schema.Schema{
 			"category": {
@@ -38,11 +39,6 @@ func resourceAlicloudClickHouseDbCluster() *schema.Resource {
 				Optional: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
-						"db_cluster_ip_array_attribute": {
-							Type:     schema.TypeString,
-							Optional: true,
-							Removed:  "Field 'db_cluster_ip_array_attribute' has been removed from provider",
-						},
 						"db_cluster_ip_array_name": {
 							Type:     schema.TypeString,
 							Optional: true,
@@ -423,7 +419,6 @@ func resourceAlicloudClickHouseDbClusterRead(d *schema.ResourceData, meta interf
 						continue
 					}
 					iPArrayListItemMap := make(map[string]interface{})
-					iPArrayListItemMap["db_cluster_ip_array_attribute"] = v["DBClusterIPArrayAttribute"]
 					iPArrayListItemMap["db_cluster_ip_array_name"] = v["DBClusterIPArrayName"]
 					iPArrayListItemMap["security_ip_list"] = v["SecurityIPList"]
 					dBClusterAccessWhiteListMaps = append(dBClusterAccessWhiteListMaps, iPArrayListItemMap)
@@ -558,11 +553,10 @@ func resourceAlicloudClickHouseDbClusterUpdate(d *schema.ResourceData, meta inte
 		if len(coverList) > 0 {
 			for _, whiteList := range coverList {
 				coverWhiteListReq := map[string]interface{}{
-					"DBClusterId":               d.Id(),
-					"ModifyMode":                "Cover",
-					"DBClusterIPArrayAttribute": whiteList["db_cluster_ip_array_attribute"].(string),
-					"DBClusterIPArrayName":      whiteList["db_cluster_ip_array_name"].(string),
-					"SecurityIps":               whiteList["security_ip_list"].(string),
+					"DBClusterId":          d.Id(),
+					"ModifyMode":           "Cover",
+					"DBClusterIPArrayName": whiteList["db_cluster_ip_array_name"].(string),
+					"SecurityIps":          whiteList["security_ip_list"].(string),
 				}
 
 				action := "ModifyDBClusterAccessWhiteList"
@@ -592,11 +586,10 @@ func resourceAlicloudClickHouseDbClusterUpdate(d *schema.ResourceData, meta inte
 		if len(removeList) > 0 {
 			for _, whiteList := range removeList {
 				removeWhiteListReq := map[string]interface{}{
-					"DBClusterId":               d.Id(),
-					"ModifyMode":                "Delete",
-					"DBClusterIPArrayAttribute": whiteList["db_cluster_ip_array_attribute"].(string),
-					"DBClusterIPArrayName":      whiteList["db_cluster_ip_array_name"].(string),
-					"SecurityIps":               whiteList["security_ip_list"].(string),
+					"DBClusterId":          d.Id(),
+					"ModifyMode":           "Delete",
+					"DBClusterIPArrayName": whiteList["db_cluster_ip_array_name"].(string),
+					"SecurityIps":          whiteList["security_ip_list"].(string),
 				}
 
 				action := "ModifyDBClusterAccessWhiteList"
@@ -626,11 +619,10 @@ func resourceAlicloudClickHouseDbClusterUpdate(d *schema.ResourceData, meta inte
 		if len(createList) > 0 {
 			for _, whiteList := range createList {
 				createWhiteListReq := map[string]interface{}{
-					"DBClusterId":               d.Id(),
-					"ModifyMode":                "Append",
-					"DBClusterIPArrayAttribute": whiteList["db_cluster_ip_array_attribute"].(string),
-					"DBClusterIPArrayName":      whiteList["db_cluster_ip_array_name"].(string),
-					"SecurityIps":               whiteList["security_ip_list"].(string),
+					"DBClusterId":          d.Id(),
+					"ModifyMode":           "Append",
+					"DBClusterIPArrayName": whiteList["db_cluster_ip_array_name"].(string),
+					"SecurityIps":          whiteList["security_ip_list"].(string),
 				}
 
 				action := "ModifyDBClusterAccessWhiteList"

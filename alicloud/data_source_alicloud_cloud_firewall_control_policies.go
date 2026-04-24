@@ -174,11 +174,6 @@ func dataSourceAliCloudCloudFirewallControlPolicies() *schema.Resource {
 					},
 				},
 			},
-			"source_ip": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `upgrade_type` has been removed from provider version 1.213.0.",
-			},
 		},
 	}
 }

@@ -182,11 +182,6 @@ func resourceAliCloudEcsDisk() *schema.Resource {
 				Deprecated:    "Field `name` has been deprecated from provider version 1.122.0. New field `disk_name` instead.",
 				ConflictsWith: []string{"disk_name"},
 			},
-			"dedicated_block_storage_cluster_id": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field `dedicated_block_storage_cluster_id` is unavailable and it has been removed since 1.208.0.",
-			},
 		},
 	}
 }
@@ -268,9 +263,6 @@ func resourceAliCloudEcsDiskCreate(d *schema.ResourceData, meta interface{}) err
 		request["AdvancedFeatures"] = v
 	}
 
-	if v, ok := d.GetOk("dedicated_block_storage_cluster_id"); ok {
-		request["DedicatedBlockStorageClusterId"] = v
-	}
 	wait := incrementalWait(3*time.Second, 5*time.Second)
 	err = resource.Retry(d.Timeout(schema.TimeoutCreate), func() *resource.RetryError {
 		response, err = client.RpcPost("Ecs", "2014-05-26", action, query, request, true)

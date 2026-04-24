@@ -75,16 +75,6 @@ func resourceAlicloudPvtzZone() *schema.Resource {
 				Deprecated:    "Field 'name' has been deprecated from version 1.107.0. Use 'zone_name' instead.",
 				ConflictsWith: []string{"zone_name"},
 			},
-			"creation_time": {
-				Type:     schema.TypeString,
-				Computed: true,
-				Removed:  "Field 'creation_time' has been removed from provider version 1.107.0",
-			},
-			"update_time": {
-				Type:     schema.TypeString,
-				Computed: true,
-				Removed:  "Field 'update_time' has been removed from provider version 1.107.0",
-			},
 			"user_info": {
 				Type:     schema.TypeSet,
 				Optional: true,

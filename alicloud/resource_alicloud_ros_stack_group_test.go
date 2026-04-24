@@ -122,7 +122,7 @@ func TestAccAliCloudROSStackGroup_basic(t *testing.T) {
 			{
 				Config: testAccConfig(map[string]interface{}{
 					"stack_group_name": name,
-					"template_body":    `{\"ROSTemplateFormatVersion\":\"2015-09-01\"}`,
+					"template_body":    `{\"ROSTemplateFormatVersion\": \"2015-09-01\",\"Parameters\": {\"VpcName\": {\"Type\": \"String\"},\"InstanceType\": {\"Type\": \"String\"}}}`,
 					"parameters": []map[string]interface{}{
 						{
 							"parameter_key":   "VpcName",

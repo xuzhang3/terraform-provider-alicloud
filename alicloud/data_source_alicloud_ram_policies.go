@@ -119,11 +119,6 @@ func dataSourceAliCloudRamPolicies() *schema.Resource {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"user_name": {
-							Type:     schema.TypeString,
-							Computed: true,
-							Removed:  "Field `user_name` has been removed from provider version 1.262.1.",
-						},
 					},
 				},
 			},

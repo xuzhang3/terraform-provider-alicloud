@@ -64,11 +64,6 @@ func resourceAliCloudAmqpQueue() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
-			"exclusive_state": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				Removed:  "Field `exclusive_state` has been removed from provider version 1.266.0.",
-			},
 		},
 	}
 }

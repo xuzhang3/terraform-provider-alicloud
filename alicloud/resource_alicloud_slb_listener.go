@@ -41,29 +41,11 @@ func resourceAliCloudSlbListener() *schema.Resource {
 				Required:     true,
 				ForceNew:     true,
 			},
-			"lb_port": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Removed:  "Field 'lb_port' has been removed since 1.211.0.",
-			},
-
 			"backend_port": {
 				Type:         schema.TypeInt,
 				ValidateFunc: IntBetween(1, 65535),
 				Optional:     true,
 				ForceNew:     true,
-			},
-
-			"instance_port": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Removed:  "Field 'instance_port' has been removed since 1.211.0",
-			},
-
-			"lb_protocol": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field 'lb_protocol' has been removed since 1.211.0.",
 			},
 
 			"protocol": {

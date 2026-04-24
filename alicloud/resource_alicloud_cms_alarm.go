@@ -330,39 +330,6 @@ func resourceAliCloudCmsAlarm() *schema.Resource {
 				ConflictsWith: []string{"effective_interval"},
 				Deprecated:    "Field `end_time` has been deprecated from provider version 1.50.0. New field `effective_interval` instead.",
 			},
-			"operator": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				ValidateFunc: StringInSlice([]string{
-					MoreThan, MoreThanOrEqual, LessThan, LessThanOrEqual, NotEqual,
-				}, false),
-				Removed: "Field `operator` has been removed from provider version 1.216.0. New field `escalations_critical.comparison_operator` instead.",
-			},
-			"statistics": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Removed:  "Field `statistics` has been removed from provider version 1.216.0. New field `escalations_critical.statistics` instead.",
-			},
-			"threshold": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Removed:  "Field `threshold` has been removed from provider version 1.216.0. New field `escalations_critical.threshold` instead.",
-			},
-			"triggered_count": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Computed: true,
-				Removed:  "Field `triggered_count` has been removed from provider version 1.216.0. New field `escalations_critical.times` instead.",
-			},
-			"notify_type": {
-				Type:         schema.TypeInt,
-				Optional:     true,
-				ValidateFunc: IntInSlice([]int{0, 1}),
-				Removed:      "Field `notify_type` has been removed from provider version 1.50.0.",
-			},
 		},
 	}
 }

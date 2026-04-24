@@ -43,16 +43,6 @@ func resourceAlicloudResourceManagerPolicyVersion() *schema.Resource {
 				Required: true,
 				ForceNew: true,
 			},
-			"create_date": {
-				Type:     schema.TypeString,
-				Computed: true,
-				Removed:  "Field 'create_date' has been removed from provider version 1.100.0.",
-			},
-			"version_id": {
-				Type:     schema.TypeString,
-				Computed: true,
-				Removed:  "Field 'version_id' has been removed from provider version 1.100.0.",
-			},
 		},
 	}
 }

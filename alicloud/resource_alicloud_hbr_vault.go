@@ -89,13 +89,6 @@ func resourceAliCloudHbrVault() *schema.Resource {
 				Type:     schema.TypeBool,
 				Optional: true,
 			},
-			"redundancy_type": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Computed:     true,
-				ValidateFunc: StringInSlice([]string{"LRS", "ZRS"}, false),
-				Removed:      "Field `redundancy_type` has been removed from provider version 1.209.1.",
-			},
 		},
 	}
 }

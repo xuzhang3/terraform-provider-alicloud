@@ -110,13 +110,12 @@ func TestUnitECSDisk(t *testing.T) {
 			"TagResourcesValue_1": "CreateDiskValue",
 			"TagResourcesValue_2": "CreateDiskValue",
 		},
-		"encrypt_algorithm":                  "CreateDiskValue",
-		"instance_id":                        "CreateDiskValue",
-		"kms_key_id":                         "CreateDiskValue",
-		"performance_level":                  "CreateDiskValue",
-		"storage_set_id":                     "CreateDiskValue",
-		"storage_set_partition_number":       1,
-		"dedicated_block_storage_cluster_id": "CreateDiskValue",
+		"encrypt_algorithm":            "CreateDiskValue",
+		"instance_id":                  "CreateDiskValue",
+		"kms_key_id":                   "CreateDiskValue",
+		"performance_level":            "CreateDiskValue",
+		"storage_set_id":               "CreateDiskValue",
+		"storage_set_partition_number": 1,
 	}
 	for key, value := range attributes {
 		err := dInit.Set(key, value)

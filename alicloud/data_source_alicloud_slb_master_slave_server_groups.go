@@ -74,11 +74,6 @@ func dataSourceAlicloudSlbMasterSlaveServerGroups() *schema.Resource {
 										Type:     schema.TypeString,
 										Computed: true,
 									},
-									"is_backup": {
-										Type:     schema.TypeInt,
-										Computed: true,
-										Removed:  "Field 'is_backup' has been removed from provider version 1.63.0.",
-									},
 								},
 							},
 						},

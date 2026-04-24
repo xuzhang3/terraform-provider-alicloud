@@ -34,11 +34,6 @@ func resourceAlicloudResourceManagerRole() *schema.Resource {
 					return equal
 				},
 			},
-			"create_date": {
-				Type:     schema.TypeString,
-				Computed: true,
-				Removed:  "Field 'create_date' has been removed from provider version 1.114.0.",
-			},
 			"description": {
 				Type:     schema.TypeString,
 				Optional: true,

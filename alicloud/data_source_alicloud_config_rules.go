@@ -33,23 +33,6 @@ func dataSourceAlicloudConfigRules() *schema.Resource {
 				ValidateFunc: validation.StringInSlice([]string{"ACTIVE", "DELETING", "DELETING_RESULTS", "EVALUATING", "INACTIVE"}, false),
 				Deprecated:   "Field 'config_rule_state' has been deprecated from provider version 1.124.1. New field 'status' instead.",
 			},
-			"member_id": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Removed:  "Field 'member_id' has been removed from provider version 1.146.0. Please Use the Resource alicloud_config_aggregate_config_rule",
-			},
-			"message_type": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ValidateFunc: validation.StringInSlice([]string{"ConfigurationItemChangeNotification", "ScheduledNotification", "ConfigurationSnapshotDeliveryCompleted"}, false),
-				Removed:      "Field 'message_type' has been removed from provider version 1.124.1. ",
-			},
-			"multi_account": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				Default:  false,
-				Removed:  "Field 'multi_account' has been removed from provider version 1.146.0. Please Use the Resource alicloud_config_aggregate_config_rule",
-			},
 			"risk_level": {
 				Type:         schema.TypeInt,
 				Optional:     true,

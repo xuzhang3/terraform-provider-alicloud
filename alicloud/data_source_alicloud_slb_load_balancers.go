@@ -17,16 +17,6 @@ func dataSourceAlicloudSlbLoadBalancers() *schema.Resource {
 	return &schema.Resource{
 		Read: dataSourceAlicloudSlbLoadBalancersRead,
 		Schema: map[string]*schema.Schema{
-			"master_availability_zone": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field 'master_availability_zone' has removed from v1.123.1 and replace by 'master_zone_id'.",
-			},
-			"slave_availability_zone": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Removed:  "Field 'slave_availability_zone' has removed from v1.123.1 and replace by 'slave_zone_id'.",
-			},
 			"address": {
 				Type:     schema.TypeString,
 				Optional: true,

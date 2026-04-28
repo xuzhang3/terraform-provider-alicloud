@@ -172,7 +172,7 @@ func TestAccAliCloudCmsGroupMetricRule_basic0(t *testing.T) {
 			},
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"contact_groups": "${alicloud_cms_monitor_group.default.id}",
+					"contact_groups": "${alicloud_cms_alarm_contact_group.default.id}",
 				}),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
@@ -369,7 +369,7 @@ func TestAccAliCloudCmsGroupMetricRule_basic0_twin(t *testing.T) {
 					"metric_name":            "disk_writebytes",
 					"namespace":              "acs_ecs_dashboard",
 					"category":               "ecs",
-					"contact_groups":         "${alicloud_cms_monitor_group.default.id}",
+					"contact_groups":         "${alicloud_cms_alarm_contact_group.default.id}",
 					"dimensions":             `{\"device\":\"C:\"}`,
 					"email_subject":          "tf-testacc-rule-name-warning",
 					"effective_interval":     "00:00-22:59",

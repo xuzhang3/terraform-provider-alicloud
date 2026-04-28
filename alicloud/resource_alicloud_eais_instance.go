@@ -14,10 +14,11 @@ import (
 
 func resourceAliCloudEaisInstance() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceAliCloudEaisInstanceCreate,
-		Read:   resourceAliCloudEaisInstanceRead,
-		Update: resourceAliCloudEaisInstanceUpdate,
-		Delete: resourceAliCloudEaisInstanceDelete,
+		Create:             resourceAliCloudEaisInstanceCreate,
+		Read:               resourceAliCloudEaisInstanceRead,
+		Update:             resourceAliCloudEaisInstanceUpdate,
+		Delete:             resourceAliCloudEaisInstanceDelete,
+		DeprecationMessage: "This resource has been deprecated since v1.278.0.",
 		Importer: &schema.ResourceImporter{
 			State: schema.ImportStatePassthrough,
 		},

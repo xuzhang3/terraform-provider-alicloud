@@ -27,6 +27,7 @@ import (
 )
 
 var testAccProviders map[string]*schema.Provider
+var testAccProviderFactory map[string]func() (*schema.Provider, error)
 var testAccProvider *schema.Provider
 var defaultRegionToTest = os.Getenv("ALICLOUD_REGION")
 
@@ -34,6 +35,12 @@ func init() {
 	testAccProvider = Provider()
 	testAccProviders = map[string]*schema.Provider{
 		"alicloud": testAccProvider,
+	}
+
+	testAccProviderFactory = map[string]func() (*schema.Provider, error){
+		"alicloud": func() (*schema.Provider, error) {
+			return testAccProvider, nil
+		},
 	}
 	setStsCredential()
 }

@@ -1,9 +1,9 @@
 package alicloud
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -17,7 +17,7 @@ import (
 // TestProviderCredentials_ExternalMode 测试 External 模式的凭证获取
 func TestProviderCredentials_ExternalMode(t *testing.T) {
 	// 创建临时目录和文件
-	tmpDir, err := ioutil.TempDir("", "alicloud-test-external-*")
+	tmpDir, err := os.MkdirTemp("", "alicloud-test-external-*")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,7 +35,7 @@ cat <<EOF
 }
 EOF
 `
-	err = ioutil.WriteFile(scriptPath, []byte(scriptContent), 0755)
+	err = os.WriteFile(scriptPath, []byte(scriptContent), 0755)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -59,14 +59,14 @@ EOF
 		t.Fatal(err)
 	}
 
-	err = ioutil.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// 测试配置读取
 	t.Run("ParseExternalConfig", func(t *testing.T) {
-		data, err := ioutil.ReadFile(configPath)
+		data, err := os.ReadFile(configPath)
 		if err != nil {
 			t.Fatalf("Failed to read config file: %v", err)
 		}
@@ -131,7 +131,7 @@ EOF
 // TestProviderCredentials_OAuthMode 测试 OAuth 模式的凭证获取
 func TestProviderCredentials_OAuthMode(t *testing.T) {
 	// 创建临时目录
-	tmpDir, err := ioutil.TempDir("", "alicloud-test-oauth-*")
+	tmpDir, err := os.MkdirTemp("", "alicloud-test-oauth-*")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -159,14 +159,14 @@ func TestProviderCredentials_OAuthMode(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = ioutil.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// 测试配置读取
 	t.Run("ParseOAuthConfig", func(t *testing.T) {
-		data, err := ioutil.ReadFile(configPath)
+		data, err := os.ReadFile(configPath)
 		if err != nil {
 			t.Fatalf("Failed to read config file: %v", err)
 		}
@@ -225,7 +225,7 @@ func TestProviderCredentials_OAuthMode(t *testing.T) {
 
 // TestProviderCredentials_MultipleProfiles 测试多个 profile 配置
 func TestProviderCredentials_MultipleProfiles(t *testing.T) {
-	tmpDir, err := ioutil.TempDir("", "alicloud-test-multi-*")
+	tmpDir, err := os.MkdirTemp("", "alicloud-test-multi-*")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -243,7 +243,7 @@ cat <<EOF
 }
 EOF
 `
-	err = ioutil.WriteFile(scriptPath, []byte(scriptContent), 0755)
+	err = os.WriteFile(scriptPath, []byte(scriptContent), 0755)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -290,7 +290,7 @@ EOF
 		t.Fatal(err)
 	}
 
-	err = ioutil.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -340,7 +340,7 @@ EOF
 
 // TestProviderCredentials_GetConfigFromProfile 测试 getConfigFromProfile 函数
 func TestProviderCredentials_GetConfigFromProfile(t *testing.T) {
-	tmpDir, err := ioutil.TempDir("", "alicloud-test-getconfig-*")
+	tmpDir, err := os.MkdirTemp("", "alicloud-test-getconfig-*")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -364,7 +364,7 @@ func TestProviderCredentials_GetConfigFromProfile(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = ioutil.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -425,7 +425,7 @@ func TestProviderCredentials_GetConfigFromProfile(t *testing.T) {
 
 // TestProviderCredentials_AdvancedModesReturnNil 测试高级模式返回 nil
 func TestProviderCredentials_AdvancedModesReturnNil(t *testing.T) {
-	tmpDir, err := ioutil.TempDir("", "alicloud-test-advanced-*")
+	tmpDir, err := os.MkdirTemp("", "alicloud-test-advanced-*")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -452,7 +452,7 @@ func TestProviderCredentials_AdvancedModesReturnNil(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			err = ioutil.WriteFile(configPath, configData, 0644)
+			err = os.WriteFile(configPath, configData, 0644)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -481,7 +481,7 @@ func TestProviderCredentials_AdvancedModesReturnNil(t *testing.T) {
 
 // TestProviderCredentials_PriorityOrder 测试凭证优先级顺序
 func TestProviderCredentials_PriorityOrder(t *testing.T) {
-	tmpDir, err := ioutil.TempDir("", "alicloud-test-priority-*")
+	tmpDir, err := os.MkdirTemp("", "alicloud-test-priority-*")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -507,7 +507,7 @@ func TestProviderCredentials_PriorityOrder(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = ioutil.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -594,7 +594,7 @@ func TestProviderConfigure_WithExternalAndOAuth(t *testing.T) {
 		t.Skip("Skipping bash script test on Windows")
 	}
 
-	tmpDir, err := ioutil.TempDir("", "alicloud-test-integration-*")
+	tmpDir, err := os.MkdirTemp("", "alicloud-test-integration-*")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -620,7 +620,7 @@ func TestProviderConfigure_WithExternalAndOAuth(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = ioutil.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -634,8 +634,8 @@ func TestProviderConfigure_WithExternalAndOAuth(t *testing.T) {
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
 	// 尝试配置 provider（这会实际调用外部凭证提供程序）
-	_, err = providerConfigure(resourceData, provider)
-	if err != nil {
+	_, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
 		t.Logf("Expected: External credential provider might not return valid credentials in test environment")
 		// 不报错，因为在测试环境可能没有真实的凭证
 	} else {
@@ -658,8 +658,8 @@ func TestProviderConfigure_StaticAK(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
+	client, err := providerConfigure(context.Background(), resourceData, provider)
+	if err.HasError() {
 		t.Fatalf("providerConfigure failed with static AK/SK: %v", err)
 	}
 
@@ -680,8 +680,8 @@ func TestProviderConfigure_StaticAKWithSTS(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
+	client, err := providerConfigure(context.Background(), resourceData, provider)
+	if err.HasError() {
 		t.Fatalf("providerConfigure failed with STS token: %v", err)
 	}
 
@@ -720,13 +720,13 @@ func TestProviderConfigure_MissingCredentials(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	_, err := providerConfigure(resourceData, provider)
-	if err == nil {
+	_, err := providerConfigure(context.Background(), resourceData, provider)
+	if !err.HasError() {
 		t.Fatal("Expected error when credentials are missing")
 	}
 
 	expectedMsg := "no valid credential sources"
-	if !containsString(err.Error(), expectedMsg) {
+	if !containsString(err[0].Summary+err[0].Detail, expectedMsg) {
 		t.Errorf("Expected error message to contain '%s', got: %v", expectedMsg, err)
 	}
 }
@@ -761,8 +761,8 @@ func TestProviderConfigure_MissingSecretKey(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	_, err := providerConfigure(resourceData, provider)
-	if err == nil {
+	_, err := providerConfigure(context.Background(), resourceData, provider)
+	if !err.HasError() {
 		t.Fatal("Expected error when secret_key is missing")
 	}
 }
@@ -778,8 +778,8 @@ func TestProviderConfigure_DefaultRegion(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
+	client, err := providerConfigure(context.Background(), resourceData, provider)
+	if err.HasError() {
 		t.Fatalf("providerConfigure failed: %v", err)
 	}
 
@@ -813,8 +813,8 @@ func TestProviderConfigure_CredentialsURI(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
+	client, err := providerConfigure(context.Background(), resourceData, provider)
+	if err.HasError() {
 		t.Fatalf("providerConfigure failed with credentials_uri: %v", err)
 	}
 
@@ -860,21 +860,22 @@ func TestProviderConfigure_CredentialsURIInvalid(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	_, err := providerConfigure(resourceData, provider)
-	if err == nil {
+	_, err := providerConfigure(context.Background(), resourceData, provider)
+	if !err.HasError() {
 		t.Fatal("Expected error with invalid credentials_uri response")
 	}
 
 	// 验证错误消息
 	expectedMsg := "failed"
-	if !containsString(err.Error(), expectedMsg) && !containsString(err.Error(), "no valid credential") {
+	msg := err[0].Summary + err[0].Detail
+	if !containsString(msg, expectedMsg) && !containsString(msg, "no valid credential") {
 		t.Errorf("Expected error message related to credentials, got: %v", err)
 	}
 }
 
 // TestProviderConfigure_ProfileWithStaticAK 测试 Profile 配置（AK 模式）
 func TestProviderConfigure_ProfileWithStaticAK(t *testing.T) {
-	tmpDir, err := ioutil.TempDir("", "alicloud-test-profile-ak-*")
+	tmpDir, err := os.MkdirTemp("", "alicloud-test-profile-ak-*")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -899,7 +900,7 @@ func TestProviderConfigure_ProfileWithStaticAK(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = ioutil.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -916,9 +917,9 @@ func TestProviderConfigure_ProfileWithStaticAK(t *testing.T) {
 	// 重置全局变量
 	providerConfig = nil
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed with profile AK mode: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed with profile AK mode: %v", diags)
 	}
 
 	if client == nil {
@@ -928,7 +929,7 @@ func TestProviderConfigure_ProfileWithStaticAK(t *testing.T) {
 
 // TestProviderConfigure_ProfileWithSTS 测试 Profile 配置（StsToken 模式）
 func TestProviderConfigure_ProfileWithSTS(t *testing.T) {
-	tmpDir, err := ioutil.TempDir("", "alicloud-test-profile-sts-*")
+	tmpDir, err := os.MkdirTemp("", "alicloud-test-profile-sts-*")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -954,7 +955,7 @@ func TestProviderConfigure_ProfileWithSTS(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = ioutil.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -970,9 +971,9 @@ func TestProviderConfigure_ProfileWithSTS(t *testing.T) {
 
 	providerConfig = nil
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed with profile STS mode: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed with profile STS mode: %v", diags)
 	}
 
 	if client == nil {
@@ -987,7 +988,7 @@ func TestProviderConfigure_ProfileExternal(t *testing.T) {
 		t.Skip("Skipping bash script test on Windows")
 	}
 
-	tmpDir, err := ioutil.TempDir("", "alicloud-test-profile-external-*")
+	tmpDir, err := os.MkdirTemp("", "alicloud-test-profile-external-*")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1007,7 +1008,7 @@ cat <<EOF
 }
 EOF
 `
-	err = ioutil.WriteFile(scriptPath, []byte(scriptContent), 0755)
+	err = os.WriteFile(scriptPath, []byte(scriptContent), 0755)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1030,7 +1031,7 @@ EOF
 		t.Fatal(err)
 	}
 
-	err = ioutil.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1046,9 +1047,9 @@ EOF
 
 	providerConfig = nil
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed with profile External mode: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed with profile External mode: %v", diags)
 	}
 
 	if client == nil {
@@ -1082,9 +1083,9 @@ func TestProviderConfigure_AssumeRole(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed with assume_role: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed with assume_role: %v", diags)
 	}
 
 	if client == nil {
@@ -1181,9 +1182,9 @@ func TestProviderConfigure_WithEndpoints(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed with custom endpoints: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed with custom endpoints: %v", diags)
 	}
 
 	if client == nil {
@@ -1205,9 +1206,9 @@ func TestProviderConfigure_WithTimeout(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed with timeout settings: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed with timeout settings: %v", diags)
 	}
 
 	if client == nil {
@@ -1227,9 +1228,9 @@ func TestProviderConfigure_WithAccountId(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed with account_id: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed with account_id: %v", diags)
 	}
 
 	if client == nil {
@@ -1249,9 +1250,9 @@ func TestProviderConfigure_WithConfigurationSource(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed with configuration_source: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed with configuration_source: %v", diags)
 	}
 
 	if client == nil {
@@ -1281,9 +1282,9 @@ func TestProviderConfigure_WithProtocol(t *testing.T) {
 			provider := Provider()
 			resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-			client, err := providerConfigure(resourceData, provider)
-			if err != nil {
-				t.Fatalf("providerConfigure failed with protocol %s: %v", tc.protocol, err)
+			client, diags := providerConfigure(context.Background(), resourceData, provider)
+			if diags.HasError() {
+				t.Fatalf("providerConfigure failed with protocol %s: %v", tc.protocol, diags)
 			}
 
 			if client == nil {
@@ -1305,9 +1306,9 @@ func TestProviderConfigure_SkipRegionValidation(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed with skip_region_validation: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed with skip_region_validation: %v", diags)
 	}
 
 	if client == nil {
@@ -1327,9 +1328,9 @@ func TestProviderConfigure_SecureTransport(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed with secure_transport: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed with secure_transport: %v", diags)
 	}
 
 	if client == nil {
@@ -1349,9 +1350,9 @@ func TestProviderConfigure_SourceIP(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed with source_ip: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed with source_ip: %v", diags)
 	}
 
 	if client == nil {
@@ -1361,7 +1362,7 @@ func TestProviderConfigure_SourceIP(t *testing.T) {
 
 // TestProviderConfigure_StaticOverridesProfile 测试静态配置优先级高于 Profile
 func TestProviderConfigure_StaticOverridesProfile(t *testing.T) {
-	tmpDir, err := ioutil.TempDir("", "alicloud-test-priority-*")
+	tmpDir, err := os.MkdirTemp("", "alicloud-test-priority-*")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1386,7 +1387,7 @@ func TestProviderConfigure_StaticOverridesProfile(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = ioutil.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1405,9 +1406,9 @@ func TestProviderConfigure_StaticOverridesProfile(t *testing.T) {
 
 	providerConfig = nil
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed: %v", diags)
 	}
 
 	if client == nil {
@@ -1437,7 +1438,7 @@ func TestProviderConfigure_ProfileNotFound(t *testing.T) {
 		}
 	}()
 
-	tmpDir, err := ioutil.TempDir("", "alicloud-test-notfound-*")
+	tmpDir, err := os.MkdirTemp("", "alicloud-test-notfound-*")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1462,7 +1463,7 @@ func TestProviderConfigure_ProfileNotFound(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = ioutil.WriteFile(configPath, configData, 0644)
+	err = os.WriteFile(configPath, configData, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1478,9 +1479,9 @@ func TestProviderConfigure_ProfileNotFound(t *testing.T) {
 
 	providerConfig = nil
 
-	_, err = providerConfigure(resourceData, provider)
+	_, diags := providerConfigure(context.Background(), resourceData, provider)
 	// Profile 不存在时，应该返回缺少凭证的错误
-	if err == nil {
+	if !diags.HasError() {
 		t.Fatal("Expected error when profile not found")
 	}
 }
@@ -1509,9 +1510,9 @@ func TestProviderConfigure_AllRegions(t *testing.T) {
 			provider := Provider()
 			resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-			client, err := providerConfigure(resourceData, provider)
-			if err != nil {
-				t.Fatalf("providerConfigure failed for region %s: %v", region, err)
+			client, diags := providerConfigure(context.Background(), resourceData, provider)
+			if diags.HasError() {
+				t.Fatalf("providerConfigure failed for region %s: %v", region, diags)
 			}
 
 			if client == nil {
@@ -1536,9 +1537,9 @@ func TestProviderConfigure_EcsRoleName(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Logf("providerConfigure with ecs_role_name failed (expected in non-ECS environment): %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Logf("providerConfigure with ecs_role_name failed (expected in non-ECS environment): %v", diags)
 	} else if client == nil {
 		t.Log("Client is nil (expected in non-ECS environment)")
 	}
@@ -1561,9 +1562,9 @@ func TestProviderConfigure_SignVersion(t *testing.T) {
 	provider := Provider()
 	resourceData := schema.TestResourceDataRaw(t, provider.Schema, raw)
 
-	client, err := providerConfigure(resourceData, provider)
-	if err != nil {
-		t.Fatalf("providerConfigure failed with sign_version: %v", err)
+	client, diags := providerConfigure(context.Background(), resourceData, provider)
+	if diags.HasError() {
+		t.Fatalf("providerConfigure failed with sign_version: %v", diags)
 	}
 
 	if client == nil {
@@ -1665,7 +1666,7 @@ func TestProviderConfigure_AdvancedProfileModes(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			err = ioutil.WriteFile(configPath, configData, 0644)
+			err = os.WriteFile(configPath, configData, 0644)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -1684,11 +1685,11 @@ func TestProviderConfigure_AdvancedProfileModes(t *testing.T) {
 			providerConfig = nil
 
 			// 测试配置过程
-			client, err := providerConfigure(resourceData, provider)
-			if err != nil {
+			client, diags := providerConfigure(context.Background(), resourceData, provider)
+			if diags.HasError() {
 				// 对于 External 和 OAuth 模式，由于缺少真实的凭证提供程序，可能会出错
 				// 我们主要验证配置是否能正确处理这些模式
-				t.Logf("Expected error for mode %s (might be due to missing real credential provider): %v", mode.name, err)
+				t.Logf("Expected error for mode %s (might be due to missing real credential provider): %v", mode.name, diags)
 			} else {
 				if client == nil {
 					t.Errorf("Expected non-nil client for mode %s", mode.name)
@@ -1730,7 +1731,7 @@ func TestProviderConfigure_GetConfigFromProfile_AdvancedModes(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			err = ioutil.WriteFile(configPath, configData, 0644)
+			err = os.WriteFile(configPath, configData, 0644)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -1872,7 +1873,7 @@ func TestAdvancedProfileModes_CredentialRetrieval(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			err = ioutil.WriteFile(configPath, configData, 0644)
+			err = os.WriteFile(configPath, configData, 0644)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -1892,11 +1893,11 @@ func TestAdvancedProfileModes_CredentialRetrieval(t *testing.T) {
 
 			// 测试 providerConfigure 函数对高级模式的处理
 			// 注意：由于我们没有真实的凭证提供程序，这里会返回错误，但我们主要验证流程
-			client, err := providerConfigure(resourceData, provider)
-			if err != nil {
+			client, diags := providerConfigure(context.Background(), resourceData, provider)
+			if diags.HasError() {
 				// 对于 External 和 OAuth 模式，由于缺少真实的凭证提供程序，会出错
 				// 这是预期的行为，我们主要验证配置是否能正确识别这些模式
-				t.Logf("Expected error for mode %s (might be due to missing real credential provider): %v", mode.name, err)
+				t.Logf("Expected error for mode %s (might be due to missing real credential provider): %v", mode.name, diags)
 			} else {
 				if client == nil {
 					t.Errorf("Expected non-nil client for mode %s", mode.name)

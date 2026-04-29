@@ -2,6 +2,7 @@ package alicloud
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -19,6 +20,7 @@ import (
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/helper"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"github.com/mitchellh/go-homedir"
@@ -2053,15 +2055,15 @@ func Provider() *schema.Provider {
 			"alicloud_polardb_zonal_account":                                 resourceAlicloudPolarDBZonalAccount(),
 		},
 	}
-	provider.ConfigureFunc = func(d *schema.ResourceData) (interface{}, error) {
-		return providerConfigure(d, provider)
+	provider.ConfigureContextFunc = func(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
+		return providerConfigure(ctx, d, provider)
 	}
 	return provider
 }
 
 var providerConfig map[string]interface{}
 
-func providerConfigure(d *schema.ResourceData, p *schema.Provider) (interface{}, error) {
+func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Provider) (interface{}, diag.Diagnostics) {
 	log.Println("using terraform version:", p.TerraformVersion)
 	var getProviderConfig = func(schemaKey string, profileKey string) string {
 		if schemaKey != "" {
@@ -2102,12 +2104,12 @@ func providerConfigure(d *schema.ResourceData, p *schema.Provider) (interface{},
 		}
 		provider, err := providers.NewCLIProfileCredentialsProviderBuilder().WithProfileName(profileName).WithProfileFile(profileFile).Build()
 		if err != nil {
-			return nil, fmt.Errorf("failed to create profile credentials provider: %v", err)
+			return nil, diag.FromErr(fmt.Errorf("failed to create profile credentials provider: %v", err))
 		}
 		credential = credentials.FromCredentialsProvider("cli_profile", provider)
 		creds, err := credential.GetCredential()
 		if err != nil {
-			return nil, fmt.Errorf("failed to get credential from profile: %v", err)
+			return nil, diag.FromErr(fmt.Errorf("failed to get credential from profile: %v", err))
 		}
 		accessKey, secretKey, securityToken = *creds.AccessKeyId, *creds.AccessKeySecret, *creds.SecurityToken
 	}
@@ -2116,7 +2118,7 @@ func providerConfigure(d *schema.ResourceData, p *schema.Provider) (interface{},
 		if v, ok := d.GetOk("credentials_uri"); ok && v.(string) != "" {
 			credentialsURIResp, err := getClientByCredentialsURI(v.(string))
 			if err != nil {
-				return nil, err
+				return nil, diag.FromErr(err)
 			}
 			accessKey = credentialsURIResp.AccessKeyId
 			secretKey = credentialsURIResp.AccessKeySecret
@@ -2163,7 +2165,7 @@ func providerConfigure(d *schema.ResourceData, p *schema.Provider) (interface{},
 		}
 		credential, err := credentials.NewCredential(credentialConfig)
 		if err != nil {
-			return nil, err
+			return nil, diag.FromErr(err)
 		}
 		config.Credential = credential
 	}
@@ -2220,7 +2222,7 @@ func providerConfigure(d *schema.ResourceData, p *schema.Provider) (interface{},
 	if v, ok := d.GetOk("assume_role_with_oidc"); ok && len(v.([]interface{})) == 1 {
 		config.AssumeRoleWithOidc, err = getAssumeRoleWithOIDCConfig(v.([]interface{})[0].(map[string]interface{}))
 		if err != nil {
-			return nil, err
+			return nil, diag.FromErr(err)
 		}
 		log.Printf("[INFO] assume_role_with_oidc configuration set: (RoleArn: %q, SessionName: %q, SessionExpiration: %d, OIDCProviderArn: %s)",
 			config.AssumeRoleWithOidc.RoleARN, config.AssumeRoleWithOidc.RoleSessionName, config.AssumeRoleWithOidc.DurationSeconds, config.AssumeRoleWithOidc.OIDCProviderArn)
@@ -2432,18 +2434,18 @@ func providerConfigure(d *schema.ResourceData, p *schema.Provider) (interface{},
 	}
 
 	if err := config.RefreshAuthCredential(); err != nil {
-		return nil, err
+		return nil, diag.FromErr(err)
 	}
 
 	if config.AccessKey == "" || config.SecretKey == "" {
-		return nil, fmt.Errorf("configuring Terraform Alibaba Cloud Provider: no valid credential sources for Terraform Alibaba Cloud Provider found.\n\n%s",
+		return nil, diag.FromErr(fmt.Errorf("configuring Terraform Alibaba Cloud Provider: no valid credential sources for Terraform Alibaba Cloud Provider found.\n\n%s",
 			"Please see https://registry.terraform.io/providers/aliyun/alicloud/latest/docs#authentication\n"+
-				"for more information about providing credentials.")
+				"for more information about providing credentials."))
 	}
 
 	client, err := config.Client()
 	if err != nil {
-		return nil, err
+		return nil, diag.FromErr(err)
 	}
 
 	return client, nil

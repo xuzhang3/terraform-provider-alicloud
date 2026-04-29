@@ -613,8 +613,8 @@ func (dsa *dataSourceAttr) dataSourceTestCheck(t *testing.T, rand int, configs .
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		Providers: testAccProviders,
-		Steps:     steps,
+		ProviderFactories: testAccProviderFactory,
+		Steps:             steps,
 	})
 }
 
@@ -626,9 +626,9 @@ func (dsa *dataSourceAttr) dataSourceTestCheckWithPreCheck(t *testing.T, rand in
 		steps = append(steps, conf.buildDataSourceSteps(t, dsa, rand)...)
 	}
 	resource.Test(t, resource.TestCase{
-		PreCheck:  preCheck,
-		Providers: testAccProviders,
-		Steps:     steps,
+		PreCheck:          preCheck,
+		ProviderFactories: testAccProviderFactory,
+		Steps:             steps,
 	})
 }
 

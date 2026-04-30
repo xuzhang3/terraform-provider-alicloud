@@ -252,7 +252,7 @@ func resourceAlicloudCSKubernetes() *schema.Resource {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: StringInSlice([]string{"iptables", "ipvs"}, false),
+				ValidateFunc: StringInSlice([]string{"iptables", "ipvs", "nftables"}, false),
 			},
 			"addons": {
 				Type:     schema.TypeList,

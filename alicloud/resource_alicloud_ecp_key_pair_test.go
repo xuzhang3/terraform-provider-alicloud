@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccAlicloudEcpKeyPair_basic(t *testing.T) {
+func TestAccAliCloudEcpKeyPair_basic(t *testing.T) {
 	var v map[string]interface{}
 	resourceId := "alicloud_ecp_key_pair.default"
 	ra := resourceAttrInit(resourceId, AlicloudEcpKeyPairMap)

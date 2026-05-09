@@ -79,6 +79,8 @@ func testAccEssScalingGroupSuspendProcess(name string) string {
 	}
 	data "alicloud_instance_types" "default1" {
 	  availability_zone = "${data.alicloud_zones.default.zones.0.id}"
+	  cpu_core_count    = 1
+	  memory_size       = 2
 	}
 	resource "alicloud_ess_scaling_group" "default" {
 	  min_size = "0"

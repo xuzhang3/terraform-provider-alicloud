@@ -1149,6 +1149,7 @@ func testAccEssScalingRuleConfig(name string) string {
 		name_regex  = "^centos.*_64"
   		most_recent = true
   		owners      = "system"
+  		instance_type = "${data.alicloud_instance_types.default.instance_types.0.id}"
 	}
 	resource "alicloud_ess_scaling_group" "default" {
 		min_size = 1
@@ -1179,6 +1180,7 @@ func testAccEssScalingRuleConfigMulti(name string) string {
 		name_regex  = "^centos.*_64"
   		most_recent = true
   		owners      = "system"
+  		instance_type = "${data.alicloud_instance_types.default.instance_types.0.id}"
 	}
 	resource "alicloud_ess_scaling_group" "default" {
 		min_size = 1

@@ -132,13 +132,13 @@ func TestAccAliCloudTagPolicyAttachment_basic(t *testing.T) {
 				Config: testAccConfig(map[string]interface{}{
 					"policy_id":   "${alicloud_tag_policy.this.id}",
 					"target_id":   "${data.alicloud_account.default.id}",
-					"target_type": "USER",
+					"target_type": "ACCOUNT",
 				}),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
 						"policy_id":   CHECKSET,
 						"target_id":   CHECKSET,
-						"target_type": "USER",
+						"target_type": "ACCOUNT",
 					}),
 				),
 			},

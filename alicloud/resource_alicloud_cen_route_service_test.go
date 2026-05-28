@@ -125,6 +125,7 @@ func TestAccAliCloudCenRouteService_basic(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
 		},
 
 		IDRefreshName: resourceId,
@@ -141,10 +142,10 @@ func TestAccAliCloudCenRouteService_basic(t *testing.T) {
 				}),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
-						"access_region_id": defaultRegionToTest,
+						"access_region_id": "cn-hangzhou",
 						"cen_id":           CHECKSET,
 						"host":             "100.118.28.52/32",
-						"host_region_id":   defaultRegionToTest,
+						"host_region_id":   "cn-hangzhou",
 						"host_vpc_id":      CHECKSET,
 					}),
 				),
@@ -173,6 +174,7 @@ func TestAccAliCloudCenRouteService_basic1(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
 		},
 
 		IDRefreshName: resourceId,
@@ -190,10 +192,10 @@ func TestAccAliCloudCenRouteService_basic1(t *testing.T) {
 				}),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
-						"access_region_id": defaultRegionToTest,
+						"access_region_id": "cn-hangzhou",
 						"cen_id":           CHECKSET,
 						"host":             "100.118.28.52/32",
-						"host_region_id":   defaultRegionToTest,
+						"host_region_id":   "cn-hangzhou",
 						"host_vpc_id":      CHECKSET,
 						"description":      name,
 					}),
@@ -229,7 +231,7 @@ resource "alicloud_cen_instance_attachment" "vpc" {
 	child_instance_type = "VPC"
     child_instance_region_id = "%s"
 }
-`, name, defaultRegionToTest)
+`, name, "cn-hangzhou")
 }
 
 func deleteCenRouteService(id string, client *connectivity.AliyunClient) error {

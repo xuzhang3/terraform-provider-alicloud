@@ -36,6 +36,7 @@ func TestAccAliCloudNatGatewayNatIpCidr_basic12366(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{connectivity.EUCentral1})
 		},
 		IDRefreshName: resourceId,
 		ProviderFactories: testAccProviderFactory,
@@ -100,6 +101,7 @@ func TestAccAliCloudNatGatewayNatIpCidr_basic12366_twin(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{connectivity.EUCentral1})
 		},
 		IDRefreshName: resourceId,
 		ProviderFactories: testAccProviderFactory,
@@ -189,6 +191,7 @@ func TestAccAliCloudVPCNatIpCidr_basic0(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{connectivity.EUCentral1})
 		},
 		IDRefreshName: resourceId,
 		ProviderFactories: testAccProviderFactory,
@@ -253,6 +256,7 @@ func TestAccAliCloudVPCNatIpCidr_basic0_twin(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{connectivity.EUCentral1})
 		},
 		IDRefreshName: resourceId,
 		ProviderFactories: testAccProviderFactory,

@@ -29,6 +29,7 @@ func TestAccAliCloudCenRouteMap_basic_child_instance_same_region(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
 		},
 		// module name
 		IDRefreshName: resourceId,
@@ -163,6 +164,7 @@ func TestAccAliCloudCenRouteMap_basic_transit_router_route_table_id(t *testing.T
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
 		},
 		// module name
 		IDRefreshName: resourceId,
@@ -220,6 +222,7 @@ func TestAccAliCloudCenRouteMap_basic_child_instance_different_region(t *testing
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
 		},
 		// module name
 		IDRefreshName:     resourceId,
@@ -389,6 +392,7 @@ func TestAccAliCloudCenRouteMap_multi(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
 		},
 		// module name
 		IDRefreshName: resourceId,

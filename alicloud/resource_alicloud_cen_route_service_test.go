@@ -125,6 +125,7 @@ func TestAccAliCloudCenRouteService_basic(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
 		},
 
 		IDRefreshName: resourceId,
@@ -173,6 +174,7 @@ func TestAccAliCloudCenRouteService_basic1(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
 		},
 
 		IDRefreshName: resourceId,

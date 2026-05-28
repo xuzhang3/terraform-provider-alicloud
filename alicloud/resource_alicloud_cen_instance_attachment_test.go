@@ -135,6 +135,7 @@ func TestAccAliCloudCenInstanceAttachment_basic(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
 		},
 		// module name
 		IDRefreshName: resourceId,
@@ -220,6 +221,7 @@ func TestAccAliCloudCenInstanceAttachment_multi_different_region(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
 		},
 
 		// module name

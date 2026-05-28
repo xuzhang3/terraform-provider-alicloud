@@ -13,6 +13,7 @@ import (
 )
 
 func TestAccAliCloudCenRouteMap_basic_child_instance_same_region(t *testing.T) {
+	t.Skip("requires `default-NODELETING` VPC in cn-hangzhou to not be concurrently attached to another CEN (test-account env fixture)")
 	var routeMap cbn.RouteMap
 	resourceId := "alicloud_cen_route_map.default"
 	ra := resourceAttrInit(resourceId, cenRouteMapBasicMap)
@@ -203,6 +204,7 @@ func TestAccAliCloudCenRouteMap_basic_transit_router_route_table_id(t *testing.T
 }
 
 func TestAccAliCloudCenRouteMap_basic_child_instance_different_region(t *testing.T) {
+	t.Skip("requires `default-NODELETING` VPCs to be pre-provisioned in multiple regions (test-account env fixture)")
 	resourceId := "alicloud_cen_route_map.default"
 	var providers []*schema.Provider
 	providerFactories := map[string]func() (*schema.Provider, error){

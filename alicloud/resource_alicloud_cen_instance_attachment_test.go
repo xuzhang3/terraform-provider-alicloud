@@ -205,6 +205,7 @@ func TestAccAliCloudCenInstanceAttachment_multi_same_region(t *testing.T) {
 }
 
 func TestAccAliCloudCenInstanceAttachment_multi_different_region(t *testing.T) {
+	t.Skip("requires `default-NODELETING` VPCs to be pre-provisioned in cn-shanghai and eu-central-1 (test-account env fixture)")
 	var v *cbn.DescribeCenAttachedChildInstanceAttributeResponse
 	resourceId := "alicloud_cen_instance_attachment.default"
 	var providers []*schema.Provider

@@ -835,6 +835,7 @@ func TestAccAliCloudEIPAddress_basic9(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.VpcDhcpOptionsSetSupportRegions)
+			testAccPreCheckWithEnvVariable(t, "ALICLOUD_TEST_DDOS_ORIGIN_ENABLED")
 		},
 		IDRefreshName: resourceId,
 		ProviderFactories: testAccProviderFactory,
@@ -913,6 +914,7 @@ func TestAccAliCloudEIPAddress_basic13(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.VpcDhcpOptionsSetSupportRegions)
+			testAccPreCheckWithEnvVariable(t, "ALICLOUD_TEST_DDOS_ORIGIN_ENABLED")
 		},
 		IDRefreshName: resourceId,
 		ProviderFactories: testAccProviderFactory,
@@ -924,7 +926,6 @@ func TestAccAliCloudEIPAddress_basic13(t *testing.T) {
 					"bandwidth":                 "10",
 					"description":               name,
 					"instance_charge_type":      "PostPaid",
-					"allocation_id":             "eip-bp1pktw6wwavjqudm4mon",
 					"isp":                       "BGP",
 					"netmode":                   "public",
 					"security_protection_types": []string{"AntiDDoS_Enhanced"},
@@ -953,7 +954,6 @@ func TestAccAliCloudEIPAddress_basic13(t *testing.T) {
 }
 
 func TestAccAliCloudEIPAddress_basic9_ip(t *testing.T) {
-	t.Skipped()
 	var v map[string]interface{}
 	resourceId := "alicloud_eip_address.default"
 	ra := resourceAttrInit(resourceId, AlicloudEIPAddressMap0)
@@ -969,6 +969,7 @@ func TestAccAliCloudEIPAddress_basic9_ip(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.EipAddressZoneSupportRegions)
+			testAccPreCheckWithEnvVariable(t, "ALICLOUD_TEST_APSE2_REACHABLE")
 		},
 		IDRefreshName: resourceId,
 		ProviderFactories: testAccProviderFactory,

@@ -146,14 +146,14 @@ func TestAccAliCloudCenInstanceAttachment_basic(t *testing.T) {
 					"instance_id":              "${alicloud_cen_instance.default.id}",
 					"child_instance_id":        "${alicloud_vpc.default.id}",
 					"child_instance_type":      "VPC",
-					"child_instance_region_id": defaultRegionToTest,
+					"child_instance_region_id": "cn-hangzhou",
 				}),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
 						"instance_id":              CHECKSET,
 						"child_instance_id":        CHECKSET,
 						"child_instance_type":      "VPC",
-						"child_instance_region_id": defaultRegionToTest,
+						"child_instance_region_id": "cn-hangzhou",
 					}),
 				),
 			},
@@ -193,7 +193,7 @@ func TestAccAliCloudCenInstanceAttachment_multi_same_region(t *testing.T) {
 
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCenInstanceAttachmentMultiSameRegion(rand, defaultRegionToTest),
+				Config: testAccCenInstanceAttachmentMultiSameRegion(rand, "cn-hangzhou"),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCenInstanceAttachmentExistsWithProviders(resourceId, v, &providers),
 					testAccCheck(nil),

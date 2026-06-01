@@ -75,13 +75,10 @@ variable "name" {
     default = "%s"
 }
 
-variable "project_name" {
-  default = "project-for-machine-group-terraform"
-}
 
 resource "alicloud_log_project" "defaultyJqrue" {
   description = "for terraform test"
-  name        = var.project_name
+  name        = var.name
 }
 
 
@@ -156,13 +153,10 @@ variable "name" {
     default = "%s"
 }
 
-variable "project_name" {
-  default = "project-for-machine-group-terraform-unordered"
-}
 
 resource "alicloud_log_project" "defaultyJqrue" {
   description = "for terraform test"
-  name        = var.project_name
+  name        = var.name
 }
 
 

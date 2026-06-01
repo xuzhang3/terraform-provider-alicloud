@@ -98,13 +98,10 @@ variable "logstore_name" {
   default = "logstore-test"
 }
 
-variable "project_name" {
-  default = "project-for-index-terraform-test"
-}
 
 resource "alicloud_log_project" "defaultdCM1bA" {
   description = "terrafrom test"
-  name        = var.project_name
+  name        = var.name
 }
 
 resource "alicloud_log_store" "default7MW26R" {

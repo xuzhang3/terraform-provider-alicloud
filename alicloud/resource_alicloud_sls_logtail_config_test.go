@@ -89,13 +89,10 @@ variable "name" {
     default = "%s"
 }
 
-variable "project_name" {
-  default = "project-for-logtail-terraform"
-}
 
 resource "alicloud_log_project" "defaultuA28zS" {
   description = "project for terrafrom test"
-  name        = var.project_name
+  name        = var.name
 }
 
 

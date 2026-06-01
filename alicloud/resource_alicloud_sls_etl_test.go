@@ -214,8 +214,8 @@ variable "name" {
 }
 
 resource "alicloud_log_project" "defaulthhAPo6" {
-  description = "terraform-etl-test-312"
-  name        = "terraform-etl-test-625"
+  description = var.name
+  name        = var.name
 }
 
 resource "alicloud_log_store" "defaultzWKLkp" {

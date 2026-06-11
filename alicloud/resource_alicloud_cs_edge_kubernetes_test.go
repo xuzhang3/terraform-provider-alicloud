@@ -110,9 +110,9 @@ func TestAccAliCloudEdgeKubernetes_basic(t *testing.T) {
 			testAccPreCheckWithRegions(t, true, connectivity.ManagedKubernetesSupportedRegions)
 		},
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  resourceAttrCheck.checkResourceDestroy(),
+		CheckDestroy:      resourceAttrCheck.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -218,7 +218,7 @@ func TestAccAliCloudEdgeKubernetes_essd(t *testing.T) {
 	testAccCheck := resourceAttrCheck.resourceAttrMapUpdateSet()
 	rand := acctest.RandIntRange(1000000, 9999999)
 	name := fmt.Sprintf("tf-testaccedgekubernetes-%d", rand)
-	testAccConfig := resourceTestAccConfigFunc(resourceId, name, edgeKubernetesConfigDependence)
+	testAccConfig := resourceTestAccConfigFunc(resourceId, name, edgeKubernetesConfigDependenceNoRds)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
@@ -226,9 +226,9 @@ func TestAccAliCloudEdgeKubernetes_essd(t *testing.T) {
 			testAccPreCheckWithRegions(t, true, connectivity.EssdSupportRegions)
 		},
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  resourceAttrCheck.checkResourceDestroy(),
+		CheckDestroy:      resourceAttrCheck.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -371,7 +371,7 @@ func TestAccAliCloudEdgeKubernetes_pro(t *testing.T) {
 	testAccCheck := resourceAttrCheck.resourceAttrMapUpdateSet()
 	rand := acctest.RandIntRange(1000000, 9999999)
 	name := fmt.Sprintf("tf-testaccedgekubernetes-%d", rand)
-	testAccConfig := resourceTestAccConfigFunc(resourceId, name, edgeKubernetesConfigDependence)
+	testAccConfig := resourceTestAccConfigFunc(resourceId, name, edgeKubernetesConfigDependenceNoRds)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
@@ -379,9 +379,9 @@ func TestAccAliCloudEdgeKubernetes_pro(t *testing.T) {
 			testAccPreCheckWithRegions(t, true, connectivity.ManagedKubernetesSupportedRegions)
 		},
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  resourceAttrCheck.checkResourceDestroy(),
+		CheckDestroy:      resourceAttrCheck.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -453,4 +453,59 @@ func TestAccAliCloudEdgeKubernetes_pro(t *testing.T) {
 
 func edgeKubernetesConfigDependence(name string) string {
 	return fmt.Sprintf(EdgeKubernetesConfigTpl, name)
+}
+
+// edgeKubernetesConfigDependenceNoRds is for tests that do not reference
+// alicloud_db_instance (essd / pro): some of their target regions (e.g.
+// cn-zhangjiakou) offer no MySQL HighAvailability+cloud_essd stock, which made
+// the shared RDS fixture fail with an empty alicloud_db_zones result.
+func edgeKubernetesConfigDependenceNoRds(name string) string {
+	return fmt.Sprintf(`
+variable "name" {
+	default = "%s"
+}
+
+variable "instance_type" {
+  default = "ecs.c6.xlarge"
+}
+
+data "alicloud_instance_types" "c6" {
+  instance_type_family = "ecs.c6"
+  cpu_core_count       = 4
+  memory_size          = 8
+}
+
+data "alicloud_resource_manager_resource_groups" "default" {
+}
+
+resource "alicloud_vpc" "vpc" {
+  count      = 1
+  cidr_block = "192.168.0.0/16"
+  vpc_name   = var.name
+}
+
+resource "alicloud_vswitch" "vswitches" {
+  count        = 1
+  vpc_id       = alicloud_vpc.vpc.0.id
+  cidr_block   = format("192.168.%%d.0/24", count.index + 1)
+  zone_id      = data.alicloud_instance_types.c6.instance_types.0.availability_zones[count.index]
+  vswitch_name = var.name
+}
+
+locals {
+  vswitch_id = alicloud_vswitch.vswitches.0.id
+}
+
+resource "alicloud_log_project" "log" {
+  project_name = var.name
+  description  = "created by terraform for edgekubernetes cluster"
+}
+
+resource "alicloud_snapshot_policy" "default" {
+  auto_snapshot_policy_name = var.name
+  repeat_weekdays           = ["1", "2", "3"]
+  retention_days            = -1
+  time_points               = ["1", "22", "23"]
+}
+`, name)
 }

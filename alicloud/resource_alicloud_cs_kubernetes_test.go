@@ -213,9 +213,9 @@ func TestAccAliCloudCSKubernetes_basic(t *testing.T) {
 			testAccPreCheckWithRegions(t, true, connectivity.KubernetesSupportedRegions)
 		},
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -425,15 +425,15 @@ func TestAccAliCloudCSKubernetes_prepaid(t *testing.T) {
 			testAccPreCheckWithRegions(t, true, connectivity.KubernetesSupportedRegions)
 		},
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
 					"name_prefix":                    "tf-testAccKubernetes_prepaid",
 					"master_vswitch_ids":             []string{"${local.vswitch_id}", "${local.vswitch_id}", "${local.vswitch_id}"},
-					"master_instance_types":          []string{"${data.alicloud_instance_types.default.instance_types.2.id}", "${data.alicloud_instance_types.default.instance_types.2.id}", "${data.alicloud_instance_types.default.instance_types.2.id}"},
+					"master_instance_types":          []string{"${data.alicloud_instance_types.default.instance_types.0.id}", "${data.alicloud_instance_types.default.instance_types.0.id}", "${data.alicloud_instance_types.default.instance_types.0.id}"},
 					"master_disk_category":           "cloud_essd",
 					"master_auto_renew":              "true",
 					"master_auto_renew_period":       "1",
@@ -600,15 +600,14 @@ func resourceCSKubernetesConfigDependence_essd(name string) string {
 variable "name" {
   default = "%s"
 }
-data "alicloud_zones" "default" {
-  available_resource_creation = "VSwitch"
+data "alicloud_enhanced_nat_available_zones" "enhanced" {
 }
 
 data "alicloud_instance_types" "default" {
-  availability_zone    = data.alicloud_zones.default.zones.0.id
   cpu_core_count       = 4
   memory_size          = 8
   system_disk_category = "cloud_essd"
+  instance_charge_type = "PrePaid"
 }
 
 data "alicloud_resource_manager_resource_groups" "default" {}
@@ -621,7 +620,7 @@ resource "alicloud_vpc" "test" {
 resource "alicloud_vswitch" "test" {
   vpc_id       = alicloud_vpc.test.id
   cidr_block   = cidrsubnet(alicloud_vpc.test.cidr_block, 8, 8)
-  zone_id      = data.alicloud_zones.default.zones.0.id
+  zone_id      = data.alicloud_instance_types.default.instance_types.0.availability_zones.0
   vswitch_name = var.name
 }
 
@@ -633,7 +632,7 @@ resource "alicloud_cs_kubernetes_node_pool" "default" {
   cluster_id                    = alicloud_cs_kubernetes.default.id
   node_pool_name                = var.name
   vswitch_ids                   = [local.vswitch_id]
-  instance_types                = [data.alicloud_instance_types.default.instance_types.2.id]
+  instance_types                = [data.alicloud_instance_types.default.instance_types.0.id]
   password                      = "Test12345"
   system_disk_size              = 50
   system_disk_category          = "cloud_essd"

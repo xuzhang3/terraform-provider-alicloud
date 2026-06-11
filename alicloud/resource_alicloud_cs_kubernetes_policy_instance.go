@@ -185,7 +185,13 @@ func resourceAliCloudCSKubernetesPolicyInstanceRead(d *schema.ResourceData, meta
 		if err == nil {
 			// Apply type conversion to the parameters
 			convertedParams := NormalizeMap(paramsMap)
-			d.Set("parameters", convertedParams)
+			// schema "parameters" is a TypeString map; stringify values so
+			// non-string YAML values (e.g. min: 30) don't panic d.Set
+			stringParams := make(map[string]interface{}, len(convertedParams))
+			for k, val := range convertedParams {
+				stringParams[k] = fmt.Sprintf("%v", val)
+			}
+			d.Set("parameters", stringParams)
 		} else {
 			log.Printf("[WARN] Failed to parse policy_parameters as YAML: %v", err)
 		}

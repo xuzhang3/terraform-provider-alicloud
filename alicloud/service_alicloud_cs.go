@@ -355,6 +355,19 @@ func (s *CsClient) DescribeCsKubernetesAddonStatus(clusterId string, addonName s
 	return result, nil
 }
 
+// DescribeUserPermission is used by the acceptance-test framework
+// (resourceCheck.callDescribeMethod) to verify the permissions resource exists
+func (s *CsClient) DescribeUserPermission(uid string) ([]*client.DescribeUserPermissionResponseBody, error) {
+	return describeUserPermissions(s.client, uid)
+}
+
+// DescribeCsAutoscalingConfig is used by the acceptance-test framework to
+// verify the autoscaling config exists; the resource id is the cluster id and
+// the config itself is cluster-scoped, so cluster existence is the check
+func (s *CsClient) DescribeCsAutoscalingConfig(id string) (*client.DescribeClusterDetailResponseBody, error) {
+	return s.DescribeClusterDetail(id)
+}
+
 // This function returns the latest addon instance
 func (s *CsClient) GetCsKubernetesAddonInstance(clusterId string, addonName string) (*Component, error) {
 	component := &Component{}
@@ -1157,7 +1170,10 @@ func GetKubernetesNetworkName(cluster *cs.KubernetesClusterDetail) (network stri
 	return "", fmt.Errorf("no network addon found")
 }
 
-func setCerts(d *schema.ResourceData, meta interface{}, skipSetCertificateAuthority bool) error {
+// setCertificateAuthorityAttribute must be false for resources whose schema does not
+// declare "certificate_authority" (e.g. alicloud_cs_serverless_kubernetes): under
+// terraform-plugin-sdk v2, d.Set on an undeclared key panics ("Invalid address to set")
+func setCerts(d *schema.ResourceData, meta interface{}, skipSetCertificateAuthority bool, setCertificateAuthorityAttribute bool) error {
 	client := meta.(*connectivity.AliyunClient)
 	roaClient, err := client.NewRoaCsClient()
 	if err != nil {
@@ -1191,17 +1207,19 @@ func setCerts(d *schema.ResourceData, meta interface{}, skipSetCertificateAuthor
 		writeToFile(file.(string), tea.StringValue(kubeConfig.Config))
 	}
 
-	if skipSetCertificateAuthority {
-		d.Set("certificate_authority", []interface{}{
-			map[string]string{
-				"cluster_cert": "",
-				"client_cert":  "",
-				"client_key":   "",
-			},
-		})
-	} else {
-		if err := d.Set("certificate_authority", []interface{}{flattenAlicloudCSCertificate(kubeConfig)}); err != nil {
-			return WrapError(fmt.Errorf("error setting certificate_authority: %s", err))
+	if setCertificateAuthorityAttribute {
+		if skipSetCertificateAuthority {
+			d.Set("certificate_authority", []interface{}{
+				map[string]string{
+					"cluster_cert": "",
+					"client_cert":  "",
+					"client_key":   "",
+				},
+			})
+		} else {
+			if err := d.Set("certificate_authority", []interface{}{flattenAlicloudCSCertificate(kubeConfig)}); err != nil {
+				return WrapError(fmt.Errorf("error setting certificate_authority: %s", err))
+			}
 		}
 	}
 

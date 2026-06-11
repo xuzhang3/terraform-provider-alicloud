@@ -34,7 +34,7 @@ func TestAccAliCloudCSKubernetesPermissions_basic(t *testing.T) {
 			testAccPreCheckWithRegions(t, true, connectivity.ManagedKubernetesSupportedRegions)
 		},
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{

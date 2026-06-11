@@ -550,7 +550,7 @@ func resourceAlicloudCSServerlessKubernetesRead(d *schema.ResourceData, meta int
 	d.Set("cluster_spec", object.ClusterSpec)
 
 	if object.Timezone != nil {
-		d.Set("timezone", object.Timezone)
+		d.Set("time_zone", object.Timezone)
 	}
 
 	if err := d.Set("tags", flattenTags(object.Tags)); err != nil {
@@ -614,7 +614,7 @@ func resourceAlicloudCSServerlessKubernetesRead(d *schema.ResourceData, meta int
 		return nil
 	}
 
-	if err = setCerts(d, meta, true); err != nil {
+	if err = setCerts(d, meta, true, false); err != nil {
 		return WrapError(err)
 	}
 
@@ -747,8 +747,8 @@ func modifyServerlessCluster(d *schema.ResourceData, meta interface{}, invoker *
 		updated = true
 	}
 
-	if d.HasChange("timezone") {
-		request.SetTimezone(d.Get("timezone").(string))
+	if d.HasChange("time_zone") {
+		request.SetTimezone(d.Get("time_zone").(string))
 		updated = true
 	}
 

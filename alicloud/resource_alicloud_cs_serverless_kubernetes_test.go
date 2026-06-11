@@ -55,9 +55,9 @@ func TestAccAliCloudCSServerlessKubernetes_basic(t *testing.T) {
 			testAccPreCheck(t)
 		},
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -294,9 +294,9 @@ func TestAccAliCloudCSServerlessKubernetesAuto(t *testing.T) {
 			testAccPreCheck(t)
 		},
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -412,8 +412,7 @@ variable "name" {
 	default = "%s"
 }
 
-data "alicloud_zones" "default" {
-	available_resource_creation = "VSwitch"
+data "alicloud_enhanced_nat_available_zones" "enhanced" {
 }
 
 data "alicloud_resource_manager_resource_groups" "default" {}
@@ -438,7 +437,7 @@ resource "alicloud_vpc" "default" {
 resource "alicloud_vswitch" "default" {
 	vpc_id            = alicloud_vpc.default.id
 	cidr_block        = cidrsubnet(alicloud_vpc.default.cidr_block, 8, 8)
-	zone_id           = data.alicloud_zones.default.zones.0.id
+	zone_id           = data.alicloud_enhanced_nat_available_zones.enhanced.zones.0.zone_id
 	vswitch_name      = var.name
 }
 

@@ -259,6 +259,11 @@ func resourceAlicloudCSKubernetes() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
+			"cluster_spec": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
 			"proxy_mode": {
 				Type:         schema.TypeString,
 				Optional:     true,
@@ -835,10 +840,10 @@ func resourceAlicloudCSKubernetesRead(d *schema.ResourceData, meta interface{}) 
 	//d.Set("maintenance_window", flattenMaintenanceWindowConfig(&object.MaintenanceWindow))
 
 	//request.Parameters
-	if v, ok := object.Parameters["MasterVSwitchIds"]; ok {
+	if v, ok := object.Parameters["MasterVSwitchIds"]; ok && object.Profile != EdgeProfile {
 		d.Set("master_vswitch_ids", strings.Split(Interface2String(v), ","))
 	}
-	if v, ok := object.Parameters["MasterSystemDiskCategory"]; ok {
+	if v, ok := object.Parameters["MasterSystemDiskCategory"]; ok && object.Profile != EdgeProfile {
 		category := Interface2String(v)
 		d.Set("master_disk_category", category)
 		if category == string(DiskCloudESSD) {
@@ -847,13 +852,13 @@ func resourceAlicloudCSKubernetesRead(d *schema.ResourceData, meta interface{}) 
 			}
 		}
 	}
-	if v, ok := object.Parameters["MasterSystemDiskSize"]; ok {
+	if v, ok := object.Parameters["MasterSystemDiskSize"]; ok && object.Profile != EdgeProfile {
 		d.Set("master_disk_size", formatInt(v))
 	}
-	if v, ok := object.Parameters["MasterSnapshotPolicyId"]; ok {
+	if v, ok := object.Parameters["MasterSnapshotPolicyId"]; ok && object.Profile != EdgeProfile {
 		d.Set("master_disk_snapshot_policy_id", Interface2String(v))
 	}
-	if v, ok := object.Parameters["MasterInstanceChargeType"]; ok {
+	if v, ok := object.Parameters["MasterInstanceChargeType"]; ok && object.Profile != EdgeProfile {
 		chargeType := Interface2String(v)
 		d.Set("master_instance_charge_type", chargeType)
 		if chargeType == string(PrePaid) {
@@ -871,7 +876,7 @@ func resourceAlicloudCSKubernetesRead(d *schema.ResourceData, meta interface{}) 
 			}
 		}
 	}
-	if v, ok := object.Parameters["MasterInstanceTypes"]; ok {
+	if v, ok := object.Parameters["MasterInstanceTypes"]; ok && object.Profile != EdgeProfile {
 		d.Set("master_instance_types", strings.Split(Interface2String(v), ","))
 	}
 	if object.ClusterType != "Kubernetes" {
@@ -918,7 +923,7 @@ func resourceAlicloudCSKubernetesRead(d *schema.ResourceData, meta interface{}) 
 		}
 		d.Set("master_nodes", fetchMasterNodes(d, meta))
 	}
-	if v, ok := object.Parameters["PodVswitchIds"]; ok {
+	if v, ok := object.Parameters["PodVswitchIds"]; ok && object.Profile != EdgeProfile {
 		l := make([]string, 0)
 		err := json.Unmarshal([]byte(Interface2String(v)), &l)
 		if err == nil && len(l) > 0 {
@@ -940,7 +945,7 @@ func resourceAlicloudCSKubernetesRead(d *schema.ResourceData, meta interface{}) 
 
 	// Cluster Metadata
 	metadata := object.GetMetaData()
-	if v, ok := metadata["ExtraCertSAN"]; ok && v != nil {
+	if v, ok := metadata["ExtraCertSAN"]; ok && v != nil && object.Profile != EdgeProfile {
 		l := expandStringList(v.([]interface{}))
 		d.Set("custom_san", strings.Join(l, ","))
 	}
@@ -997,7 +1002,7 @@ func resourceAlicloudCSKubernetesRead(d *schema.ResourceData, meta interface{}) 
 		return nil
 	}
 
-	if err = setCerts(d, meta, d.Get("skip_set_certificate_authority").(bool)); err != nil {
+	if err = setCerts(d, meta, d.Get("skip_set_certificate_authority").(bool), true); err != nil {
 		return WrapError(err)
 	}
 
@@ -1028,10 +1033,12 @@ func resourceAlicloudCSKubernetesDelete(d *schema.ResourceData, meta interface{}
 
 	wait := incrementalWait(3*time.Second, 3*time.Second)
 	var resp *roacs.DeleteClusterResponse
-	err = resource.Retry(5*time.Minute, func() *resource.RetryError {
+	err = resource.Retry(d.Timeout(schema.TimeoutDelete), func() *resource.RetryError {
 		resp, err = client.DeleteCluster(tea.String(d.Id()), args)
 		if err != nil {
-			if NeedRetry(err) {
+			// dependent resources (SLB/ENI/SG) created by the cluster may
+			// still be detaching shortly after the test steps finish
+			if NeedRetry(err) || IsExpectedErrors(err, []string{"DependencyViolation.Resource"}) {
 				wait()
 				return resource.RetryableError(err)
 			}

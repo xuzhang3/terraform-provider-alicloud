@@ -3,6 +3,7 @@ package alicloud
 import (
 	"encoding/base64"
 	"fmt"
+	"log"
 	"regexp"
 	"strconv"
 	"strings"
@@ -357,6 +358,10 @@ func resourceAlicloudCSEdgeKubernetes() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
+			"slb_id": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
 			"slb_intranet": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -483,7 +488,27 @@ func resourceAlicloudCSEdgeKubernetesCreate(d *schema.ResourceData, meta interfa
 	if _, err := stateConf.WaitForState(); err != nil {
 		return WrapErrorf(err, IdMsg, d.Id())
 	}
+	// edge worker nodes register asynchronously after the cluster turns
+	// running; give them a chance to appear but do not fail the create —
+	// in some environments cloud workers attach through a slower legacy path
+	if v, ok := d.GetOk("worker_number"); ok && v.(int) > 0 {
+		if err := waitForEdgeWorkerNodes(d, meta, v.(int)); err != nil {
+			log.Printf("[WARN] resource_alicloud_cs_edge_kubernetes: %v", err)
+		}
+	}
 	return resourceAlicloudCSKubernetesRead(d, meta)
+}
+
+// waitForEdgeWorkerNodes polls the default nodepool until at least `expected`
+// worker nodes have registered, or 15 minutes elapse
+func waitForEdgeWorkerNodes(d *schema.ResourceData, meta interface{}, expected int) error {
+	return resource.Retry(10*time.Minute, func() *resource.RetryError {
+		nodes := fetchWorkerNodes(d, meta)
+		if len(nodes) >= expected {
+			return nil
+		}
+		return resource.RetryableError(Error("edge cluster %s has %d of %d worker nodes registered", d.Id(), len(nodes), expected))
+	})
 }
 
 func resourceAlicloudCSEdgeKubernetesUpdate(d *schema.ResourceData, meta interface{}) error {
@@ -599,6 +624,12 @@ func resourceAlicloudCSEdgeKubernetesUpdate(d *schema.ResourceData, meta interfa
 
 			if _, err := stateConf.WaitForState(); err != nil {
 				return WrapErrorf(err, IdMsg, d.Id())
+			}
+			// scaled-out edge workers also register asynchronously
+			if v, ok := d.GetOk("worker_number"); ok && v.(int) > 0 {
+				if err := waitForEdgeWorkerNodes(d, meta, v.(int)); err != nil {
+					log.Printf("[WARN] resource_alicloud_cs_edge_kubernetes: %v", err)
+				}
 			}
 		}
 

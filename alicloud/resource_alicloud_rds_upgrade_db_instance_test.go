@@ -57,7 +57,7 @@ resource "alicloud_db_instance" "default" {
   engine_version           = "13.0"
   db_instance_storage_type = "cloud_essd"
   instance_type            = data.alicloud_db_instance_classes.default.instance_classes.0.instance_class
-  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.min
+  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.min
   vswitch_id               = data.alicloud_vswitches.default.ids.0
   instance_name            = var.name
 }
@@ -66,7 +66,7 @@ resource "alicloud_db_instance" "default" {
 
 var upgradeInstanceBasicMap = map[string]string{}
 
-func TestAccAlicloudRdsUpgradeDBInstancePostgreSQL(t *testing.T) {
+func TestAccAliCloudRdsUpgradeDBInstancePostgreSQL(t *testing.T) {
 	var instance map[string]interface{}
 	var ips []map[string]interface{}
 	resourceId := "alicloud_rds_upgrade_db_instance.default"
@@ -84,9 +84,9 @@ func TestAccAlicloudRdsUpgradeDBInstancePostgreSQL(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -275,7 +275,7 @@ func TestAccAlicloudRdsUpgradeDBInstancePostgreSQL(t *testing.T) {
 }
 
 // SSL function and pg_hba_conf function incompatible, so add this test case for pg_hba_conf without ssl function.
-func TestAccAlicloudRdsUpgradeDBInstancePostgreSQL_PG_HBA_CONF(t *testing.T) {
+func TestAccAliCloudRdsUpgradeDBInstancePostgreSQL_PG_HBA_CONF(t *testing.T) {
 	var instance map[string]interface{}
 	var ips []map[string]interface{}
 	resourceId := "alicloud_rds_upgrade_db_instance.default"
@@ -292,9 +292,9 @@ func TestAccAlicloudRdsUpgradeDBInstancePostgreSQL_PG_HBA_CONF(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -422,7 +422,7 @@ func TestAccAlicloudRdsUpgradeDBInstancePostgreSQL_PG_HBA_CONF(t *testing.T) {
 	})
 }
 
-func TestAccAlicloudRdsUpgradeDBInstancePostgreSQL2(t *testing.T) {
+func TestAccAliCloudRdsUpgradeDBInstancePostgreSQL2(t *testing.T) {
 	var instance map[string]interface{}
 	var ips []map[string]interface{}
 	resourceId := "alicloud_rds_upgrade_db_instance.default"
@@ -440,9 +440,9 @@ func TestAccAlicloudRdsUpgradeDBInstancePostgreSQL2(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{

@@ -3,7 +3,6 @@ package alicloud
 import (
 	"fmt"
 	"log"
-	"os"
 	"reflect"
 	"strings"
 	"testing"
@@ -107,7 +106,7 @@ func testSweepDTSMigrationJob(region string) error {
 	return nil
 }
 
-func TestAccAlicloudDTSMigrationJob_basic0(t *testing.T) {
+func TestAccAliCloudDTSMigrationJob_basic0(t *testing.T) {
 	var v map[string]interface{}
 	resourceId := "alicloud_dts_migration_job.default"
 	checkoutSupportedRegions(t, true, connectivity.DTSSupportRegions)
@@ -124,9 +123,9 @@ func TestAccAlicloudDTSMigrationJob_basic0(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -135,13 +134,13 @@ func TestAccAlicloudDTSMigrationJob_basic0(t *testing.T) {
 					"source_endpoint_instance_type":      "RDS",
 					"source_endpoint_instance_id":        "${alicloud_db_instance.default.0.id}",
 					"source_endpoint_engine_name":        "MySQL",
-					"source_endpoint_region":             "${var.region}",
+					"source_endpoint_region":             "${data.alicloud_regions.default.regions.0.id}",
 					"source_endpoint_user_name":          "${alicloud_rds_account.default.0.name}",
 					"source_endpoint_password":           "${var.password}",
 					"destination_endpoint_instance_type": "RDS",
 					"destination_endpoint_instance_id":   "${alicloud_db_instance.default.1.id}",
 					"destination_endpoint_engine_name":   "MySQL",
-					"destination_endpoint_region":        "${var.region}",
+					"destination_endpoint_region":        "${data.alicloud_regions.default.regions.0.id}",
 					"destination_endpoint_user_name":     "${alicloud_rds_account.default.1.name}",
 					"destination_endpoint_password":      "${var.password}",
 					"db_list":                            `{\"tftestdatabase\":{\"name\":\"tftestdatabase\",\"all\":true}}`,
@@ -207,8 +206,8 @@ variable "name" {
   default = "%s"
 }
 
-variable "region" {
-  default = "%s"
+data "alicloud_regions" "default" {
+  current = true
 }
 
 variable "password" {
@@ -219,11 +218,21 @@ variable "database_name" {
   default = "tftestdatabase"
 }
 
-data "alicloud_db_zones" "default" {}
+data "alicloud_db_zones" "default" {
+  engine                   = "MySQL"
+  engine_version           = "8.0"
+  instance_charge_type     = "PostPaid"
+  category                 = "HighAvailability"
+  db_instance_storage_type = "cloud_essd"
+}
 
 data "alicloud_db_instance_classes" "default" {
-  engine               = "MySQL"
-  engine_version       = "5.6"
+  zone_id                  = data.alicloud_db_zones.default.zones.0.id
+  engine                   = "MySQL"
+  engine_version           = "8.0"
+  category                 = "HighAvailability"
+  db_instance_storage_type = "cloud_essd"
+  instance_charge_type     = "PostPaid"
 }
 
 data "alicloud_vpcs" "default" {
@@ -232,15 +241,16 @@ data "alicloud_vpcs" "default" {
 
 data "alicloud_vswitches" "default" {
   vpc_id  = data.alicloud_vpcs.default.ids[0]
-  zone_id = data.alicloud_db_zones.default.zones[0].id
+  zone_id = data.alicloud_db_zones.default.zones.0.id
 }
 
 resource "alicloud_db_instance" "default" {
   count            = 2
   engine           = "MySQL"
-  engine_version   = "5.6"
-  instance_type    =  data.alicloud_db_instance_classes.default.instance_classes[0].instance_class
-  instance_storage = "10"
+  engine_version   = "8.0"
+  db_instance_storage_type = "cloud_essd"
+  instance_type    = data.alicloud_db_instance_classes.default.instance_classes[0].instance_class
+  instance_storage = data.alicloud_db_instance_classes.default.instance_classes[0].storage_range.0.min
   vswitch_id       = data.alicloud_vswitches.default.ids[0]
   instance_name    = join("", [var.name, count.index])
 }
@@ -269,13 +279,13 @@ resource "alicloud_db_account_privilege" "default" {
 resource "alicloud_dts_migration_instance" "default" {
   payment_type                     = "PayAsYouGo"
   source_endpoint_engine_name      = "MySQL"
-  source_endpoint_region           = var.region
+  source_endpoint_region           = "${data.alicloud_regions.default.regions.0.id}"
   destination_endpoint_engine_name = "MySQL"
-  destination_endpoint_region      = var.region
+  destination_endpoint_region      = "${data.alicloud_regions.default.regions.0.id}"
   instance_class                   = "small"
   sync_architecture                = "oneway"
 }
-`, name, defaultRegionToTest)
+`, name)
 }
 
 // lintignore: R001
@@ -321,7 +331,7 @@ func TestUnitAlicloudDTSMigrationJob(t *testing.T) {
 		err = d.Set(key, value)
 		assert.Nil(t, err)
 	}
-	region := os.Getenv("ALICLOUD_REGION")
+	region := "cn-beijing"
 	rawClient, err := sharedClientForRegion(region)
 	if err != nil {
 		t.Skipf("Skipping the test case with err: %s", err)

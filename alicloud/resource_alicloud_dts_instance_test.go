@@ -2,7 +2,6 @@ package alicloud
 
 import (
 	"fmt"
-	"os"
 	"testing"
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
@@ -11,7 +10,7 @@ import (
 )
 
 // Case 1
-func TestAccAliCloudDtsInstance_basic1170(t *testing.T) {
+func TestAccAliCloudDTSInstance_basic1170(t *testing.T) {
 	var v map[string]interface{}
 	resourceId := "alicloud_dts_instance.default"
 	ra := resourceAttrInit(resourceId, AliCloudDtsInstanceMap1170)
@@ -27,9 +26,9 @@ func TestAccAliCloudDtsInstance_basic1170(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -38,11 +37,11 @@ func TestAccAliCloudDtsInstance_basic1170(t *testing.T) {
 					"payment_type":                     "PayAsYouGo",
 					"instance_class":                   "large",
 					"source_endpoint_engine_name":      "MySQL",
-					"source_region":                    os.Getenv("ALICLOUD_REGION"),
+					"source_region":                    "${data.alicloud_regions.default.regions.0.id}",
 					"destination_endpoint_engine_name": "MySQL",
 					"compute_unit":                     "2",
 					"database_count":                   "1",
-					"destination_region":               os.Getenv("ALICLOUD_REGION"),
+					"destination_region":               "${data.alicloud_regions.default.regions.0.id}",
 					"sync_architecture":                "oneway",
 				}),
 				Check: resource.ComposeTestCheckFunc(
@@ -95,7 +94,7 @@ func TestAccAliCloudDtsInstance_basic1170(t *testing.T) {
 	})
 }
 
-func TestAccAliCloudDtsInstance_basic1(t *testing.T) {
+func TestAccAliCloudDTSInstance_basic1(t *testing.T) {
 	var v map[string]interface{}
 	resourceId := "alicloud_dts_instance.default"
 	ra := resourceAttrInit(resourceId, AliCloudDtsInstanceMap1170)
@@ -112,9 +111,9 @@ func TestAccAliCloudDtsInstance_basic1(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithTime(t, []int{1})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -123,11 +122,11 @@ func TestAccAliCloudDtsInstance_basic1(t *testing.T) {
 					"payment_type":                     "Subscription",
 					"instance_class":                   "large",
 					"source_endpoint_engine_name":      "MySQL",
-					"source_region":                    os.Getenv("ALICLOUD_REGION"),
+					"source_region":                    "${data.alicloud_regions.default.regions.0.id}",
 					"destination_endpoint_engine_name": "MySQL",
 					"compute_unit":                     "2",
 					"database_count":                   "1",
-					"destination_region":               os.Getenv("ALICLOUD_REGION"),
+					"destination_region":               "${data.alicloud_regions.default.regions.0.id}",
 					"auto_start":                       "true",
 					"du":                               "30",
 					"period":                           "Month",
@@ -169,6 +168,9 @@ variable "name" {
 }
 data "alicloud_resource_manager_resource_groups" "default" {
   status = "OK"
+}
+data "alicloud_regions" "default" {
+  current = true
 }
 
 `, name)

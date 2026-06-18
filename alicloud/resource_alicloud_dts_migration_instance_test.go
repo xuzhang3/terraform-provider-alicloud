@@ -2,7 +2,6 @@ package alicloud
 
 import (
 	"fmt"
-	"os"
 	"reflect"
 	"strconv"
 	"testing"
@@ -19,7 +18,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestAccAlicloudDTSMigrationInstance_basic0(t *testing.T) {
+func TestAccAliCloudDTSMigrationInstance_basic0(t *testing.T) {
 	var v map[string]interface{}
 	resourceId := "alicloud_dts_migration_instance.default"
 	ra := resourceAttrInit(resourceId, AlicloudDTSMigrationInstanceMap0)
@@ -35,17 +34,17 @@ func TestAccAlicloudDTSMigrationInstance_basic0(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
 					"payment_type":                     "PayAsYouGo",
 					"source_endpoint_engine_name":      "MySQL",
-					"source_endpoint_region":           os.Getenv("ALICLOUD_REGION"),
+					"source_endpoint_region":           "${data.alicloud_regions.default.regions.0.id}",
 					"destination_endpoint_engine_name": "MySQL",
-					"destination_endpoint_region":      os.Getenv("ALICLOUD_REGION"),
+					"destination_endpoint_region":      "${data.alicloud_regions.default.regions.0.id}",
 					"instance_class":                   "small",
 					"sync_architecture":                "oneway",
 				}),
@@ -106,6 +105,10 @@ func AlicloudDTSMigrationInstanceBasicDependence0(name string) string {
 variable "name" {
   default = "%s"
 }
+
+data "alicloud_regions" "default" {
+  current = true
+}
 `, name)
 }
 
@@ -131,7 +134,7 @@ func TestUnitAlicloudDTSMigrationInstance(t *testing.T) {
 		err = d.Set(key, value)
 		assert.Nil(t, err)
 	}
-	region := os.Getenv("ALICLOUD_REGION")
+	region := "cn-beijing"
 	rawClient, err := sharedClientForRegion(region)
 	if err != nil {
 		t.Skipf("Skipping the test case with err: %s", err)

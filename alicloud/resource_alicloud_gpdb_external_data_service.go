@@ -2,8 +2,10 @@
 package alicloud
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"strconv"
 	"strings"
 	"time"
 
@@ -137,13 +139,13 @@ func resourceAliCloudGpdbExternalDataServiceRead(d *schema.ResourceData, meta in
 	if objectRaw["Status"] != nil {
 		d.Set("status", objectRaw["Status"])
 	}
-	if objectRaw["ServiceId"] != nil {
-		d.Set("service_id", objectRaw["ServiceId"])
+	serviceId, err := strconv.ParseInt(objectRaw["ServiceId"].(json.Number).String(), 10, 64)
+	if err != nil {
+		return WrapError(err)
 	}
-
+	d.Set("service_id", serviceId)
 	parts := strings.Split(d.Id(), ":")
 	d.Set("db_instance_id", parts[0])
-	d.Set("service_id", parts[1])
 
 	return nil
 }

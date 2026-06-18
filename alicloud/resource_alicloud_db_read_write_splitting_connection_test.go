@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccAlicloudRdsDBReadWriteSplittingConnectionMssql_create(t *testing.T) {
+func TestAccAliCloudRdsDBReadWriteSplittingConnectionMssql_create(t *testing.T) {
 	var v map[string]interface{}
 	resourceId := "alicloud_db_read_write_splitting_connection.create"
 
@@ -34,7 +34,7 @@ func TestAccAlicloudRdsDBReadWriteSplittingConnectionMssql_create(t *testing.T) 
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -108,7 +108,7 @@ resource "alicloud_db_instance" "default" {
 	engine_version           = "2017_ent"
  	db_instance_storage_type = "cloud_essd"
 	instance_type            = data.alicloud_db_instance_classes.master.instance_classes.0.instance_class
-	instance_storage         = data.alicloud_db_instance_classes.master.instance_classes.0.storage_range.min
+	instance_storage         = data.alicloud_db_instance_classes.master.instance_classes.0.storage_range.0.min
 	vswitch_id               = data.alicloud_vswitches.default.vswitches.0.vswitch_id
 	instance_name            = var.name
 }

@@ -830,7 +830,6 @@ func TestAccAlicloudCSKubernetes_StateMigrationV0ToV1(t *testing.T) {
 			{
 				ProviderFactories: testAccProviderFactory,
 				Config:            testAccCSKubernetesStateMigrationConfigV1(name),
-				PlanOnly:          true,
 			},
 		},
 	})

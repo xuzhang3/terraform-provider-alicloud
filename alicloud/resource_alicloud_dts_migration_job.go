@@ -50,6 +50,13 @@ func resourceAlicloudDtsMigrationJob() *schema.Resource {
 				ForceNew: true,
 				Computed: true,
 			},
+			"payment_type": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				Computed:     true,
+				ForceNew:     true,
+				ValidateFunc: StringInSlice([]string{"PayAsYouGo"}, false),
+			},
 			"destination_endpoint_instance_type": {
 				Type:         schema.TypeString,
 				Required:     true,

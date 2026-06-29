@@ -3,7 +3,6 @@ package alicloud
 import (
 	"fmt"
 	"log"
-	"os"
 	"reflect"
 	"testing"
 
@@ -18,7 +17,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestAccAlicloudDTSConsumerChannel_basic0(t *testing.T) {
+func TestAccAliCloudDTSConsumerChannel_basic0(t *testing.T) {
 	var v map[string]interface{}
 	resourceId := "alicloud_dts_consumer_channel.default"
 	checkoutSupportedRegions(t, true, connectivity.DTSSupportRegions)
@@ -35,9 +34,9 @@ func TestAccAlicloudDTSConsumerChannel_basic0(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -80,8 +79,8 @@ variable "name" {
   default = "%s"
 }
 
-variable "region_id" {
-	default = "%s"
+data "alicloud_regions" "default" {
+  current = true
 }
 
 data "alicloud_db_zones" "default" {
@@ -89,7 +88,7 @@ data "alicloud_db_zones" "default" {
   engine_version           = "8.0"
   instance_charge_type     = "PostPaid"
   category                 = "HighAvailability"
-  db_instance_storage_type = "local_ssd"
+  db_instance_storage_type = "cloud_essd"
 }
 
 data "alicloud_vpcs" "default" {
@@ -106,7 +105,7 @@ data "alicloud_db_instance_classes" "default" {
   engine                   = "MySQL"
   engine_version           = "8.0"
   category                 = "HighAvailability"
-  db_instance_storage_type = "local_ssd"
+  db_instance_storage_type = "cloud_essd"
   instance_charge_type     = "PostPaid"
 }
 
@@ -114,8 +113,9 @@ data "alicloud_db_instance_classes" "default" {
 resource "alicloud_db_instance" "source" {
   engine           = "MySQL"
   engine_version   = "8.0"
+  db_instance_storage_type = "cloud_essd"
   instance_type    = data.alicloud_db_instance_classes.default.instance_classes.0.instance_class
-  instance_storage = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.min
+  instance_storage = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.min
   vswitch_id       = data.alicloud_vswitches.default.ids.0
   instance_name    = "rds-mysql-source"
 }
@@ -142,8 +142,9 @@ resource "alicloud_db_account_privilege" "source_privilege" {
 resource "alicloud_db_instance" "target" {
   engine           = "MySQL"
   engine_version   = "8.0"
+  db_instance_storage_type = "cloud_essd"
   instance_type    = data.alicloud_db_instance_classes.default.instance_classes.0.instance_class
-  instance_storage = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.min
+  instance_storage = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.min
   vswitch_id       = data.alicloud_vswitches.default.ids.0
   instance_name    = "rds-mysql-target"
 }
@@ -165,12 +166,12 @@ resource "alicloud_dts_subscription_job" "default" {
   source_endpoint_password = "Test12345"
   dts_job_name = "tf-testAccCase"
   payment_duration = "1"
-  source_endpoint_region = "cn-hangzhou"
+  source_endpoint_region = "${data.alicloud_regions.default.regions.0.id}"
   subscription_instance_network_type = "classic"
   source_endpoint_engine_name = "MySQL"
   status = "Normal"
 } 
-`, name, os.Getenv("ALICLOUD_REGION"))
+`, name)
 }
 
 // lintignore: R001
@@ -194,7 +195,7 @@ func TestUnitAlicloudDTSConsumerChannel(t *testing.T) {
 			log.Printf("[ERROR] the field %s setting error", key)
 		}
 	}
-	region := os.Getenv("ALICLOUD_REGION")
+	region := "cn-beijing"
 	rawClient, err := sharedClientForRegion(region)
 	if err != nil {
 		t.Skipf("Skipping the test case with err: %s", err)

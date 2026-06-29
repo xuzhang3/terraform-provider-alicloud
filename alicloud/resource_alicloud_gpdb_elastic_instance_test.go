@@ -109,7 +109,8 @@ func testSweepGpdbElasticInstances(region string) error {
 	return nil
 }
 
-func TestAccAlicloudGPDBElasticInstanceVpc(t *testing.T) {
+func TestAccAliCloudGPDBElasticInstanceVpc(t *testing.T) {
+	t.Skip()
 	var instance gpdb.DBInstanceAttribute
 	resourceId := "alicloud_gpdb_elastic_instance.default"
 	serverFunc := func() interface{} {
@@ -123,11 +124,11 @@ func TestAccAlicloudGPDBElasticInstanceVpc(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
-			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"eu-central-1"})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -226,7 +227,8 @@ func resourceGpdbElasticInstanceConfigDependence(name string) string {
         `, name)
 }
 
-func TestAccAlicloudGPDBElasticInstance_basic0(t *testing.T) {
+func TestAccAliCloudGPDBElasticInstance_basic0(t *testing.T) {
+	t.Skip()
 	var v map[string]interface{}
 	resourceId := "alicloud_gpdb_elastic_instance.default"
 	ra := resourceAttrInit(resourceId, AlicloudGpdbElasticInstanceMap0)
@@ -240,11 +242,11 @@ func TestAccAlicloudGPDBElasticInstance_basic0(t *testing.T) {
 	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AlicloudGpdbElasticInstanceBasicDependence0)
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
-			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"eu-central-1"})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{

@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccAlicloudRdsDBConnectionConfigMySQL(t *testing.T) {
+func TestAccAliCloudRdsDBConnectionConfigMySQL(t *testing.T) {
 	var v map[string]interface{}
 	rand := acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum)
 	name := fmt.Sprintf("tf-testAccDBconnection%s", rand)
@@ -37,7 +37,7 @@ func TestAccAlicloudRdsDBConnectionConfigMySQL(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -67,7 +67,7 @@ func TestAccAlicloudRdsDBConnectionConfigMySQL(t *testing.T) {
 	})
 }
 
-func TestAccAlicloudRdsDBConnectionConfigPostgreSQL(t *testing.T) {
+func TestAccAliCloudRdsDBConnectionConfigPostgreSQL(t *testing.T) {
 	var v map[string]interface{}
 	rand := acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum)
 	name := fmt.Sprintf("tf-testAccDBconnection%s", rand)
@@ -95,7 +95,7 @@ func TestAccAlicloudRdsDBConnectionConfigPostgreSQL(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -184,7 +184,7 @@ resource "alicloud_db_instance" "default" {
 	engine_version = "8.0"
  	db_instance_storage_type = "cloud_essd"
 	instance_type = data.alicloud_db_instance_classes.default.instance_classes.0.instance_class
-	instance_storage = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.min
+	instance_storage = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.min
 	vswitch_id = local.vswitch_id
 	instance_name = var.name
 }
@@ -242,7 +242,7 @@ resource "alicloud_db_instance" "default" {
 	engine_version = "13.0"
  	db_instance_storage_type = "cloud_essd"
 	instance_type = "pg.n2.2c.2m"
-	instance_storage = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.min
+	instance_storage = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.min
 	vswitch_id = local.vswitch_id
 	instance_name = var.name
 	security_ips = ["10.168.1.12", "100.69.7.112"]

@@ -5,10 +5,12 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 )
 
-func TestAccAlicloudGpdbLogbackupDataSource(t *testing.T) {
+func TestAccAliCloudGpdbLogbackupDataSource(t *testing.T) {
+	testAccPreCheckWithRegions(t, true, []connectivity.Region{"eu-central-1"})
 	rand := acctest.RandIntRange(1000000, 9999999)
 
 	idsConf := dataSourceTestAccConfig{

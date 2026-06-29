@@ -42,9 +42,9 @@ func TestAccAliCloudGpdbDbInstancePlan_basic0(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -190,9 +190,9 @@ func TestAccAliCloudGpdbDbInstancePlan_basic0_twin(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -259,11 +259,11 @@ func TestAccAliCloudGpdbDbInstancePlan_basic1(t *testing.T) {
 	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudGpdbDbInstancePlanBasicDependence0)
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
-			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"eu-central-1"})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -407,9 +407,9 @@ func TestAccAliCloudGpdbDbInstancePlan_basic1_twin(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -480,11 +480,11 @@ func TestAccAliCloudGpdbDbInstancePlan_basic2(t *testing.T) {
 	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudGpdbDbInstancePlanBasicDependence1)
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
-			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"eu-central-1"})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -632,11 +632,11 @@ func TestAccAliCloudGpdbDbInstancePlan_basic2_twin(t *testing.T) {
 	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudGpdbDbInstancePlanBasicDependence1)
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
-			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"eu-central-1"})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -705,11 +705,11 @@ func TestAccAliCloudGpdbDbInstancePlan_basic3(t *testing.T) {
 	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudGpdbDbInstancePlanBasicDependence1)
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
-			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"eu-central-1"})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -855,11 +855,11 @@ func TestAccAliCloudGpdbDbInstancePlan_basic3_twin(t *testing.T) {
 	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudGpdbDbInstancePlanBasicDependence1)
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
-			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"eu-central-1"})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -934,9 +934,9 @@ func TestAccAliCloudGpdbDbInstancePlan_basic4(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1086,9 +1086,9 @@ func TestAccAliCloudGpdbDbInstancePlan_basic4_twin(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1157,11 +1157,11 @@ func TestAccAliCloudGpdbDbInstancePlan_basic5(t *testing.T) {
 	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudGpdbDbInstancePlanBasicDependence0)
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
-			testAccPreCheck(t)
+			testAccPreCheckWithRegions(t, true, []connectivity.Region{"eu-central-1"})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1309,9 +1309,9 @@ func TestAccAliCloudGpdbDbInstancePlan_basic5_twin(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{

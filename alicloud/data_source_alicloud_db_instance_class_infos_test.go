@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 )
 
-func TestAccAlicloudRdsDBInstanceClassInfosDatasource_main(t *testing.T) {
+func TestAccAliCloudRdsDBInstanceClassInfosDatasource_main(t *testing.T) {
 	rand := acctest.RandInt()
 	resourceId := "data.alicloud_db_instance_class_infos.default"
 	name := "tf-testAccAlicloudRdsDBInstanceClassInfos"
@@ -57,7 +57,7 @@ func TestAccAlicloudRdsDBInstanceClassInfosDatasource_main(t *testing.T) {
 	DBInstanceMainCheckInfo.dataSourceTestCheck(t, rand, BardsInstanceClassesConf, RdsInstanceClassesConf)
 }
 
-func TestAccAlicloudRdsDBInstanceClassInfosDatasource_readOnly(t *testing.T) {
+func TestAccAliCloudRdsDBInstanceClassInfosDatasource_readOnly(t *testing.T) {
 	rand := acctest.RandInt()
 	resourceId := "data.alicloud_db_instance_class_infos.default"
 	name := "tf-testAccAlicloudRdsDBInstanceClassInfos"
@@ -145,7 +145,7 @@ resource "alicloud_db_instance" "default" {
 	engine_version           = "2017_ent"
  	db_instance_storage_type = "cloud_essd"
 	instance_type            = data.alicloud_db_instance_classes.master.instance_classes.0.instance_class
-	instance_storage         = data.alicloud_db_instance_classes.master.instance_classes.0.storage_range.min
+	instance_storage         = data.alicloud_db_instance_classes.master.instance_classes.0.storage_range.0.min
 	vswitch_id               = data.alicloud_vswitches.default.vswitches.0.vswitch_id
 	instance_name            = var.name
 }

@@ -71,7 +71,7 @@ var cloneInstanceClusterMap = map[string]string{
 	"zone_id_slave_b": CHECKSET,
 }
 
-func TestAccAlicloudRdsCloneDBInstancePostgreSQLSSL(t *testing.T) {
+func TestAccAliCloudRdsCloneDBInstancePostgreSQLSSL(t *testing.T) {
 	var instance map[string]interface{}
 	var ips []map[string]interface{}
 	resourceId := "alicloud_rds_clone_db_instance.default"
@@ -89,9 +89,9 @@ func TestAccAlicloudRdsCloneDBInstancePostgreSQLSSL(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -286,7 +286,7 @@ func TestAccAlicloudRdsCloneDBInstancePostgreSQLSSL(t *testing.T) {
 }
 
 // SSL function and pg_hba_conf function incompatible, so add this test case for pg_hba_conf without ssl function.
-func TestAccAlicloudRdsCloneDBInstancePostgreSQL_PG_HBA_CONF(t *testing.T) {
+func TestAccAliCloudRdsCloneDBInstancePostgreSQL_PG_HBA_CONF(t *testing.T) {
 	var instance map[string]interface{}
 	var ips []map[string]interface{}
 	resourceId := "alicloud_rds_clone_db_instance.default"
@@ -304,9 +304,9 @@ func TestAccAlicloudRdsCloneDBInstancePostgreSQL_PG_HBA_CONF(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -423,7 +423,7 @@ func TestAccAlicloudRdsCloneDBInstancePostgreSQL_PG_HBA_CONF(t *testing.T) {
 	})
 }
 
-func TestAccAlicloudRdsCloneDBInstanceMySQL_ServerlessBasic(t *testing.T) {
+func TestAccAliCloudRdsCloneDBInstanceMySQL_ServerlessBasic(t *testing.T) {
 	var instance map[string]interface{}
 	resourceId := "alicloud_rds_clone_db_instance.default"
 	ra := resourceAttrInit(resourceId, cloneInstanceBasicMap)
@@ -442,9 +442,9 @@ func TestAccAlicloudRdsCloneDBInstanceMySQL_ServerlessBasic(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.ServerlessSupportRegions)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -518,7 +518,7 @@ func TestAccAlicloudRdsCloneDBInstanceMySQL_ServerlessBasic(t *testing.T) {
 	})
 }
 
-func TestAccAlicloudRdsCloneDBInstanceMySQL_Cluster(t *testing.T) {
+func TestAccAliCloudRdsCloneDBInstanceMySQL_Cluster(t *testing.T) {
 	var instance map[string]interface{}
 	var ips []map[string]interface{}
 
@@ -537,9 +537,9 @@ func TestAccAlicloudRdsCloneDBInstanceMySQL_Cluster(t *testing.T) {
 			testAccPreCheck(t)
 		},
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -578,7 +578,7 @@ func TestAccAlicloudRdsCloneDBInstanceMySQL_Cluster(t *testing.T) {
 			},
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"db_instance_storage": "${data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.min + data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.step}",
+					"db_instance_storage": "${data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.min + data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.step}",
 				}),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
@@ -702,7 +702,7 @@ data "alicloud_vswitches" "default" {
 resource "alicloud_db_instance" "default" {
   engine                   = "MySQL"
   engine_version           = "8.0"
-  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.min
+  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.min
   instance_type            = data.alicloud_db_instance_classes.default.instance_classes.0.instance_class
   instance_charge_type     = "Serverless"
   instance_name            = var.name
@@ -762,7 +762,7 @@ resource "alicloud_db_instance" "default" {
   engine_version           = "8.0"
   db_instance_storage_type = "cloud_essd"
   instance_type            = "mysql.n2e.small.xc"
-  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.min
+  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.min
   vswitch_id               = data.alicloud_vswitches.default.ids.0
   instance_name            = var.name
   zone_id 				   = data.alicloud_db_zones.default.ids.0
@@ -778,7 +778,7 @@ resource "alicloud_rds_backup" "default" {
 `, name)
 }
 
-func TestAccAlicloudRdsCloneDBInstanceMySQL_ServerlessStandard(t *testing.T) {
+func TestAccAliCloudRdsCloneDBInstanceMySQL_ServerlessStandard(t *testing.T) {
 	var instance map[string]interface{}
 	resourceId := "alicloud_rds_clone_db_instance.default"
 	ra := resourceAttrInit(resourceId, cloneInstanceBasicMap)
@@ -797,9 +797,9 @@ func TestAccAlicloudRdsCloneDBInstanceMySQL_ServerlessStandard(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.ServerlessSupportRegions)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -915,7 +915,7 @@ data "alicloud_vswitches" "vswitche2" {
 resource "alicloud_db_instance" "default" {
   engine                   = "MySQL"
   engine_version           = "8.0"
-  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.min
+  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.min
   instance_type            = data.alicloud_db_instance_classes.default.instance_classes.0.instance_class
   instance_charge_type     = "Serverless"
   instance_name            = var.name
@@ -940,7 +940,7 @@ resource "alicloud_rds_backup" "default" {
 `, name)
 }
 
-func TestAccAlicloudRdsCloneDBInstancePostgreSQL_ServerlessBasic(t *testing.T) {
+func TestAccAliCloudRdsCloneDBInstancePostgreSQL_ServerlessBasic(t *testing.T) {
 	var instance map[string]interface{}
 	resourceId := "alicloud_rds_clone_db_instance.default"
 	ra := resourceAttrInit(resourceId, cloneInstanceBasicMap)
@@ -959,9 +959,9 @@ func TestAccAlicloudRdsCloneDBInstancePostgreSQL_ServerlessBasic(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.ServerlessSupportRegions)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1063,7 +1063,7 @@ data "alicloud_vswitches" "default" {
 resource "alicloud_db_instance" "default" {
   engine                   = "PostgreSQL"
   engine_version           = "14.0"
-  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.min
+  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.min
   instance_type            = data.alicloud_db_instance_classes.default.instance_classes.0.instance_class
   instance_charge_type     = "Serverless"
   instance_name            = var.name
@@ -1085,7 +1085,7 @@ resource "alicloud_rds_backup" "default" {
 `, name)
 }
 
-func TestAccAlicloudRdsCloneDBInstancegeneral_essd(t *testing.T) {
+func TestAccAliCloudRdsCloneDBInstancegeneral_essd(t *testing.T) {
 	var instance map[string]interface{}
 	resourceId := "alicloud_rds_clone_db_instance.default"
 	ra := resourceAttrInit(resourceId, cloneInstanceBasicMap)
@@ -1102,9 +1102,9 @@ func TestAccAlicloudRdsCloneDBInstancegeneral_essd(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1173,7 +1173,7 @@ resource "alicloud_db_instance" "default" {
   engine_version           = "8.0"
   db_instance_storage_type = "cloud_essd"
   instance_type            = data.alicloud_db_instance_classes.default.instance_classes.0.instance_class
-  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.min
+  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.min
   vswitch_id               = data.alicloud_vswitches.default.ids.0
   instance_name            = var.name
   zone_id 				   = data.alicloud_db_zones.default.ids.0
@@ -1186,7 +1186,7 @@ resource "alicloud_rds_backup" "default" {
 
 `, name)
 }
-func TestAccAlicloudRdsCloneDBInstanceSQLServer_ServerlessHA(t *testing.T) {
+func TestAccAliCloudRdsCloneDBInstanceSQLServer_ServerlessHA(t *testing.T) {
 	var instance map[string]interface{}
 	resourceId := "alicloud_rds_clone_db_instance.default"
 	ra := resourceAttrInit(resourceId, cloneInstanceBasicMap)
@@ -1205,9 +1205,9 @@ func TestAccAlicloudRdsCloneDBInstanceSQLServer_ServerlessHA(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.ServerlessSupportRegions)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1314,7 +1314,7 @@ data "alicloud_vswitches" "vswitche2" {
 resource "alicloud_db_instance" "default" {
   engine                   = "SQLServer"
   engine_version           = "2019_std_sl"
-  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.min
+  instance_storage         = data.alicloud_db_instance_classes.default.instance_classes.0.storage_range.0.min
   instance_type            = data.alicloud_db_instance_classes.default.instance_classes.0.instance_class
   instance_charge_type     = "Serverless"
   instance_name            = var.name

@@ -81,14 +81,6 @@ data "alicloud_db_zones" "default"{
 	category                 = "AlwaysOn"
 }
 
-data "alicloud_db_instance_classes" "master" {
-    zone_id                  = data.alicloud_db_zones.default.zones[0].id
-	engine                   = "SQLServer"
-	engine_version           = "2017_ent"
- 	db_instance_storage_type = "cloud_essd"
-	instance_charge_type     = "PostPaid"
-	category                 = "AlwaysOn"
-}
 
 data "alicloud_vswitches" "default" {
   zone_id = data.alicloud_db_zones.default.zones[0].id
@@ -107,7 +99,7 @@ resource "alicloud_db_instance" "default" {
     engine                   = "SQLServer"
 	engine_version           = "2017_ent"
  	db_instance_storage_type = "cloud_essd"
-	instance_type            = "mssql.x4.large.e2"
+instance_type            = "mssql.x4.medium.e2"
 	instance_storage         = 20
 	vswitch_id               = data.alicloud_vswitches.default.vswitches[0].vswitch_id
 	instance_name            = var.name

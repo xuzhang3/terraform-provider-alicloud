@@ -78,13 +78,38 @@ func (r *userResource) IdentitySchema(_ context.Context, _ resource.IdentitySche
 	}
 }
 
-// ModifyPlan is a resource-level plan modifier. It runs on every plan; here it
-// warns, on a destroy plan (Plan is null) for an existing user, when force is
-// not set — because the delete will fail if the user still has access keys,
-// policies, group memberships, a login profile or an MFA device.
+// ANSI escapes used to colour the rename warning red. Terraform already renders
+// warnings in yellow; these are passed through its diagnostic formatter to the
+// terminal untouched, which also means -no-color does not strip them and they
+// appear literally in -json output and in non-TTY CI logs.
+const (
+	ansiRed   = "\033[31m"
+	ansiReset = "\033[0m"
+)
+
+// redLines wraps each line of s in the red escape. Terraform word-wraps a
+// diagnostic detail and re-emits its own colour reset between the resulting
+// lines, so one leading escape would only tint the first line. Callers should
+// hard-wrap s well inside the terminal width: any line Terraform still has to
+// re-wrap loses its colour after the break.
+func redLines(s string) string {
+	lines := strings.Split(s, "\n")
+	for i, line := range lines {
+		lines[i] = ansiRed + line + ansiReset
+	}
+	return strings.Join(lines, "\n")
+}
+
+// ModifyPlan is a resource-level plan modifier. It runs on every plan and emits
+// two warnings for an existing user:
+//   - on a destroy plan (Plan is null) when force is not set, because the delete
+//     will fail if the user still has access keys, policies, group memberships, a
+//     login profile or an MFA device;
+//   - on an update plan when name changes, because the rename happens in place
+//     and anything referencing the old user name keeps pointing at it.
 func (r *userResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
-	// Only a destroy plan has a null Plan; skip create (null State) and updates.
-	if !req.Plan.Raw.IsNull() || req.State.Raw.IsNull() {
+	// Create has a null State: nothing to compare against.
+	if req.State.Raw.IsNull() {
 		return
 	}
 
@@ -94,12 +119,38 @@ func (r *userResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRe
 		return
 	}
 
-	if !state.Force.ValueBool() {
+	// Only a destroy plan has a null Plan.
+	if req.Plan.Raw.IsNull() {
+		if !state.Force.ValueBool() {
+			resp.Diagnostics.AddWarning(
+				"Deleting alicloud_ram_user_v2 without force",
+				fmt.Sprintf("RAM user %q is planned for deletion but force is not set to true. The delete will "+
+					"fail if the user still has access keys, policies, group memberships, a login profile or an "+
+					"MFA device. Set force = true to remove them automatically.", state.Name.ValueString()),
+			)
+		}
+		return
+	}
+
+	var plan userModel
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// custom warning message with red alert
+	if isKnown(plan.Name) && !plan.Name.Equal(state.Name) {
 		resp.Diagnostics.AddWarning(
-			"Deleting alicloud_ram_user_v2 without force",
-			fmt.Sprintf("RAM user %q is planned for deletion but force is not set to true. The delete will "+
-				"fail if the user still has access keys, policies, group memberships, a login profile or an "+
-				"MFA device. Set force = true to remove them automatically.", state.Name.ValueString()),
+			"Renaming alicloud_ram_user_v2 in place",
+			redLines(fmt.Sprintf("This RAM user will be renamed in place:\n"+
+				"  from %[1]q\n"+
+				"  to   %[2]q\n"+
+				"The user ID, access keys, policies and group memberships are kept.\n"+
+				"The old name stops working immediately: the console logon name\n"+
+				"changes, and anything referring to the user by name (RAM policy\n"+
+				"documents, resources configured with user_name, external scripts)\n"+
+				"must be updated separately.",
+				state.Name.ValueString(), plan.Name.ValueString())),
 		)
 	}
 }

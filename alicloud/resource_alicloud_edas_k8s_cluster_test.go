@@ -10,8 +10,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/edas"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func init() {
@@ -122,9 +122,9 @@ func TestAccAlicloudEdasK8sCluster_basic(t *testing.T) {
 			testAccPreCheck(t)
 		},
 
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  testAccCheckEdasK8sClusterDestroy,
+		CheckDestroy:      testAccCheckEdasK8sClusterDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{

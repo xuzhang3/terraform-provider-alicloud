@@ -6,8 +6,8 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccAliCloudEssServerGroupAttachment_basic_alb(t *testing.T) {
@@ -29,7 +29,7 @@ func TestAccAliCloudEssServerGroupAttachment_basic_alb(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssServerGroupsDestroy,
+		CheckDestroy:      testAccCheckEssServerGroupsDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -82,7 +82,7 @@ func TestAccAliCloudEssServerGroupAttachment_nonForceAttach_alb(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssServerGroupsDestroy,
+		CheckDestroy:      testAccCheckEssServerGroupsDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -135,7 +135,7 @@ func TestAccAliCloudEssServerGroupAttachment_basic_nlb(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssServerGroupsDestroy,
+		CheckDestroy:      testAccCheckEssServerGroupsDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -237,7 +237,7 @@ func TestAccAliCloudEssServerGroupAttachment_nonForceAttach_nlb(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssServerGroupsDestroy,
+		CheckDestroy:      testAccCheckEssServerGroupsDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -290,7 +290,7 @@ func TestAccAliCloudEssServerGroupAttachment_nonForceAttach_mutil(t *testing.T) 
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssServerGroupsDestroy,
+		CheckDestroy:      testAccCheckEssServerGroupsDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{

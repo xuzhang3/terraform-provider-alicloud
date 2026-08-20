@@ -11,8 +11,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/slb"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func init() {
@@ -125,7 +125,7 @@ func TestAccAliCloudEssScalingGroup_basic(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -310,7 +310,7 @@ func TestAccAliCloudEssScalingGroup_desiredCapacity(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -402,7 +402,7 @@ func TestAccAliCloudEssScalingGroup_max_min_desiredCapacityRange(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -480,7 +480,7 @@ func TestAccAliClouddEssScalingGroup_withLaunchTemplateId(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -559,7 +559,7 @@ func TestAccAliClouddEssScalingGroup_withLaunchTemplateOverride(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -683,7 +683,7 @@ func TestAccAliClouddEssScalingGroup_withAlbServerGroup(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -853,7 +853,7 @@ func TestAccAliCloudEssScalingGroup_costoptimized(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1028,7 +1028,7 @@ func TestAccAliCloudEssScalingGroup_costoptimizedSupply(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1200,7 +1200,7 @@ func TestAccAliCloudEssScalingGroup_costoptimized_capacityOptions(t *testing.T) 
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1412,7 +1412,7 @@ func TestAccAliCloudEssScalingGroup_costoptimized_capacityOptionsPriceComparison
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1534,7 +1534,7 @@ func TestAccAliCloudEssScalingGroup_costoptimized_capacityOptionsPriceComparison
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1656,7 +1656,7 @@ func TestAccAliCloudEssScalingGroup_costoptimized_capacityOptionsSupply(t *testi
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1837,7 +1837,7 @@ func TestAccAliCloudEssScalingGroup_composable(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -2034,7 +2034,7 @@ func TestAccAliCloudEssScalingGroup_scalingPolicy_maxInstanceLifetime(t *testing
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -2193,7 +2193,7 @@ func TestAccAliCloudEssScalingGroup_scalingPolicy_stopInstanceTimeout(t *testing
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -2287,7 +2287,7 @@ func TestAccAliCloudEssScalingGroup_vpc(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -2440,7 +2440,7 @@ func TestAccAliCloudEssScalingGroup_balanceUpdate(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -2555,7 +2555,7 @@ func TestAccAliCloudEssScalingGroup_balanceCreate(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -2658,7 +2658,7 @@ func TestAccAliCloudEssScalingGroup_noBalanceCreate(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -2766,7 +2766,7 @@ func TestAccAliCloudEssScalingGroup_slb(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -2970,7 +2970,7 @@ func TestAccAliCloudEssScalingGroup_tags(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -3040,7 +3040,7 @@ func TestAccAliCloudEssScalingGroup_healthCheckTypes(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -3127,7 +3127,7 @@ func TestAccAliCloudEssScalingGroup_healthCheckTypesCreate(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -3213,7 +3213,7 @@ func TestAccAliCloudEssScalingGroup_resourceGroupId(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -3321,7 +3321,7 @@ func TestAccAliCloudEssScalingGroup_eci(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -3391,7 +3391,7 @@ func TestAccAliCloudEssScalingGroup_eciInstance(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -3446,7 +3446,7 @@ func TestAccAliCloudEssScalingGroup_ecsInstance(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -3497,7 +3497,7 @@ func TestAccAliCloudEssScalingGroup_protected_instances(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssAttachmentDestroy,
+		CheckDestroy:      testAccCheckEssAttachmentDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -3578,7 +3578,7 @@ func TestAccAliCloudEssScalingGroup_rds(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScalingGroupDestroy,
+		CheckDestroy:      testAccCheckEssScalingGroupDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{

@@ -6,7 +6,7 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 // Test RealtimeCompute VvpInstance. >>> Resource test cases, automatically generated.
@@ -28,9 +28,9 @@ func TestAccAliCloudRealtimeComputeVvpInstance_basic4636(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, []connectivity.Region{connectivity.Hangzhou})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -185,7 +185,7 @@ func TestAccAliCloudRealtimeComputeVvpInstance_basic4594(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, []connectivity.Region{connectivity.Hangzhou})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		// CheckDestroy:  rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
@@ -299,9 +299,9 @@ func TestAccAliCloudRealtimeComputeVvpInstance_basic4636_twin(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, []connectivity.Region{connectivity.Hangzhou})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -360,7 +360,7 @@ func TestAccAliCloudRealtimeComputeVvpInstance_basic4594_twin(t *testing.T) {
 			testAccPreCheckWithTime(t, []int{14})
 			testAccPreCheckWithRegions(t, true, []connectivity.Region{connectivity.Hangzhou})
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		//CheckDestroy:  rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{

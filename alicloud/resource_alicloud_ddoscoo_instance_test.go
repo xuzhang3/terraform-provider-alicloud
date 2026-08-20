@@ -12,7 +12,7 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ddoscoo"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func init() {
@@ -239,9 +239,9 @@ func TestAccAliCloudDdosCooInstance_basic0(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, DomesticSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -414,9 +414,9 @@ func TestAccAliCloudDdosCooInstance_basic0_twin(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, DomesticSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -481,9 +481,9 @@ func TestAccAliCloudDdosCooInstance_basic0_intl(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, IntlSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -658,9 +658,9 @@ func TestAccAliCloudDdosCooInstance_basic1_dip(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, DomesticSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -827,9 +827,9 @@ func TestAccAliCloudDdosCooInstance_basic1_dip_intl(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, IntlSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  nil,
+		CheckDestroy:      nil,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{

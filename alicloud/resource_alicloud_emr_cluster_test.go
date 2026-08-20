@@ -11,7 +11,7 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/emr"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func init() {
@@ -116,7 +116,7 @@ func TestAccAlicloudEmrCluster_basic(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		//CheckDestroy:  testAccAlicloudEmrClusterDestroy,
 		CheckDestroy: rac.checkResourceDestroy(),
@@ -208,7 +208,7 @@ func TestAccAlicloudEmrCluster_hadoop_cluster(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		//CheckDestroy:  testAccAlicloudEmrClusterDestroy,
 		CheckDestroy: rac.checkResourceDestroy(),
@@ -318,7 +318,7 @@ func TestAccAlicloudEmrCluster_local_storage(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		//CheckDestroy:  testAccAlicloudEmrClusterDestroy,
 		CheckDestroy: rac.checkResourceDestroy(),
@@ -410,7 +410,7 @@ func TestAccAlicloudEmrCluster_gateway(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		//CheckDestroy:  testAccAlicloudEmrClusterDestroy,
 		CheckDestroy: rac.checkResourceDestroy(),
@@ -478,9 +478,9 @@ func TestAccAlicloudEmrCluster_multicluster(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{

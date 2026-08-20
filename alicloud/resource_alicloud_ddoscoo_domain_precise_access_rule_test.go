@@ -7,7 +7,7 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 // Test DdosCoo DomainPreciseAccessRule. >>> Resource test cases, automatically generated.
@@ -30,9 +30,9 @@ func TestAccAliCloudDdosCooDomainPreciseAccessRule_basic12326(t *testing.T) {
 			testAccPreCheckWithAccountSiteType(t, DomesticSite)
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -131,9 +131,9 @@ func TestAccAliCloudDdosCooDomainPreciseAccessRule_basic12326_twin(t *testing.T)
 			testAccPreCheckWithAccountSiteType(t, DomesticSite)
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{

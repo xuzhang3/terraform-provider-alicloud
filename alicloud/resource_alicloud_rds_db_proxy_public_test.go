@@ -6,7 +6,7 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccAliCloudRdsDBProxy_Public_MySQL(t *testing.T) {
@@ -46,7 +46,7 @@ func TestAccAliCloudRdsDBProxy_Public_MySQL(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: nil,
+		CheckDestroy:      nil,
 
 		Steps: []resource.TestStep{
 			{
@@ -116,7 +116,7 @@ func TestAccAliCloudRdsDBProxy_Public_MySQL_Update(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: nil,
+		CheckDestroy:      nil,
 
 		Steps: []resource.TestStep{
 			{

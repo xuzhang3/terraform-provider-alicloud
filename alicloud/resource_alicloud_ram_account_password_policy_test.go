@@ -5,8 +5,8 @@ import (
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ram"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccAlicloudRAMAccountPasswordPolicy_basic(t *testing.T) {
@@ -28,9 +28,9 @@ func TestAccAlicloudRAMAccountPasswordPolicy_basic(t *testing.T) {
 		},
 
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  testAccCheckRamAccountPasswordPolicyDestroy,
+		CheckDestroy:      testAccCheckRamAccountPasswordPolicyDestroy,
 
 		Steps: []resource.TestStep{
 			{

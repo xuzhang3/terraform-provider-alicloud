@@ -6,7 +6,7 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 // Test MaxCompute Quota. >>> Resource test cases, automatically generated.
@@ -29,7 +29,7 @@ func TestAccAliCloudMaxComputeQuota_basic10404(t *testing.T) {
 			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-chengdu"})
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -232,7 +232,7 @@ func TestAccAliCloudMaxComputeQuota_basic6979(t *testing.T) {
 			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-shenzhen"})
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{

@@ -11,8 +11,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func init() {
@@ -142,9 +142,9 @@ func TestAccAliCloudVPNCustomerGatewayBasic(t *testing.T) {
 		},
 
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  testAccCheckVpnCustomerGatewayDestroy,
+		CheckDestroy:      testAccCheckVpnCustomerGatewayDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccVpnCustomerGatewayConfigBasic(rand),
@@ -209,9 +209,9 @@ func TestAccAliCloudVPNCustomerGatewayMulti(t *testing.T) {
 		},
 
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  testAccCheckVpnCustomerGatewayDestroy,
+		CheckDestroy:      testAccCheckVpnCustomerGatewayDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccVpnCustomerGatewayConfig_multi(rand),
@@ -292,9 +292,9 @@ func TestAccAliCloudVPNCustomerGateway_basic2(t *testing.T) {
 			testAccPreCheck(t)
 		},
 
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -356,9 +356,9 @@ func TestAccAliCloudVPNGatewayCustomerGateway_basic3650(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -511,9 +511,9 @@ func TestAccAliCloudVPNGatewayCustomerGateway_basic3650_twin(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{

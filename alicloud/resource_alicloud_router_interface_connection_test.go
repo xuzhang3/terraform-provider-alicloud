@@ -6,8 +6,8 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func testAccCheckRouterInterfaceConnectionExists(n string) resource.TestCheckFunc {
@@ -78,7 +78,7 @@ func TestAccAlicloudVPCRouterInterfaceConnectionBasic(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckRouterInterfaceConnectionDestroy,
+		CheckDestroy:      testAccCheckRouterInterfaceConnectionDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccRouterInterfaceConnectionConfigBasic(rand),

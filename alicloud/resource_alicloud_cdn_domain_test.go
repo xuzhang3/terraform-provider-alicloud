@@ -9,8 +9,8 @@ import (
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/denverdino/aliyungo/cdn"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func init() {
@@ -94,7 +94,7 @@ func SkipTestAccAlicloudCDNDomain_basic(t *testing.T) {
 		IDRefreshName: "alicloud_cdn_domain.domain",
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckCdnDomainDestroy,
+		CheckDestroy:      testAccCheckCdnDomainDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCdnDomainConfig(rand),
@@ -126,7 +126,7 @@ func SkipTestAccAlicloudCDNDomain_https(t *testing.T) {
 		IDRefreshName: "alicloud_cdn_domain.domain",
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckCdnDomainDestroy,
+		CheckDestroy:      testAccCheckCdnDomainDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCdnDomainHttpsConfig(rand),
@@ -156,7 +156,7 @@ func SkipTestAccAlicloudCDNDomain_domestic(t *testing.T) {
 		IDRefreshName: "alicloud_cdn_domain.domain",
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckCdnDomainDestroy,
+		CheckDestroy:      testAccCheckCdnDomainDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCdnDomainDomestic(rand),

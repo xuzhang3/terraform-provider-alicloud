@@ -11,8 +11,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ess"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func init() {
@@ -114,7 +114,7 @@ func TestAccAliCloudEssScheduledTask_basic(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScheduledTaskDestroy,
+		CheckDestroy:      testAccCheckEssScheduledTaskDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -245,7 +245,7 @@ func TestAccAliCloudEssScheduledTask_basic_2(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScheduledTaskDestroy,
+		CheckDestroy:      testAccCheckEssScheduledTaskDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -347,7 +347,7 @@ func TestAccAliCloudEssScheduledTask_basic_3(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScheduledTaskDestroy,
+		CheckDestroy:      testAccCheckEssScheduledTaskDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -445,7 +445,7 @@ func TestAccAliCloudEssScheduledTask_basic4(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScheduledTaskDestroy,
+		CheckDestroy:      testAccCheckEssScheduledTaskDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -510,7 +510,7 @@ func TestAccAliCloudEssScheduledTask_multi(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScheduledTaskDestroy,
+		CheckDestroy:      testAccCheckEssScheduledTaskDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -555,7 +555,7 @@ func TestAccAliCloudEssScheduledTask_max_min_supportZero(t *testing.T) {
 		IDRefreshName: resourceId,
 
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy: testAccCheckEssScheduledTaskDestroy,
+		CheckDestroy:      testAccCheckEssScheduledTaskDestroy,
 		Steps: []resource.TestStep{
 			{
 

@@ -11,8 +11,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func init() {
@@ -139,9 +139,9 @@ func TestAccAlicloudSslVpnServerBasic(t *testing.T) {
 			testAccPreCheckWithAccountSiteType(t, IntlSite)
 		},
 
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  testAccCheckSslVpnServerDestroy,
+		CheckDestroy:      testAccCheckSslVpnServerDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSslVpnServerConfigBasic(rand),
@@ -255,9 +255,9 @@ func TestAccAlicloudSslVpnServerMulti(t *testing.T) {
 			testAccPreCheckWithAccountSiteType(t, IntlSite)
 		},
 
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  testAccCheckSslVpnServerDestroy,
+		CheckDestroy:      testAccCheckSslVpnServerDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSslVpnServerConfig_mulit(rand),

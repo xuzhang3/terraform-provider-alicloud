@@ -11,8 +11,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func init() {
@@ -150,9 +150,9 @@ func SkipTestAccAlicloudVPNGatewayBasic(t *testing.T) {
 		},
 
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  testAccCheckVpnGatewayDestroy,
+		CheckDestroy:      testAccCheckVpnGatewayDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccVpnConfigBasic(rand),
@@ -386,9 +386,9 @@ func TestAccAliCloudVPNGateway_basic2(t *testing.T) {
 			testAccPreCheck(t)
 		},
 
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -517,9 +517,9 @@ func TestAccAliCloudVPNGateway_basic3(t *testing.T) {
 			testAccPreCheckWithRegions(t, true, connectivity.VPNSingleConnectRegions)
 		},
 
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -615,9 +615,9 @@ func TestAccAliCloudVPNGateway_basic4(t *testing.T) {
 			testAccPreCheckWithRegions(t, true, connectivity.VPNSingleConnectRegions)
 		},
 
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -740,7 +740,7 @@ func TestAccAliCloudVPNGatewayVPNGateway_basic5658(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		// CheckDestroy:  rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
@@ -917,7 +917,7 @@ func TestAccAliCloudVPNGatewayVPNGateway_basic5485(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.VPNSupportRegions)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		// CheckDestroy:  rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
@@ -1075,7 +1075,7 @@ func TestAccAliCloudVPNGatewayVPNGateway_basic5632(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.VPNSupportRegions)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		// CheckDestroy:  rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
@@ -1233,7 +1233,7 @@ func TestAccAliCloudVPNGatewayVPNGateway_basic3671(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.VPNSupportRegions)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		// CheckDestroy:  rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
@@ -1537,7 +1537,7 @@ func TestAccAliCloudVPNGatewayVPNGateway_basic5489(t *testing.T) {
 			testAccPreCheck(t)
 			// testAccPreCheckWithRegions(t, true, connectivity.VPNSupportRegions)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		// CheckDestroy:  rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
@@ -1697,7 +1697,7 @@ func TestAccAliCloudVPNGatewayVPNGateway_basic5488(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		// CheckDestroy:  rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{

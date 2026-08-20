@@ -7,7 +7,7 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 // Test Esa CustomResponseCodeRule. >>> Resource test cases, automatically generated.
@@ -29,9 +29,9 @@ func TestAccAliCloudEsaCustomResponseCodeRule_basic12096(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, DomesticSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -124,9 +124,9 @@ func TestAccAliCloudEsaCustomResponseCodeRule_basic12096_twin(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, DomesticSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -179,9 +179,9 @@ func TestAccAliCloudEsaCustomResponseCodeRule_basic12098(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, DomesticSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{

@@ -6,8 +6,8 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccAlicloudVPCNetworkAclEntries_basic(t *testing.T) {
@@ -17,9 +17,9 @@ func TestAccAlicloudVPCNetworkAclEntries_basic(t *testing.T) {
 	testAccCheck := ra.resourceAttrMapUpdateSet()
 	resource.Test(t, resource.TestCase{
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  testAccCheckNetworkAclEntriesDestroy,
+		CheckDestroy:      testAccCheckNetworkAclEntriesDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccNetworkAclEntries_create(rand),

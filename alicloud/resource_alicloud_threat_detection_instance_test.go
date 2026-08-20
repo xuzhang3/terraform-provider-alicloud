@@ -6,7 +6,7 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 // Skip Test,Because each account can only be opened once
@@ -28,7 +28,7 @@ func TestAccAliCloudThreatDetectionInstance_basic1826(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckForCleanUpInstances(t, "", "sas", "sas", "sas", "")
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -162,7 +162,7 @@ func TestAccAliCloudThreatDetectionInstance_basic4253(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckForCleanUpInstances(t, "", "sas", "sas", "sas", "")
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -634,7 +634,7 @@ func TestAccAliCloudThreatDetectionInstance_basic4253_twin(t *testing.T) {
 			testAccPreCheck(t)
 			// testAccPreCheckForCleanUpInstances(t, "", "sas", "sas", "sas", "")
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -726,7 +726,7 @@ func TestAccAliCloudThreatDetectionInstance_basic4253_intl(t *testing.T) {
 			//testAccPreCheckWithAccountSiteType(t, IntlSite)
 			//testAccPreCheckForCleanUpInstances(t, "", "sas", "sas", "sas", "")
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -825,7 +825,7 @@ func TestAccAliCloudThreatDetectionInstance_basic4253_twin_fix(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckForCleanUpInstances(t, "", "sas", "sas", "sas", "")
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -897,7 +897,7 @@ func TestAccAliCloudThreatDetectionInstance_basic10249(t *testing.T) {
 			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -966,7 +966,7 @@ func TestAccAliCloudThreatDetectionInstance_basic10249_twin(t *testing.T) {
 			testAccPreCheckWithRegions(t, true, []connectivity.Region{"cn-hangzhou"})
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -1029,7 +1029,7 @@ func TestAccAliCloudThreatDetectionInstance_basic12300(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -1133,7 +1133,7 @@ func TestAccAliCloudThreatDetectionInstance_basic12300_twin(t *testing.T) {
 		PreCheck: func() {
 			testAccPreCheck(t)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -1198,7 +1198,7 @@ func TestAccAliCloudThreatDetectionInstance_basic12300_intl(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, IntlSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{

@@ -10,8 +10,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func init() {
@@ -138,9 +138,9 @@ func TestAccAliCloudVPCRouteTableAttachmentBasic(t *testing.T) {
 			testAccPreCheckWithRegions(t, false, connectivity.RouteTableNoSupportedRegions)
 		},
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  testAccCheckRouteTableAttachmentDestroy,
+		CheckDestroy:      testAccCheckRouteTableAttachmentDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccRouteTableAttachmentConfigBasic(rand),
@@ -174,9 +174,9 @@ func TestAccAliCloudVPCRouteTableAttachmentMulti(t *testing.T) {
 			testAccPreCheckWithRegions(t, false, connectivity.RouteTableNoSupportedRegions)
 		},
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  testAccCheckRouteTableAttachmentDestroy,
+		CheckDestroy:      testAccCheckRouteTableAttachmentDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccRouteTableAttachmentConfigMulti(rand),
@@ -205,9 +205,9 @@ func TestAccAliCloudVPCRouteTableAttachmentMulti_bugfix(t *testing.T) {
 			testAccPreCheckWithRegions(t, false, connectivity.RouteTableNoSupportedRegions)
 		},
 		// module name
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  testAccCheckRouteTableAttachmentDestroy,
+		CheckDestroy:      testAccCheckRouteTableAttachmentDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccRouteTableAttachmentConfigMultiBugFix(rand),

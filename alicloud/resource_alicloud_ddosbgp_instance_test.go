@@ -6,7 +6,7 @@ import (
 
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 // Test DdosBgp Instance. >>> Resource test cases, automatically generated.
@@ -30,7 +30,7 @@ func TestAccAliCloudDdosBgpInstance_basic11131(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, DomesticSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -140,7 +140,7 @@ func TestAccAliCloudDdosBgpInstance_basic11131_twin(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, DomesticSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -222,7 +222,7 @@ func TestAccAliCloudDdosBgpInstance_basic11229(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, DomesticSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{
@@ -332,7 +332,7 @@ func TestAccAliCloudDdosBgpInstance_basic11229_twin(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithAccountSiteType(t, DomesticSite)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
 		Steps: []resource.TestStep{
 			{

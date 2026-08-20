@@ -17,9 +17,9 @@ import (
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -825,11 +825,11 @@ func TestAccAliCloudActiontrailTrail_basic11012(t *testing.T) {
 			},
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"trail_region":               "cn-hangzhou",
+					"trail_region": "cn-hangzhou",
 				}),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
-						"trail_region":               "cn-hangzhou",
+						"trail_region": "cn-hangzhou",
 					}),
 				),
 			},
@@ -1117,11 +1117,11 @@ func TestAccAliCloudActiontrailTrail_basic11016(t *testing.T) {
 			},
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"trail_region":               "cn-hangzhou",
+					"trail_region": "cn-hangzhou",
 				}),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
-						"trail_region":               "cn-hangzhou",
+						"trail_region": "cn-hangzhou",
 					}),
 				),
 			},

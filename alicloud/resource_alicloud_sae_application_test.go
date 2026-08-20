@@ -12,7 +12,7 @@ import (
 	"github.com/PaesslerAG/jsonpath"
 	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func init() {
@@ -125,9 +125,9 @@ func TestAccAliCloudSAEApplication_basicImage(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.SaeSupportRegions)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -480,9 +480,9 @@ func SkipTestAccAliCloudSAEApplication_basicFatJar(t *testing.T) {
 	name := fmt.Sprintf("tftestacc%d", rand)
 	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudSAEApplicationBasicDependence0)
 	resource.Test(t, resource.TestCase{
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -806,9 +806,9 @@ func TestAccAliCloudSAEApplication_basicWar(t *testing.T) {
 	name := fmt.Sprintf("tftestacc%d", rand)
 	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudSAEApplicationBasicDependence0)
 	resource.Test(t, resource.TestCase{
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1154,9 +1154,9 @@ func TestAccAliCloudSAEApplication_basicPhp(t *testing.T) {
 	name := fmt.Sprintf("tftestacc%d", rand)
 	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudSAEApplicationBasicDependence0)
 	resource.Test(t, resource.TestCase{
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1482,9 +1482,9 @@ func SkipTestAccAliCloudSAEApplication_basicNewImage(t *testing.T) {
 	name := fmt.Sprintf("tftestacc%d", rand)
 	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudSAEApplicationBasicDependence0)
 	resource.Test(t, resource.TestCase{
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -1854,9 +1854,9 @@ func SkipTestAccAliCloudSAEApplication_basicNewFatJar(t *testing.T) {
 	name := fmt.Sprintf("tftestacc%d", rand)
 	testAccConfig := resourceTestAccConfigFunc(resourceId, name, AliCloudSAEApplicationBasicDependence1)
 	resource.Test(t, resource.TestCase{
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -2476,9 +2476,9 @@ func TestAccAliCloudSAEApplication_basicTags(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.SaeSupportRegions)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
@@ -2560,9 +2560,9 @@ func SkipAccAliCloudSAEApplication_basic3(t *testing.T) {
 			testAccPreCheck(t)
 			testAccPreCheckWithRegions(t, true, connectivity.SaeSupportRegions)
 		},
-		IDRefreshName: resourceId,
+		IDRefreshName:     resourceId,
 		ProviderFactories: testAccProviderFactory,
-		CheckDestroy:  rac.checkResourceDestroy(),
+		CheckDestroy:      rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
